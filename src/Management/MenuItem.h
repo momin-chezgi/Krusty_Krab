@@ -6,7 +6,6 @@
 class MenuItem
 {
 private:
-    size_t id{};
     size_t preparationMinutes{};
     string name{};
     // For the type of food(i.e. Pizza)
@@ -25,7 +24,6 @@ public:
 
     cost calculatePrice(double quantity);
 
-    void setID(size_t newID);
     void setPreparationMinutes(size_t minutes);
     void setName(string newName);
     void setBio(string newBio);
@@ -43,6 +41,7 @@ public:
 
     ~MenuItem();
 protected:
+    size_t id{};
     // For the type of food(i.e. Pizza)
     string itemType{};
     // For more informations (i.e. Vegie Pizza, ...)

@@ -2,7 +2,7 @@
 
 Menu::Menu(size_t initID, Menu *m)
 {
-    setID(initID);
+    id = initID;
     setMenu(m->getMenu());
     // no suitable user-defined conversion from 
     // "std::vector<MenuItem, std::allocator<MenuItem>>" 
@@ -11,7 +11,7 @@ Menu::Menu(size_t initID, Menu *m)
 }
 Menu::Menu(size_t initID, const vector<MenuItem> &initMenu)
 {
-    setID(initID);
+    id = initID;
     setMenu(initMenu);
 }
 
@@ -24,12 +24,7 @@ vector<MenuItem> Menu::getMenu() const
     return menu;
 }
 
-void Menu::setID(const size_t newID)
-{
-    if(IDInitializer::Menu(1, newID)==1){
-        id = newID;
-    }
-}
+
 void Menu::setMenu(const vector< MenuItem>& newMenu)
 {
     menu = newMenu;

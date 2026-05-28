@@ -1,10 +1,7 @@
 #include "MenuItem.h"
 
-MenuItem::MenuItem(size_t initID){
-    setID(initID);
-}
-MenuItem::MenuItem(size_t initID, string initName, cost initPrice, string initBio = ""){
-    setID(initID);
+MenuItem::MenuItem(size_t initID) : id(initID){}
+MenuItem::MenuItem(size_t initID, string initName, cost initPrice, string initBio = "") : id(initID){
     setName(initName);
     setPricePerUnit(initPrice);
     setBio(initBio);
@@ -26,12 +23,6 @@ cost MenuItem::getPricePerUnit() const{
     return pricePerUnit;
 }
 
-
-void MenuItem::setID(size_t newID){
-    if(newID != 0){
-        id = newID;
-    }
-}
 void MenuItem::setPreparationMinutes(size_t minutes)
 {
     preparationMinutes = minutes;

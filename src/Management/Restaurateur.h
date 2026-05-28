@@ -24,10 +24,8 @@ public:
     size_t getID() const;
     string getName() const;
 
-    void setID(size_t newID);
     void setName(string newName);
 
-    void editRestaurantID(size_t newID);
     void editRestaurantName(string newName);
     void editRestaurantAddress(vector<string> newAddress);
     void activateRestaurant();

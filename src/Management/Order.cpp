@@ -33,14 +33,6 @@ string Order::getOrderStatus() const
     return orderStatus;
 }
 
-bool Order::setID(const size_t newID)
-{
-    if(IDInitializer::Order(newID)==1){
-        id = newID;
-        return true;
-    }
-    return false;
-}
 void Order::setOrderer(const Customer const *newOrderer)
 {
     orderer = *newOrderer;

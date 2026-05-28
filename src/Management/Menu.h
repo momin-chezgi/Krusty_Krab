@@ -12,7 +12,6 @@ public:
     size_t getID() const;
     vector<MenuItem> getMenu() const;
 
-    void setID(const size_t newID);
     void setMenu(const vector< MenuItem>& newMenu);
 
     bool addItem(const MenuItem const *newItem);       // If the item hasn't been in the menu returns true, otherwise false

@@ -18,7 +18,6 @@ public:
     vector<MenuItem> getOrder() const;
     string getOrderStatus() const;
 
-    bool setID(const size_t newID);
     void setOrderer(const Customer const *newOrderer);
     void setOrder(const vector<MenuItem> &newOrder);
     void setOrderStatus(string newStatus);

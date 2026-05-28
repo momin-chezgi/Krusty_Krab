@@ -47,12 +47,6 @@ string Restaurateur::getName() const
     return name;
 }
 
-void Restaurateur::setID(size_t newID)
-{
-    if(IDInitializer::Restaurateur(1, newID)==1){
-        id = newID;
-    }
-}
 void Restaurateur::setName(string newName)
 {
     if(newName != "" || newName != " "){
