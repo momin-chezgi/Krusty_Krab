@@ -53,15 +53,23 @@ void MenuItem::setPricePerUnit(cost newPrice){
     }
 }
 
-cost MenuItem::calculatePrice(double quantity, string container) {
-    if(allowedContainers[container]==nullptr){
-        return 0.00;
-    }
+string MenuItem::getItemType() {
+    return itemType;
+}
+string MenuItem::getFoodType() {
+    return foodType;
+}
+
+
+cost MenuItem::calculatePrice(double quantity) {
     cost foodPrice = quantity * getPricePerUnit();
-    cost otherPrices = allowedContainers[container]->getPrice();
+    cost otherPrices = 0.00;
     // 'otherPrices' may vary from containers price to electricity, water, etc bills per customer.
     return foodPrice + otherPrices;
 }
 
+void MenuItem::setItemType(string newType) {
+    itemType = newType;
+}
 
 MenuItem::~MenuItem(){}

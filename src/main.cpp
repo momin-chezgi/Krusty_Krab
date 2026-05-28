@@ -30,15 +30,13 @@ int main()
 
 void CustomerDashboard(){
     Customer *user = enterAsCustomer();
-    if(!user){
-        return;
-    }
-    Menu menu = giveMenu();
+    if(!user) return;
+    size_t restaurantID = chooseRestaurant();
+    Menu menu = giveMenu(restaurantID);
     Printer::menu(&menu);
     Order order = Order(IDInitializer::Order(), user);
-    if(!orderAtGivenBuffer(&order)){
-        return;
-    }
+    while(orderAtGivenBuffer(&order));
+    return;
 }
 void RestaurateurDashboard(){
     Restaurateur *user = enterAsRestaurateur();

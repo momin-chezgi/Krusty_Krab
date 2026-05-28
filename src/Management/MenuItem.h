@@ -23,20 +23,28 @@ public:
     string getBio() const;
     cost getPricePerUnit() const;
 
-    virtual string getItemType() const = 0;
-    virtual string getFoodType() const = 0;
-    virtual bool isAvailable() const = 0;
-
-    cost calculatePrice(double quantity, string container);
+    cost calculatePrice(double quantity);
 
     void setID(size_t newID);
     void setPreparationMinutes(size_t minutes);
     void setName(string newName);
     void setBio(string newBio);
     void setPricePerUnit(cost newPrice);
-
-    virtual void setItemType(string newType) = 0;
+    void setItemType(string newType);
     // We don't have 'setIsAvailable' because it just depends on the quantity
+    
+    virtual string getItemType();
+    virtual string getFoodType();
+    virtual bool isAvailable() const = 0;
+    virtual bool addFoodQuantity(double quantity) = 0;
+    virtual bool delFoodQuantity(double quantity) = 0;
+    virtual bool setFoodQuantity(double quantity) = 0;
+    virtual void clrFoodQuantity() = 0;
 
     ~MenuItem();
+protected:
+    // For the type of food(i.e. Pizza)
+    string itemType{};
+    // For more informations (i.e. Vegie Pizza, ...)
+    string foodType{};
 };

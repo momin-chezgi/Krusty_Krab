@@ -10,9 +10,12 @@ int Login()
 Customer* enterAsCustomer(){
     return GetInf::customer();
 }
-
-Menu giveMenu(){
-    return GetInf::menu();
+size_t chooseRestaurant(){
+    Printer::chooseRestaurant();
+    return GetInf::chooseRestaurant();
+}
+Menu giveMenu(size_t restaurantID){
+    return GetInf::menu(restaurantID);
 }
 
 bool orderAtGivenBuffer(const Order const *resultOrder){

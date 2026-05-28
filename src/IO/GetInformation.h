@@ -8,7 +8,7 @@ namespace GetInf{
     Restaurateur *restaurateur();
     Customer *customer(); // like restaurant() function
     auto modifyRestaurant();
-    Menu menu();
+    Menu menu(size_t restaurantID);
     bool order(const Order const *resultOrder);
     // returns false if user doesn't want to order
     auto menuItem();
@@ -18,4 +18,5 @@ namespace GetInf{
     AdminOfSystem *admin();
     // You can also add the pasword authantication proccess to admin and restaurateurs;
     Restaurateur findRestaurant(size_t restaurantID);
+    size_t chooseRestaurant();
 };

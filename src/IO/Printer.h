@@ -3,12 +3,13 @@
 
 namespace Printer{
     void wellcome();
-    void menu(const Menu const *menu);
-    void restaurateurDashboard(string nm, vector<string> ad, bool isactive, size_t averaget) const;
-    void InvalidInput() const;
+    void menu(const Menu *menu);
+    void restaurateurDashboard(string nm, vector<string> ad, bool isactive, size_t averaget);
+    void InvalidInput();
     auto RestaurateurChoices();
     void totalSaleStatistics(const map<Restaurant *, map<MenuItem, cost>> &tss);
     void totalCustomerStatistics(const map<Restaurant *, map<Customer, vector<Order>>> &tcs);
     void saleStatistics(const map<MenuItem, cost> &ss);
     void customerStatistics(const map<Customer, vector<Order>> &cs);
+    void chooseRestaurant();
 };

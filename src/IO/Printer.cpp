@@ -1,6 +1,6 @@
 #include "Printer.h"
 
-void Printer::InvalidInput() const
+void Printer::InvalidInput()
 {
         cout << "Invalid input, please try again" << endl;
 }
