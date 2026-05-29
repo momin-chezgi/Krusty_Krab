@@ -88,13 +88,13 @@ void Restaurateur::deactivateRestaurant()
 void Restaurateur::updateAndPrintSaleStatistics(){}
 void Restaurateur::updateAndPrintCustomerStatistics(){}
 
-bool Restaurateur::AddItemToOrder(size_t orderID, const MenuItem const* item)
+bool Restaurateur::AddItemToOrder(string orderID, const MenuItem const* item)
 {
     return restaurant->AddItemToOrder(orderID, item);
 }
-bool Restaurateur::RemoveItemFromOrder(size_t orderID, const MenuItem const* item)
+bool Restaurateur::RemoveItemFromOrder(string orderID, string itemID)
 {
-    return restaurant->RemoveItemFromOrder(orderID, item);
+    return restaurant->RemoveItemFromOrder(orderID, itemID);
 }
 
 bool Restaurateur::addItemToMenu( const MenuItem const *item)

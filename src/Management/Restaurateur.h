@@ -3,7 +3,7 @@
 #include "Restaurant.h"
 
 class Restaurateur{
-    const string id = IDGen::uuid();
+    const string id = IDGenerator::uuid();
     Restaurant *restaurant;
     string name;
     map<MenuItem, cost> saleStatisics{};
@@ -40,8 +40,8 @@ public:
     void updateAndPrintSaleStatistics();
     void updateAndPrintCustomerStatistics();
 
-    bool AddItemToOrder(size_t orderID, const MenuItem const* item);
-    bool RemoveItemFromOrder(size_t orderID, const MenuItem const* item);
+    bool AddItemToOrder(string orderID, const MenuItem const* item);
+    bool RemoveItemFromOrder(string orderID, string itemID);
 
     bool addItemToMenu( const MenuItem const *item);
     // 'addItemToMenu' returns true if the item wasn't in the menu and has been added

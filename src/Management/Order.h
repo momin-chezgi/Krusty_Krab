@@ -12,7 +12,7 @@ string orderStatus2String(OrderStatus s);
 OrderStatus orderStatusString2Enum(string s);
 
 class Order{
-    const string id = IDGen::uuid();
+    const string id = IDGenerator::uuid();
     Customer *orderer {nullptr};
     vector<MenuItem> order;
     OrderStatus orderStatus {InPreparation};

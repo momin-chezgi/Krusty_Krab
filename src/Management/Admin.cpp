@@ -1,11 +1,11 @@
 # include "Admin.h"
 
 AdminOfSystem::AdminOfSystem(string initName=""):
-   id(IDGen::uuid()), name(initName){}
+   id(IDGenerator::uuid()), name(initName){}
 
 
 AdminOfSystem::AdminOfSystem(const vector<Restaurateur *> &initRestaurateurs):
-   id(IDGen::uuid())
+   id(IDGenerator::uuid())
 {
    for(auto r : initRestaurateurs){
       restaurateurs[r->getID()] = r;
@@ -14,7 +14,7 @@ AdminOfSystem::AdminOfSystem(const vector<Restaurateur *> &initRestaurateurs):
 
 Restaurateur *AdminOfSystem::addRestaurant()
 {
-   return new Restaurateur(IDGen::uuid());
+   return new Restaurateur(IDGenerator::uuid());
 }
 Restaurateur *AdminOfSystem::addRestaurant(const Restaurant& copyingRestaurant, string initName = "")
 {

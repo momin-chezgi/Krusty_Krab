@@ -2,7 +2,7 @@
 
 #include "../neededLibs.h"
 
-namespace IDGen{
+namespace IDGenerator{
     string uuid();
     // size_t Restaurant(int checker = -1);
     // size_t Menu(int checker = -1, size_t candidateID = 0);

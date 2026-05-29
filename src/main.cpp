@@ -1,7 +1,7 @@
 #include "neededLibs.h"
 #include "./IO/Interface.h"
 #include "./Management/Order.h"
-#include "./Utils/IDGen.h"
+#include "./Utils/IDGenerator.h"
 #include "./Management/Admin.h"
 
 void CustomerDashboard();
@@ -34,7 +34,7 @@ void CustomerDashboard(){
     size_t restaurantID = chooseRestaurant();
     Menu menu = giveMenu(restaurantID);
     Printer::menu(&menu);
-    Order order = Order(IDGen::Order(), user);
+    Order order = Order(user);
     while(orderAtGivenBuffer(&order));
     return;
 }
@@ -43,7 +43,7 @@ void RestaurateurDashboard(){
     if (!user){
         return;
     }
-    auto decision = restaurateurOptions(user->getRestaurntName(), user->getRestaurantAddress(), user->getRestaurantStatus(), user->getRestaurantPreparationMinutes());
+    auto decision = restaurateurOptions(user->getRestaurantName(), user->getRestaurantAddress(), user->getRestaurantStatus(), user->getRestaurantPreparationMinutes());
     int chosenOption = decision[0];
     auto x = decision[1];
     auto y = decision[2];

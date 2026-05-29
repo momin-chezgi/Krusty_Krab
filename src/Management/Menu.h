@@ -1,9 +1,9 @@
 #pragma once
 # include "MenuItem.h"
-# include "Utils/IDGen.h"
+# include "../Utils/IDGenerator.h"
 class Menu
 {
-    const string id = IDGen::uuid();
+    const string id = IDGenerator::uuid();
     vector<MenuItem> menu;
 public:
     Menu(Menu *m);

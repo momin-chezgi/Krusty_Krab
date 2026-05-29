@@ -3,7 +3,7 @@
 #include "Order.h"
 
 class Restaurant{
-    const string id = IDGen::uuid();
+    const string id = IDGenerator::uuid();
     string name;
     vector<string> address;          // city/street/building No
     bool activationStatus{true};

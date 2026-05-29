@@ -41,7 +41,7 @@ public:
 
     ~MenuItem();
 protected:
-    const string id = IDGen::uuid();
+    const string id = IDGenerator::uuid();
     // For the type of food(i.e. Pizza)
     string itemType{};
     // For more informations (i.e. Vegie Pizza, ...)

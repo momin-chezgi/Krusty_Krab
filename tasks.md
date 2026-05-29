@@ -26,3 +26,9 @@
 ... Maybe after finishing InOut/ it's vital to redesign and rewrite the codes !
 11. Think how to deal with statistics 
 12. ID Management: hide, change them to string(from size_t) and use UUID
+
+### At the very end:
+1. Create UUID
+2. Implement repositories
+3. Organize all of the files in a well-organized form(like domain/ headers/ repository/ etc.)
+-1. Use MySQL

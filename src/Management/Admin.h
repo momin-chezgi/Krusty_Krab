@@ -4,7 +4,7 @@
 
 
 class AdminOfSystem{
-    const const string id = IDGen::uuid();
+    const string id = IDGenerator::uuid();
     string name;
     map<string, Restaurateur *> restaurateurs;
     map<Restaurant *, map<MenuItem, cost>> totalSaleStatistics{};
