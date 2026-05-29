@@ -1,21 +1,15 @@
 #include "Menu.h"
 
-Menu::Menu(size_t initID, Menu *m)
+Menu::Menu(   Menu *m)
 {
-    id = initID;
     setMenu(m->getMenu());
-    // no suitable user-defined conversion from 
-    // "std::vector<MenuItem, std::allocator<MenuItem>>" 
-    // to "const std::vector<const MenuItem, std::allocator<const MenuItem>>" 
-    // exists
 }
-Menu::Menu(size_t initID, const vector<MenuItem> &initMenu)
+Menu::Menu(   const vector<MenuItem> &initMenu)
 {
-    id = initID;
     setMenu(initMenu);
 }
 
-size_t Menu::getID() const 
+string Menu::getID() const 
 {
     return id;
 }

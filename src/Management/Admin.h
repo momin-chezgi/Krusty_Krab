@@ -4,21 +4,26 @@
 
 
 class AdminOfSystem{
-    size_t id;
+    const const string id = IDGen::uuid();
     string name;
-    map<size_t, Restaurateur *> restaurateurs;
+    map<string, Restaurateur *> restaurateurs;
     map<Restaurant *, map<MenuItem, cost>> totalSaleStatistics{};
     map<Restaurant *, map<Customer, vector<Order>>> totalCustomerStatistics{};
 
 public:
-    AdminOfSystem(size_t initID, string initName="");
-    AdminOfSystem(size_t initID, const vector<Restaurateur *> &initRestaurateurs);
+    AdminOfSystem(string initName="");
+    AdminOfSystem(string initName="");
+    AdminOfSystem(const vector<Restaurateur *> &initRestaurateurs);
 
+    string getID() const;
+    string getName() const;
     Restaurateur *addRestaurant();
-    Restaurateur *addRestaurant(Restaurant *r, string initName = "");
-    Restaurateur *addRestaurant(size_t initID, string initName, vector<string> initAddress, string initPhoneNumber);
+    //  Maybe this would be better to return the id instead of the pointer,
+    // but we can find the restaurant by its id in the map of restaurateurs
+    Restaurateur *addRestaurant(const Restaurant& copyingRestaurant, string initName = "");
+    Restaurateur *addRestaurant(string initName, vector<string> initAddress, string initPhoneNumber);
 
-    Restaurateur *accessRestaurant(size_t restaurantID);
+    Restaurateur *accessRestaurant(string restaurantID);
 
     void updateAndPrintTotalSaleStatistics();
     void updateAndPrintTotalCustomerStatistics();

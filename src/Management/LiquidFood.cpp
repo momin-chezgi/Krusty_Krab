@@ -1,8 +1,8 @@
 # include "LiquidFood.h"
 
-LiquidFood::LiquidFood(size_t initID) : MenuItem(initID) {}
-LiquidFood::LiquidFood(size_t initID, string initName, cost initPrice, double initVolume, string initBio) : 
-MenuItem(initID, initName, initPrice, initBio) {
+LiquidFood::LiquidFood(   ) : MenuItem() {}
+LiquidFood::LiquidFood(   string initName, cost initPrice, double initVolume, string initBio) : 
+MenuItem(initName, initPrice, initBio) {
     setVolume(initVolume);
 }
 double LiquidFood::getVolume() const {

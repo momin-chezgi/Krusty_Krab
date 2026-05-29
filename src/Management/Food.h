@@ -6,8 +6,8 @@ class Food : public MenuItem
 {
     double weight{};
 public:
-    Food(size_t initID);
-    Food(size_t initID, string initName, cost initPrice, double initWeight, string initBio = "");
+    Food();
+    Food(string initName, cost initPrice, double initWeight, string initBio = "");
 
     double getWeight() const;
     bool isAvailable() const override;

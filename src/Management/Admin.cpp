@@ -1,10 +1,11 @@
 # include "Admin.h"
 
-AdminOfSystem::AdminOfSystem(size_t initID, string initName=""):
-   id(initID), name(initName){}
+AdminOfSystem::AdminOfSystem(string initName=""):
+   id(IDGen::uuid()), name(initName){}
 
-AdminOfSystem::AdminOfSystem(size_t initID, const vector<Restaurateur *> &initRestaurateurs):
-   id(initID)
+
+AdminOfSystem::AdminOfSystem(const vector<Restaurateur *> &initRestaurateurs):
+   id(IDGen::uuid())
 {
    for(auto r : initRestaurateurs){
       restaurateurs[r->getID()] = r;
@@ -13,19 +14,29 @@ AdminOfSystem::AdminOfSystem(size_t initID, const vector<Restaurateur *> &initRe
 
 Restaurateur *AdminOfSystem::addRestaurant()
 {
-   return new Restaurateur(IDInitializer::Restaurateur());
+   return new Restaurateur(IDGen::uuid());
 }
-Restaurateur *AdminOfSystem::addRestaurant(Restaurant *r, string initName = "")
+Restaurateur *AdminOfSystem::addRestaurant(const Restaurant& copyingRestaurant, string initName = "")
 {
-   return new Restaurateur(IDInitializer::Restaurateur(), r);
+   return new Restaurateur(copyingRestaurant, initName);
 }
-Restaurateur *AdminOfSystem::addRestaurant(size_t initID, string initName, vector<string> initAddress, string initPhoneNumber) 
+Restaurateur *AdminOfSystem::addRestaurant(string initName, vector<string> initAddress, string initPhoneNumber) 
 {
-   auto r = new Restaurant(initID, initName, initAddress, initPhoneNumber);
-   return new Restaurateur(IDInitializer::Restaurateur(), r);
+   auto r = new Restaurant(initName, initAddress, initPhoneNumber);
+   return new Restaurateur(*r, initName);
 }
 
-Restaurateur *AdminOfSystem::accessRestaurant(size_t restaurantID)
+string AdminOfSystem::getID() const
+{
+   return id;
+}
+
+string AdminOfSystem::getName() const
+{
+   return name;
+}
+
+Restaurateur *AdminOfSystem::accessRestaurant(string restaurantID)
 {
    return findForRestaurant(restaurantID);
 }

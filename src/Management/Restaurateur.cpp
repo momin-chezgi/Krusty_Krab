@@ -1,20 +1,20 @@
 # include "Restaurateur.h"
 
-Restaurateur::Restaurateur(size_t newID) : id(newID){}
+Restaurateur::Restaurateur(){}
 
-Restaurateur::Restaurateur(size_t newID, const Restaurant const *initRestaurant, string initName="") :
-    id(newID), restaurant(initRestaurant) , name(initName){}
+Restaurateur::Restaurateur(const Restaurant const *initRestaurant, string initName="") :
+    restaurant((Restaurant*)initRestaurant) , name(initName){}
 
 
 Restaurant *Restaurateur::myRestaurant() const
 {
     return restaurant;
 }
-size_t Restaurateur::getRestaurantID() const
+string Restaurateur::getRestaurantID() const
 {
     return restaurant->getID();
 }
-string Restaurateur::getRestaurntName() const
+string Restaurateur::getRestaurantName() const
 {
     return restaurant->getName();
 }
@@ -38,7 +38,7 @@ vector<Order> Restaurateur::getOrders() const
 {
     return restaurant->getOrders();
 }
-size_t Restaurateur::getID() const
+string Restaurateur::getID() const
 {
     return id;
 }

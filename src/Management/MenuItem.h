@@ -13,10 +13,10 @@ private:
     // For more informations (i.e. Vegie Pizza, ...)
     cost pricePerUnit{};
 public:
-    MenuItem(size_t initID);
-    MenuItem(size_t initID, string initName, cost initPrice, string initBio = "");
+    MenuItem();
+    MenuItem(string initName, cost initPrice, string initBio = "");
 
-    size_t getID() const;
+    string getID() const;
     size_t getPreparationMinutes() const;
     string getName() const;
     string getBio() const;
@@ -41,7 +41,7 @@ public:
 
     ~MenuItem();
 protected:
-    size_t id{};
+    const string id = IDGen::uuid();
     // For the type of food(i.e. Pizza)
     string itemType{};
     // For more informations (i.e. Vegie Pizza, ...)

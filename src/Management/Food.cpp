@@ -1,8 +1,8 @@
 # include "Food.h"
 
-Food::Food(size_t initID) : MenuItem(initID) {}
-Food::Food(size_t initID, string initName, cost initPrice, double initWeight, string initBio) : 
-MenuItem(initID, initName, initPrice, initBio) {
+Food::Food():MenuItem(){}
+Food::Food(string initName, cost initPrice, double initWeight, string initBio) : 
+MenuItem(initName, initPrice, initBio) {
     setWeight(initWeight);
 }
 

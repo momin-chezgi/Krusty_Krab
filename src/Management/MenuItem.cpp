@@ -1,13 +1,13 @@
 #include "MenuItem.h"
 
-MenuItem::MenuItem(size_t initID) : id(initID){}
-MenuItem::MenuItem(size_t initID, string initName, cost initPrice, string initBio = "") : id(initID){
+MenuItem::MenuItem(   ){}
+MenuItem::MenuItem(   string initName, cost initPrice, string initBio = ""){
     setName(initName);
     setPricePerUnit(initPrice);
     setBio(initBio);
 }
 
-size_t MenuItem::getID() const{
+string MenuItem::getID() const{
     return id;
 }
 size_t MenuItem::getPreparationMinutes() const{

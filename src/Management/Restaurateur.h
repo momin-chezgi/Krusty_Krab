@@ -3,25 +3,25 @@
 #include "Restaurant.h"
 
 class Restaurateur{
-    size_t id;
+    const string id = IDGen::uuid();
     Restaurant *restaurant;
     string name;
     map<MenuItem, cost> saleStatisics{};
     map<Customer, vector<Order>> customerStatistics{};
 
 public:
-    Restaurateur(size_t newID);
-    Restaurateur(size_t newID, const Restaurant const *initRestaurant, string initName="");
+    Restaurateur();
+    Restaurateur(const Restaurant const *initRestaurant, string initName="");
 
     Restaurant *myRestaurant() const;
-    size_t getRestaurantID() const;
-    string getRestaurntName() const;
+    string getRestaurantID() const;
+    string getRestaurantName() const;
     vector<string> getRestaurantAddress() const;
     bool getRestaurantStatus() const;
     size_t getRestaurantPreparationMinutes() const;
     Menu getMenu() const;
     vector<Order> getOrders() const;
-    size_t getID() const;
+       string getID() const;
     string getName() const;
 
     void setName(string newName);

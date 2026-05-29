@@ -14,7 +14,7 @@ size_t chooseRestaurant(){
     Printer::chooseRestaurant();
     return GetInf::chooseRestaurant();
 }
-Menu giveMenu(size_t restaurantID){
+Menu giveMenu(string restaurantID){
     return GetInf::menu(restaurantID);
 }
 
@@ -41,7 +41,7 @@ auto adminOptions()
     
 }
 
-Restaurateur findForRestaurant(size_t givenID)
+Restaurateur findForRestaurant(string givenID)
 {
     return GetInf::findRestaurant(givenID);
 }

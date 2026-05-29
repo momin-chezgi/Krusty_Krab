@@ -1,15 +1,15 @@
 #pragma once
 # include "MenuItem.h"
-# include "IDInitializer.h"
+# include "Utils/IDGen.h"
 class Menu
 {
-    size_t id;
+    const string id = IDGen::uuid();
     vector<MenuItem> menu;
 public:
-    Menu(size_t initID, Menu *m);
-    Menu(size_t initID, const vector<MenuItem> &initMenu);
+    Menu(Menu *m);
+    Menu(const vector<MenuItem> &initMenu);
     
-    size_t getID() const;
+    string getID() const;
     vector<MenuItem> getMenu() const;
 
     void setMenu(const vector< MenuItem>& newMenu);

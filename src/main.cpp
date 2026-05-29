@@ -1,7 +1,7 @@
 #include "neededLibs.h"
 #include "./IO/Interface.h"
 #include "./Management/Order.h"
-#include "./Management/IDInitializer.h"
+#include "./Utils/IDGen.h"
 #include "./Management/Admin.h"
 
 void CustomerDashboard();
@@ -30,11 +30,11 @@ int main()
 
 void CustomerDashboard(){
     Customer *user = enterAsCustomer();
-    if(!user) return;
+    if(!user) return;   
     size_t restaurantID = chooseRestaurant();
     Menu menu = giveMenu(restaurantID);
     Printer::menu(&menu);
-    Order order = Order(IDInitializer::Order(), user);
+    Order order = Order(IDGen::Order(), user);
     while(orderAtGivenBuffer(&order));
     return;
 }

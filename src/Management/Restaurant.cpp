@@ -1,7 +1,7 @@
 # include "Restaurant.h"
 
-Restaurant::Restaurant(size_t initID) : id(initID){}
-Restaurant::Restaurant(size_t initID, Restaurant* r) : id(initID)
+Restaurant::Restaurant(   ){}
+Restaurant::Restaurant(   Restaurant* r) 
 {
     name = r->getName();
     address = r->getAddress();
@@ -11,10 +11,13 @@ Restaurant::Restaurant(size_t initID, Restaurant* r) : id(initID)
     bio = r->getBio();
     orders = r->getOrders();
 }
-Restaurant::Restaurant(size_t initID, string initName, vector<string> initAddress, string initPhoneNumber, string initBio = "", size_t minutesPrepared = 0) :
-    id(initID), name(initName), address(initAddress), phoneNumber(initPhoneNumber), bio(initBio), standardTimeOfPreparation(minutesPrepared){}
+Restaurant::Restaurant(   string initName, vector<string> initAddress, string initPhoneNumber, string initBio = "", size_t minutesPrepared = 0) :
+    name(initName), address(initAddress), phoneNumber(initPhoneNumber), bio(initBio), standardTimeOfPreparation(minutesPrepared){}
 
-size_t Restaurant::getID() const
+Restaurant::~Restaurant(){}
+
+// Getters:-----------------------------------------------------------------
+string Restaurant::getID() const
 {
     return id;
 }
@@ -26,14 +29,6 @@ vector<string> Restaurant::getAddress() const
 {
     return address;
 }
-// string Restaurant::getAddress() 
-// {
-//     string strAdress{""};
-//     for (auto memb : address){
-//         strAdress += memb;
-//     }
-//     return strAdress;
-// }
 
 bool Restaurant::isActive() const
 {
@@ -56,6 +51,7 @@ Menu Restaurant::getMenu() const
     return menu;
 }
 
+// Setters:-------------------------------------------------------
 void Restaurant::setName(const string newName)
 {
     if(newName != "" || newName != " "){
@@ -93,8 +89,8 @@ void Restaurant::setBio(const string newBio)
     }
 }
 
-
-bool Restaurant::AddItemToOrder(size_t orderID, const MenuItem const* item)
+// Orders and Menu:-------------------------------------------------------
+bool Restaurant::AddItemToOrder(string orderID, const MenuItem const* item)
 {
     auto iter = find_if(orders.begin(), orders.end(), [orderID](const Order &inQ)
                         { return inQ.getID() == orderID;
@@ -102,17 +98,16 @@ bool Restaurant::AddItemToOrder(size_t orderID, const MenuItem const* item)
     if(iter != orders.end()){
         return false;
     }
-    return iter.addItem(item);
+    return iter->addItem(item);
 }
-bool Restaurant::RemoveItemFromOrder(size_t orderID, const MenuItem const* item)
+bool Restaurant::RemoveItemFromOrder(string orderID, string itemID)
 {
     auto iter = find_if(orders.begin(), orders.end(), [orderID](const Order &inQ)
-                        { return orderID == inQ.getID();
-                         });
+                        { return orderID == inQ.getID();});
     if(iter == orders.end()){
         return false;
     }
-    return iter.removeItem(item);
+    return iter->removeItem(itemID);
 }
 
 bool Restaurant::AddOrderToQueue(const Order newOrder)
@@ -147,5 +142,4 @@ bool Restaurant::removeItemFromMenu(const MenuItem const *item)
 }
 
 
-Restaurant::~Restaurant(){}
 

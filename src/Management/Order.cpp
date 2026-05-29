@@ -1,17 +1,17 @@
 # include "Order.h"
 
-Order::Order(size_t initID) : id(initID){}
-Order::Order(size_t initID, const Order const *o) : id(initID)
+Order::Order(   ){}
+Order::Order(   const Order const *o)
 {
     orderer = o->getOrderer();
     order = o->getOrder();
     orderStatus = o->getOrderStatus();
 }
-Order::Order(size_t initID, const Customer const *initOrderer, const vector<const MenuItem> &initOrder = {}) :
-    id(initID), orderer(initOrderer), order(initOrder)
+Order::Order(   const Customer const *initOrderer, const vector<MenuItem> &initOrder = {}) :
+    orderer((Customer *)initOrderer), order(initOrder)
 {}
 
-size_t Order::getID() const
+string Order::getID() const
 {
     return id;
 }
@@ -28,20 +28,20 @@ vector<MenuItem> Order::getOrder() const
 {
     return order;
 }
-string Order::getOrderStatus() const
+OrderStatus Order::getOrderStatus() const
 {
     return orderStatus;
 }
 
 void Order::setOrderer(const Customer const *newOrderer)
 {
-    orderer = *newOrderer;
+    orderer = (Customer *)newOrderer;
 }
 void Order::setOrder(const vector<MenuItem> &newOrder)
 {
     order = newOrder;
 }
-void Order::setOrderStatus(string newStatus)
+void Order::setOrderStatus(OrderStatus newStatus)
 {
     orderStatus = newStatus;
 }
@@ -63,11 +63,10 @@ bool Order::addItem(const MenuItem const *newItem)
     order.push_back(*newItem);
     return true;
 }
-bool Order::removeItem(const MenuItem const *removingItem)
+bool Order::removeItem(string menuItemID)
 {
-    auto iter = find_if(order.begin(), order.end(), [removingItem](const MenuItem &mi)
-                      { return removingItem->getID() == mi.getID(); 
-                    });
+    auto iter = find_if(order.begin(), order.end(), [menuItemID](const MenuItem &mi)
+                      { return menuItemID == mi.getID(); });
     if(iter == order.end())
     {
         return false;
@@ -77,3 +76,37 @@ bool Order::removeItem(const MenuItem const *removingItem)
 }
 
 Order::~Order(){}
+
+bool orderStatus2IsPrepared(OrderStatus s)
+{
+    return s != InPreparation;
+}
+string orderStatus2String(OrderStatus s)
+{
+    switch(s)
+    {
+        case InPreparation:
+            return "In-Preparation";
+        case ReadyToSend:
+            return "Ready-To-Send";
+        case Delivered:
+            return "Delivered";
+        default:
+            return "Unknown Status";
+    }
+}
+OrderStatus orderStatusString2Enum(string s)
+{
+    if(s == "In-Preparation"){
+        return InPreparation;
+    }
+    else if(s == "Ready-To-Send"){
+        return ReadyToSend;
+    }
+    else if(s == "Delivered"){
+        return Delivered;
+    }
+    else{
+        throw invalid_argument("Invalid order status string: " + s);
+    }
+}

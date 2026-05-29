@@ -7,8 +7,8 @@ class LiquidFood : public MenuItem
     double volume{};
 
 public:
-    LiquidFood(size_t initID);
-    LiquidFood(size_t initID, string initName, cost initPrice, double initVolume, string initBio = "");
+    LiquidFood();
+    LiquidFood(string initName, cost initPrice, double initVolume, string initBio = "");
 
     double getVolume() const;
     bool isAvailable() const override;

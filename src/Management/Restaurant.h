@@ -3,7 +3,7 @@
 #include "Order.h"
 
 class Restaurant{
-    size_t id;
+    const string id = IDGen::uuid();
     string name;
     vector<string> address;          // city/street/building No
     bool activationStatus{true};
@@ -11,14 +11,14 @@ class Restaurant{
     string phoneNumber;
     string bio;
     vector<Order> orders{};
-    Menu menu = Menu(IDInitializer::Menu(), {});
+    Menu menu = Menu({});
 
 public:
-    Restaurant(size_t initID);
-    Restaurant(size_t initID, Restaurant* r);
-    Restaurant(size_t initID, string initName, vector<string> initAddress, string initPhoneNumber, string initBio = "", size_t minutesPrepared = 0);
+    Restaurant(   );
+    Restaurant(   Restaurant* r);
+    Restaurant(   string initName, vector<string> initAddress, string initPhoneNumber, string initBio = "", size_t minutesPrepared = 0);
 
-    size_t getID() const;
+    string getID() const;
     string getName() const;
     vector<string> getAddress() const;
     // string getAddress() ;  //converts the vector<string> form to a pure string
@@ -36,10 +36,10 @@ public:
     void setPreparationTime(const size_t minutes);
     void setPhoneNumber(const string newPhoneNumber);
     void setBio(const string newBio);
-    // There isn't set menu cuz the restaurateur just can modify the menu
+    // There isn't set menu because the restaurateur just can modify the menu
 
-    bool AddItemToOrder(size_t orderID, const MenuItem const* item);
-    bool RemoveItemFromOrder(size_t orderID, const MenuItem const* item);
+    bool AddItemToOrder(string orderID, const MenuItem const* item);
+    bool RemoveItemFromOrder(string orderID, string itemID);
 
     bool AddOrderToQueue(const Order newOrder);
     bool removeOrderFromQueue(const Order removingOrder);

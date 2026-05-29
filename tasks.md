@@ -24,4 +24,5 @@
 10. Code Admin/ (The foundations are typed)
 ... And It's time for InOut/ and MySQL for data storage
 ... Maybe after finishing InOut/ it's vital to redesign and rewrite the codes !
-11. Think how to deal with statistics
+11. Think how to deal with statistics 
+12. ID Management: hide, change them to string(from size_t) and use UUID
