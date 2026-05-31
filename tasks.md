@@ -29,12 +29,13 @@
 12. ID Management: hide, change them to string(from size_t) and use UUID
 
 ### At the very end:
-1. Create UUID
-2. Implement repositories
-3. Organize all the files in a well-organized form(like domain/ headers/ repository/ etc.)
-4. Use namespaces for each logical space
-5. Use smart pointers
-6. Use Cpp modern casting
-7. Add operator overloadings
-8. Catch errors
+1. Add the option of creating a user
+2. Create UUID
+3. Implement repositories
+4. Organize all the files in a well-organized form(like domain/ headers/ repository/ etc.)
+5. Use namespaces for each logical space
+6. Use smart pointers
+7. Use Cpp modern casting
+8. Add operator overloadings
+9. Catch errors
 -1. Use MySQL

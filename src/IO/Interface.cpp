@@ -11,6 +11,17 @@ bool enterAsCustomer(Customer &buffer)
 {
     return GetInf::customer(buffer);
 }
+
+bool enterAsRestaurateur(Restaurateur &buffer)
+{
+    return GetInf::restaurateur(buffer);
+}
+
+bool enterAsAdmin(AdminOfSystem &buffer)
+{
+    return GetInf::admin(buffer);
+}
+
 string chooseRestaurant(){
     Printer::chooseRestaurant();
     return GetInf::chooseRestaurant();
@@ -40,23 +51,17 @@ bool orderOut(string RestaurantID, string menuID, Order& resultOrder){
     return true;
 }
 
-auto restaurateurOptions(string givenName, const vector<string>& givenAddress, bool givenStatus, size_t givenMinutes){
+int restaurateurOptions(string givenName, const string& givenAddress, bool givenStatus, size_t givenMinutes){
     Printer::restaurateurDashboard(givenName, givenAddress,givenStatus, givenMinutes);
+    Printer::RestaurateurChoices();
     return GetInf::restaurateurAction();
 }
-Restaurateur *enterAsRestaurateur()
-{
-    return GetInf::restaurateur();
-}
 
-AdminOfSystem *enterAsAdmin()
-{
-    return GetInf::admin();
-}
 
-auto adminOptions()
+int adminOptions()
 {
     Printer::adminDashboard();
+    return 0;
 }
 
 Restaurateur findForRestaurant(string givenID)

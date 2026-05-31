@@ -2,6 +2,12 @@
 
 #include "../neededLibs.h"
 #include "../Management/Customer.h"
+# include "../Management/Order.h"
+# include "../Management/Menu.h"
+# include "../Management/Customer.h"
+# include "../Management/Restaurant.h"
+# include "../Management/Admin.h"
+
 
 class InOut{
     virtual int reader() = 0;
@@ -20,6 +26,7 @@ public:
 
 class SQLWriter : public InOut{
 };
+
 
 class OrderStorage{
 public:
@@ -54,7 +61,19 @@ public:
     // returns true if the customer with the given ID exists and has been deleted, otherwise returns false
     
 private:
-    static map<string, Customer> customers{{"TestCustomer", Customer("TestCustomer")}};
+    static map<string, Customer> customers;
+};
+class RestaurateurStorage{
+public:
+    bool isValidRestaurateur(string restaurateurID);
+    Restaurateur giveRestaurateur(string restaurateurID);  
+    // returns the restaurateur with the given ID, if it doesn't exist, it returns a default restaurateur with empty name and no restaurant
+    bool saveRestaurateur       (const Restaurateur& newRestaurateur);
+    // returns true if the restaurateur has been saved successfully, otherwise false
+    bool deleteRestaurateur(string restaurateurID);
+    // returns true if the restaurateur with the given ID exists and has been deleted, otherwise returns false
+private:
+    static map<string, Restaurateur> restaurateurs;
 };
 
 class RestaurantStorage{
@@ -65,6 +84,11 @@ public:
     bool saveRestaurant(const Restaurant& newRestaurant);  // returns true if the restaurant has been saved successfully, otherwise false
     bool deleteRestaurant(string restaurantID);  // returns true if the restaurant with the given ID exists and has been deleted, otherwise returns false
     bool updateRestaurant(const Restaurant& updatingRestaurant);  // returns true if the restaurant with the given ID exists and has been updated, otherwise returns false
+
+    bool setName(string restaurantID, string newName);
+    bool setAddress(string restaurantID, string newAddress);
+    bool activateRestaurant(string restaurantID);
+    bool deactivateRestaurant(string restaurantID);
 private:
     static map<string, Restaurant> restaurants;
 };

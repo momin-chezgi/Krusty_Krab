@@ -61,7 +61,7 @@ void Restaurant::setName(const string newName)
 }
 void Restaurant::setAddress(const vector<string>& newAddress)
 {
-    if(size(newAddress)!=0){
+    if(newAddress.size() != 0){
         address = newAddress;
     }
 }

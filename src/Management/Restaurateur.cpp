@@ -1,43 +1,26 @@
 # include "Restaurateur.h"
 
-Restaurateur::Restaurateur(){}
+Restaurateur::Restaurateur(string initName="") : name(initName){}
 
-Restaurateur::Restaurateur(const Restaurant const *initRestaurant, string initName="") :
-    restaurant((Restaurant*)initRestaurant) , name(initName){}
+Restaurateur::Restaurateur(const Restaurant& initRestaurant, string initName="") :
+    name(initName), restaurantID(initRestaurant.getID()){}
 
+Restaurateur& Restaurateur::operator=(const Restaurateur& newRestaurateur)
+{
+    if(this != &newRestaurateur){
+        restaurant = newRestaurateur.restaurant;
+        name = newRestaurateur.name;
+        saleStatisics = newRestaurateur.saleStatisics;
+        customerStatistics = newRestaurateur.customerStatistics;
+    }
+    return *this;
+}
 
-Restaurant *Restaurateur::myRestaurant() const
+string Restaurateur::myRestaurant() const
 {
-    return restaurant;
+    return restaurantID;
 }
-string Restaurateur::getRestaurantID() const
-{
-    return restaurant->getID();
-}
-string Restaurateur::getRestaurantName() const
-{
-    return restaurant->getName();
-}
-vector<string> Restaurateur::getRestaurantAddress() const
-{
-    return restaurant->getAddress();
-}
-bool Restaurateur::getRestaurantStatus() const
-{
-    return restaurant->isActive();
-}
-size_t Restaurateur::getRestaurantPreparationMinutes() const
-{
-    return restaurant->getMinutesFoodPrepare();
-}
-Menu Restaurateur::getMenu() const
-{
-    return restaurant->getMenu();
-}
-vector<string> Restaurateur::getOrderIDs() const
-{
-    return restaurant->getOrderIDs();
-}
+
 string Restaurateur::getID() const
 {
     return id;
@@ -54,36 +37,36 @@ void Restaurateur::setName(string newName)
     }
 }
 
-// void Restaurateur::editRestaurantID(size_t newID)
-// {
-//     restaurant->
-// }
 void Restaurateur::editRestaurantName(string newName)
 {
-    if(newName != "" || newName != " "){
-        restaurant->setName(newName);
-    }
+    RestaurantStorage storage;
+    storage.setName(restaurantID, newName);
 }
 void Restaurateur::editRestaurantAddress(vector<string> newAddress)
 {
-    restaurant->setAddress(newAddress);
+    RestaurantStorage storage;
+    storage.setAddress(restaurantID, newAddress);
 }
 void Restaurateur::activateRestaurant()
 {
-    restaurant->activate();
+    RestaurantStorage storage;
+    storage.activateRestaurant(restaurantID);
 }
 void Restaurateur::deactivateRestaurant()
 {
-    restaurant->deactivate();
+    RestaurantStorage storage;
+    storage.deactivateRestaurant(restaurantID);
 }
-// bool Restaurateur::addItemToMenu(const MenuItem const* mi)
-// {
 
-// }
-// bool Restaurateur::removeItemFromMenu(MenuItem previousOrder, MenuItem replacedOrder){}
-// bool Restaurateur::replaceItemFromMenu(MenuItem previousItem, MenuItem replacedItem){}
 
-// bool Restaurateur::editThisOrder(Order *previousOrderptr, Order replacedOrder);
+bool Restaurateur::addItemToMenu(const MenuItem const* mi)
+{
+
+}
+bool Restaurateur::removeItemFromMenu(MenuItem previousOrder, MenuItem replacedOrder){}
+bool Restaurateur::replaceItemFromMenu(MenuItem previousItem, MenuItem replacedItem){}
+
+bool Restaurateur::editThisOrder(Order *previousOrderptr, Order replacedOrder);
 
 void Restaurateur::updateAndPrintSaleStatistics(){}
 void Restaurateur::updateAndPrintCustomerStatistics(){}

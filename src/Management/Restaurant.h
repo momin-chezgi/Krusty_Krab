@@ -5,7 +5,7 @@
 class Restaurant{
     const string id = IDGenerator::uuid();
     string name;
-    vector<string> address;          // city/street/building No
+    string address;          // city/street/building No
     bool activationStatus{true};
     size_t standardTimeOfPreparation;   // per minute
     string phoneNumber;
@@ -20,7 +20,7 @@ public:
 
     string getID() const;
     string getName() const;
-    vector<string> getAddress() const;
+    string getAddress() const;
     // string getAddress() ;  //converts the vector<string> form to a pure string
     bool isActive() const;
     size_t getMinutesFoodPrepare() const;
@@ -30,7 +30,7 @@ public:
     Menu getMenu() const;
 
     void setName(const string newName);
-    void setAddress(const vector<string>& newAddress);
+    void setAddress(const string& newAddress);
     void activate();
     void deactivate();
     void setPreparationTime(const size_t minutes);

@@ -40,7 +40,9 @@ int main()
 
 bool CustomerDashboard(){
     Customer user;
-    if (!enterAsCustomer(user)){    // If the user doesn't want to enter as a customer, just return to the main menu
+    if (!enterAsCustomer(user)){  
+        // If the user doesn't want to enter as a customer,
+        //  just return to the main menu
         return false;
     }
     string restaurantID = chooseRestaurant();
@@ -50,50 +52,97 @@ bool CustomerDashboard(){
     orderOut(menuID, order);
     return true;
 }
-void RestaurateurDashboard(){
-    Restaurateur *user = enterAsRestaurateur();
-    if (!user){
-        return;
+
+bool RestaurateurDashboard(){
+    
+    Restaurateur user;
+    if(!enterAsRestaurateur(user)){
+        return false;
     }
-    auto decision = restaurateurOptions(user->getRestaurantName(), user->getRestaurantAddress(), user->getRestaurantStatus(), user->getRestaurantPreparationMinutes());
-    int chosenOption = decision[0];
-    auto x = decision[1];
-    auto y = decision[2];
-    switch (chosenOption)
-    {
-    case 1: // Change price of an item(x:MenuItem ptr)
-        x->setPrice(y);
-        break;
-    case 2: // Change bio of an item(x:MenuItem ptr, y:the string of bio)
-        x.setBio(y);
-        break;
-    case 3: // Change availability status of an item
-        // It is not implemented yet, because we relate the availability
-        //of an item to its quantity(grams, slices, litres) not in the 
-        //restaurateur order(and likely won't)
-        break;
-    case 4: // remove an item from menu(x:MenuItem ptr, y:the menu ptr)
-        y->removeItem(x);
-        break;
-    case 11: // change an order totaly(x:Order ptr, y: the new order)
-        x->copyFromOrder(y);
-        break;
-    case 12: // remove an order from the order queue
-        user->removeOrderFromQueue(y);
-        break;
-    case 13: // change the status of an order( x: Order ptr, y: string of the order status)
-        x->setOrderStatus(y);
-        break;
+
+    int chosenOption = restaurateurOptions(
+        user.getRestaurantName(),
+        user.getRestaurantAddress(),
+        user.getRestaurantStatus(),
+        user.getRestaurantPreparationMinutes()
+    );
+
+    switch(chosenOption){
+        
+        // Restaurant editing options-----------------------
+        case 1: // edit restaurant name
+            user.editRestaurantName(GetInf::modifyRestaurant(chosenOption));
+            break;
+        case 2: // edit restaurant address
+            user.editRestaurantAddress(GetInf::modifyRestaurant(chosenOption));
+            break;
+        case 3: // activate restaurant
+            user.activateRestaurant(GetInf::modifyRestaurant(chosenOption));
+            break;
+        case 4: // deactivate restaurant
+            user.deactivateRestaurant(GetInf::modifyRestaurant(chosenOption));
+            break;
+        case 5: // edit restaurant preparation time
+            user.setPreparationTime(GetInf::modifyRestaurant(chosenOption));
+            break;
+        case 6: // edit restaurant phone number
+            user.setPhoneNumber(GetInf::modifyRestaurant(chosenOption));
+            break;
+        case 7: // edit restaurant bio
+            user.setBio(GetInf::modifyRestaurant(chosenOption));
+            break;
+        
+        // Menu editing options----------------------------
+        case 11: // add an item to menu
+            user.addItemToMenu(GetInf::menuItem());
+            break;
+        case 12: // remove an item from menu
+            user.removeItemFromMenu(GetInf::menuItem());
+            break;
+        case 13: // replace an item from menu
+            user.replaceItemFromMenu(GetInf::menuItem(), GetInf::menuItem());
+            break;
+        
+        
+        // Order editing options----------------------------
+        case 21: // add an order to the order queue
+            user.AddOrderToQueue(GetInf::orderOut());
+            break;
+        case 22: // remove an order from the order queue
+            user.removeOrderFromQueue(GetInf::orderOut());
+            break;
+        case 23: // replace an order to the order queue
+            user.editThisOrder(GetInf::orderOut(), GetInf::orderOut());
+            break;
+
+        // Statistics options----------------------------
+        case 31: // update and print sale statistics
+            user.updateAndPrintSaleStatistics();
+            break;
+        case 32: // update and print customer statistics
+            user.updateAndPrintCustomerStatistics();
+            break;
+        // Restaurateur editing options-----------------------
+        case 41: // edit restaurateur name
+            user.setName(GetInf::modifyRestaurant());
+            break;
+        case 42: // edit restaurateur's restaurant
+            break;
     }
+    
+    return true;
+
 }
-void AdminDashboard(){
+
+bool AdminDashboard()
+{
     AdminOfSystem* user = enterAsAdmin();
     if(!user){
-        return;
+        return false;
     }
-    auto decision = adminOptions();
-    int chosenOption = decision[0];
-    auto x = decision[1];
+    int chosenOption = adminOptions(
+
+    );
     switch (chosenOption){
         case 1:         // creates restaurant
             user->addRestaurant(x);
@@ -110,5 +159,16 @@ void AdminDashboard(){
         case 12: // recieves customers statistics
             user->updateAndPrintTotalCustomerStatistics();
             break;
-        }
+        // Statistics options----------------------------
+        case 31: // update and print sale statistics
+            user->updateAndPrintSaleStatistics();
+            break;
+        case 32: // update and print customer statistics
+            user->updateAndPrintCustomerStatistics();
+            break;
+    }
+    
+    return true;
+
 }
+

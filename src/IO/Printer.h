@@ -4,9 +4,12 @@
 namespace Printer{
     void wellcome();
     void menu(string menuID);
-    void restaurateurDashboard(string nm, vector<string> ad, bool isactive, size_t averaget);
+    void restaurateurDashboard(string nm,
+         string ad
+         , bool isactive
+         , size_t averaget);
     void InvalidInput();
-    auto RestaurateurChoices();
+    void RestaurateurChoices();
     void totalSaleStatistics(const map<Restaurant *, map<MenuItem, cost>> &tss);
     void totalCustomerStatistics(const map<Restaurant *, map<Customer, vector<Order>>> &tcs);
     void saleStatistics(const map<MenuItem, cost> &ss);

@@ -4,19 +4,24 @@
 
 class Restaurateur{
     const string id = IDGenerator::uuid();
-    Restaurant *restaurant;
+    
     string name;
-    map<MenuItem, cost> saleStatisics{};
-    map<Customer, vector<Order>> customerStatistics{};
+    string restaurantID;
 
+    map<string, cost> saleStatisics{};
+    // Some of costs of a 'MenuItem'(distinguished by id)
+    map<string, vector<Order>> customerStatistics{};
+    // Orders of a 'Customer'(distinguished by id)
 public:
-    Restaurateur();
-    Restaurateur(const Restaurant const *initRestaurant, string initName="");
+    Restaurateur(string initName="");
+    Restaurateur(const Restaurant& initRestaurant, string initName="");
 
-    Restaurant *myRestaurant() const;
-    string getRestaurantID() const;
+    Restaurateur& operator=(const Restaurateur& newRestaurateur);
+
+    string myRestaurant() const;
+    Restaurant getRestaurant() const;
     string getRestaurantName() const;
-    vector<string> getRestaurantAddress() const;
+    string getRestaurantAddress() const;
     bool getRestaurantStatus() const;
     size_t getRestaurantPreparationMinutes() const;
     Menu getMenu() const;

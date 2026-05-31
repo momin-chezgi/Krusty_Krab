@@ -20,8 +20,32 @@ bool GetInf::customer(Customer &buffer){
         }
         cout << "Invalid ID, ";
     }
+    // Note: Add user creation---------------
     // We can also add the password authentication process here
     // But for now, we just return the customer with the given ID
+}
+
+bool GetInf::restaurateur(Restaurateur &buffer){
+    RestaurateurStorage storage;
+    //SQLReader reader;
+
+    string givenID;
+
+    while(true){
+        cout << "Enter your ID: ";
+        cin >> givenID;
+        if(givenID == "q" || givenID == "Q" || givenID == "quit" || givenID == "QUIT"){
+            return false;
+        }
+        //if (reader.getRestaurateur(givenID, buffer)){
+        if(storage.isValidRestaurateur(givenID)){
+            buffer = storage.giveRestaurateur(givenID);
+            return true;
+        }
+        cout << "Invalid ID, ";
+    }
+    // We can also add the password authentication process here
+    // But for now, we just return the restaurateur with the given ID
 }
 
 string GetInf::customerName(){
@@ -41,9 +65,15 @@ int GetInf::loginRule()
     return chosenRule;
 }
 
-auto GetInf::restaurateurAction()
+int GetInf::restaurateurAction()
 {
-    return Printer::RestaurateurChoices();
+    int action{-1};
+    cin >> action;
+    while(action < 1 || action > 23){
+        Printer::InvalidInput();
+        cin >> action;
+    }
+    return action;
 }
 
 string GetInf::chooseRestaurant()

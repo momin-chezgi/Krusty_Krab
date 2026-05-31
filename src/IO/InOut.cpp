@@ -1,4 +1,26 @@
 # include "InOut.h"
+# include "../Management/Food.h"
+# include "../Management/Drink.h"
+
+map<string, Order> OrderStorage::orders = {
+    {"TestOrder", Order("TestOrder", {OrderLine(Food("TestMenuItem", "TestDescription", 10.0), 1)})}
+};
+map<string, Menu> MenuStorage::menus = {
+    {"TestMenu", Menu({new Drink("TestMenuItem", "TestDescription", 10.0)})}
+};
+map<string, Customer> CustomerStorage::customers = {
+    {"TestCustomer", Customer("TestCustomer")}
+};
+map<string, Restaurateur> RestaurateurStorage::restaurateurs = {
+    {"TestRestaurateur", Restaurateur("TestRestaurateur")}
+};
+map<string, Restaurant> RestaurantStorage::restaurants = {
+    {"TestRestaurant", Restaurant("TestRestaurant", {"TestCity", "TestStreet", "TestBuilding"}, "1234567890")}
+};
+map<string, AdminOfSystem> AdminStorage::admins = {
+    {"TestAdmin", AdminOfSystem("TestAdmin")}
+};
+
 
 Customer CustomerStorage::giveCustomer(string customerID)
 {
@@ -69,3 +91,55 @@ bool RestaurantStorage::addOrderToRestaurant(string restaurantID, string orderID
     }
     return false;
 }
+
+Restaurateur RestaurateurStorage::giveRestaurateur(string restaurateurID)
+{
+    auto it = restaurateurs.find(restaurateurID);
+    if (it != restaurateurs.end()) {
+        return it->second;
+    }
+    return Restaurateur("NotFound"); 
+}
+
+
+
+bool RestaurantStorage::setName(string restaurantID, string newName)
+{
+    auto it = restaurants.find(restaurantID);
+    if (it != restaurants.end()){
+        it->second.setName(newName);
+        return true;
+    }
+    return false;
+}
+
+bool RestaurantStorage::setAddress(string restaurantID, string newAddress)
+{
+    auto it = restaurants.find(restaurantID);
+    if (it != restaurants.end()){
+        it->second.setAddress(newAddress);
+        return true;
+    }
+    return false;   
+}
+
+bool RestaurantStorage::activateRestaurant(string restaurantID)
+{
+    auto it = restaurants.find(restaurantID);
+    if (it != restaurants.end()){
+        it->second.activate();
+        return true;
+    }
+    return false;
+}
+
+bool RestaurantStorage::deactivateRestaurant(string restaurantID)
+{
+    auto it = restaurants.find(restaurantID);
+    if (it != restaurants.end()){
+        it->second.deactivate();
+        return true;
+    }
+    return false;
+}
+
