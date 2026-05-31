@@ -1,23 +1,25 @@
 # pragma once
 
-#include "MenuItem.h"
+# include "MenuItem.h"
 
-class Food : public MenuItem
+class Drink : public MenuItem
 {
-    double weight{};
-public:
-    Food();
-    Food(Food* f);
-    Food(string initName, cost initPrice, double initWeight, string initBio = "");
+    double volume{};
 
-    double getWeight() const;
+public:
+    Drink();
+    Drink(Drink *d);
+    Drink(string initName, cost initPrice, double initVolume, string initBio = "");
+
+    double getVolume() const;
     bool isAvailable() const override;
+
+    void setVolume(double newVolume);
     bool addItemQuantity(double quantity) override;
     bool delItemQuantity(double quantity) override;
     bool setItemQuantity(double quantity) override;
     void clrItemQuantity() override;
     MenuItem* clone() const override;
 
-    void setWeight(double newWeight);
-    ~Food();
+    ~Drink();
 };

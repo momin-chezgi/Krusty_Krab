@@ -1,6 +1,9 @@
 # include "Food.h"
 
 Food::Food():MenuItem(){}
+Food::Food(Food* f) : MenuItem(f->getName(), f->getPricePerUnit(), f->getBio()) {
+    setWeight(f->getWeight());
+}
 Food::Food(string initName, cost initPrice, double initWeight, string initBio) : 
 MenuItem(initName, initPrice, initBio) {
     setWeight(initWeight);
@@ -18,32 +21,37 @@ void Food::setWeight(double newWeight) {
     weight = newWeight;
 }
 
-bool Food::addFoodQuantity(double quantity) {
+bool Food::addItemQuantity(double quantity) {
     if(quantity < 0){
         return false;
     }
     setWeight(getWeight() + quantity);
     return true;
 }
-bool Food::delFoodQuantity(double quantity) {
+bool Food::delItemQuantity(double quantity) {
     if(getWeight() >= quantity){
         setWeight(getWeight() - quantity);
         return true;
     }
     return false;
 }
-bool Food::setFoodQuantity(double quantity) {
+bool Food::setItemQuantity(double quantity) {
     if(quantity < 0){
         return false;
     }
     setWeight(quantity);
     return true;
 }
-void Food::clrFoodQuantity() {
+void Food::clrItemQuantity() {
     setWeight(0);
 }
 
 void Food::setWeight(double newWeight) {
     weight = newWeight;
 }
+
+MenuItem* Food::clone() const {
+    return new Food(*this);
+}
+
 Food::~Food() {}

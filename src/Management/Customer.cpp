@@ -1,7 +1,7 @@
 #include "Customer.h"
 
 Customer::Customer() {}
-Customer::Customer(string initName, const vector<Order *> &initOrder) : name(initName), myOrders(initOrder) {}
+Customer::Customer(string initName, const vector<Order *> &initOrder = {}) : name(initName), myOrders(initOrder) {}
 
 void Customer::order(Order *o)
 {
@@ -50,6 +50,7 @@ bool Customer::isReady (string orderID) const
             return orderStatus2IsPrepared(order->getOrderStatus());
         }
     }
+    return false;
 }
 
 string Customer::getID() const
@@ -57,3 +58,14 @@ string Customer::getID() const
     return id;
 }
 Customer::~Customer() {}
+
+Customer& Customer::operator=(const Customer& other)
+{
+    if (this != &other)
+    {
+        // We don't copy the ID because it is unique for each customer
+        name = other.name;
+        myOrders = other.myOrders;
+    }
+    return *this;
+}

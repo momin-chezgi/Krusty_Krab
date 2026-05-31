@@ -9,12 +9,12 @@
 #include "GetInformation.h"
 
 int Login();
-Customer *enterAsCustomer();
+bool enterAsCustomer(Customer &buffer);
 Restaurateur *enterAsRestaurateur();
 AdminOfSystem *enterAsAdmin();
-Menu giveMenu(size_t restaurantID);
-bool orderAtGivenBuffer(const Order const *resultOrder);
+string giveMenu(string restaurantID);
+bool orderOut(string menuID, Order& resultOrder);
 auto restaurateurOptions(string givenName, vector<string> givenAddress, bool givenStatus, size_t givenMinutes);
 auto adminOptions();
-Restaurateur findForRestaurant(size_t givenID);
-size_t chooseRestaurant();
+Restaurateur findForRestaurant(string givenID);
+string chooseRestaurant();

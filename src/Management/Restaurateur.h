@@ -20,8 +20,8 @@ public:
     bool getRestaurantStatus() const;
     size_t getRestaurantPreparationMinutes() const;
     Menu getMenu() const;
-    vector<Order> getOrders() const;
-       string getID() const;
+    vector<string> getOrderIDs() const;
+    string getID() const;
     string getName() const;
 
     void setName(string newName);
@@ -48,10 +48,10 @@ public:
     bool removeItemFromMenu(const MenuItem const *item);
     // 'removeItemFromMenu' returns true if the item was in the menu and has been deleted
     
-    bool AddOrderToQueue( const Order order);
+    bool AddOrderToQueue(string orderID);
     // AddToQueue returns true if the order hasn't been in the orders(distinguished by id)
     // and carefully added
-    bool removeOrderFromQueue( const Order order);
+    bool removeOrderFromQueue( string orderID);
 
     ~Restaurateur();
 

@@ -4,7 +4,7 @@ Menu::Menu(   Menu *m)
 {
     setMenu(m->getMenu());
 }
-Menu::Menu(   const vector<MenuItem> &initMenu)
+Menu::Menu(const vector<MenuItem *> &initMenu)
 {
     setMenu(initMenu);
 }
@@ -13,13 +13,13 @@ string Menu::getID() const
 {
     return id;
 }
-vector<MenuItem> Menu::getMenu() const
+vector<MenuItem *> Menu::getMenu() const
 {
     return menu;
 }
 
 
-void Menu::setMenu(const vector< MenuItem>& newMenu)
+void Menu::setMenu(const vector< MenuItem*>& newMenu)
 {
     menu = newMenu;
 }
@@ -30,7 +30,7 @@ bool Menu::addItem(const MenuItem const *newItem)
     if(iter != menu.end()){
         return false;
     }
-    menu.push_back(*newItem);
+    menu.push_back(newItem);
     return true;
 }
 bool Menu::removeItem(const MenuItem const *removingItem)
@@ -43,6 +43,13 @@ bool Menu::removeItem(const MenuItem const *removingItem)
     }
     menu.erase(iter);
     return true;
+}
+
+bool Menu::thereIsThatItem(string itemID) const
+{
+    auto iter = find_if(menu.begin(), menu.end(), [itemID](const MenuItem &mi)
+                        { return mi.getID() == itemID; });
+    return iter != menu.end();
 }
 
 Menu::~Menu()

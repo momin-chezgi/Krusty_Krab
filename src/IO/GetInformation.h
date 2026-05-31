@@ -6,9 +6,9 @@
 namespace GetInf{
     Restaurant *restaurant(); // inputs the id of the restaurant and return a pointer to restaurant
     Restaurateur *restaurateur();
-    Customer *customer(); // like restaurant() function
+    bool customer(Customer &buffer); // like restaurant() function
     auto modifyRestaurant();
-    Menu menu(string restaurantID);
+    string menu(string restaurantID);
     bool order(const Order const *resultOrder);
     // returns false if user doesn't want to order
     auto menuItem();
@@ -18,5 +18,7 @@ namespace GetInf{
     AdminOfSystem *admin();
     // You can also add the pasword authantication proccess to admin and restaurateurs;
     Restaurateur findRestaurant(string restaurantID);
-    size_t chooseRestaurant();
+    string chooseRestaurant();
+    bool orderOut(string restaurantID, Order& buffer);   // returns false if the customer hasn't ordered anything or doesn't want to order, otherwise returns true and saves the order in buffer
+    bool addItemToCart(string menuID, Order& resultOrder);
 };

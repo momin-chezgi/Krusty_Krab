@@ -1,30 +1,36 @@
 # include "Order.h"
 
-Order::Order(   ){}
-Order::Order(   const Order const *o)
+
+Order::Order(const Order& o)
 {
-    orderer = o->getOrderer();
-    order = o->getOrder();
-    orderStatus = o->getOrderStatus();
+    ordererID = o.getOrderer();
+    order = o.getOrder();
+    orderStatus = o.getOrderStatus();
 }
-Order::Order(   const Customer const *initOrderer, const vector<MenuItem> &initOrder = {}) :
-    orderer((Customer *)initOrderer), order(initOrder)
+Order::Order(string oID, const vector<OrderLine> &initOrder = {}) :
+    ordererID(oID), order(initOrder)
 {}
 
 string Order::getID() const
 {
     return id;
 }
-
+Order::~Order()
+{
+    for (auto &line : order)
+    {
+        delete line.first;
+    }
+}
 // (Arabic)'Fa taamal jaiiedan' that it is a good way to return a pointer
 // to the orderer ? 
 // (which ables the accesser to modify or see inside the customer)
-Customer *Order::getOrderer() const
+string Order::getOrderer() const
 {
-    return orderer;
+    return ordererID;
 }
 
-vector<MenuItem> Order::getOrder() const
+vector<OrderLine> Order::getOrder() const
 {
     return order;
 }
@@ -33,49 +39,68 @@ OrderStatus Order::getOrderStatus() const
     return orderStatus;
 }
 
-void Order::setOrderer(const Customer const *newOrderer)
-{
-    orderer = (Customer *)newOrderer;
+cost Order::getTotalPrice() const {
+    cost totalPrice = 0;
+    for(const auto& item : order){
+        totalPrice += item.first->getPricePerUnit() * item.second;
+    }
+    return totalPrice;
 }
-void Order::setOrder(const vector<MenuItem> &newOrder)
+
+void Order::setOrderer(string newOrdererID)
 {
-    order = newOrder;
+    ordererID = newOrdererID;
 }
+
 void Order::setOrderStatus(OrderStatus newStatus)
 {
     orderStatus = newStatus;
 }
 void Order::copyFromOrder(const Order newOrder)
 {
-    orderer = newOrder.getOrderer();
+    ordererID = newOrder.getOrderer();
     order = newOrder.getOrder();
     orderStatus = newOrder.getOrderStatus();
 }
 
-bool Order::addItem(const MenuItem const *newItem)
+Order& Order::operator=(const Order& other)
 {
-    auto iter = find_if(order.begin(), order.end(), [newItem](const MenuItem &mi)
-                        { return newItem->getID() == mi.getID(); });
+    if(this != &other){
+        ordererID = other.getOrderer();
+        order = other.getOrder();
+        orderStatus = other.getOrderStatus();
+    }
+    return *this;
+}
+
+bool Order::addItem(const MenuItem& newItem, double quantity)
+{
+    string itemID = newItem.getID();
+    auto iter = find_if(order.begin(), order.end(), [itemID](const OrderLine &line)
+                        { return itemID == line.first->getID(); });
     if (iter != order.end())
     {
+        iter->second += quantity;
         return false;
     }
-    order.push_back(*newItem);
+    OrderLine line;
+    line.first = newItem.clone();
+    line.second = quantity;
+    order.push_back(line);
     return true;
 }
 bool Order::removeItem(string menuItemID)
 {
-    auto iter = find_if(order.begin(), order.end(), [menuItemID](const MenuItem &mi)
-                      { return menuItemID == mi.getID(); });
+    auto iter = find_if(order.begin(), order.end(), [menuItemID](const OrderLine &line)
+                      { return menuItemID == line.first->getID(); });
     if(iter == order.end())
     {
         return false;
     }
+    delete iter->first;
     order.erase(iter);
     return true;
 }
-
-Order::~Order(){}
 
 bool orderStatus2IsPrepared(OrderStatus s)
 {

@@ -6,7 +6,9 @@
 # include <algorithm>
 
 using namespace std;
-#define cost double
+typedef double cost;
+
+class MenuItem;
 
 //--------------# IDs #-------------------
 //  Plates:
@@ -16,6 +18,5 @@ using namespace std;
 #define Cheese_Plate_ID       13
 #define Appetizer_Plate_ID    14
 #define Salad_Plate_ID          15
-//  LiquidContainers:
+//  DrinkContainers:
 //  Foods:
-

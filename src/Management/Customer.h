@@ -23,5 +23,6 @@ public:
     vector<Order> historyOfOrders() const;
     bool isReady (string orderID) const;
 
+    Customer& operator=(const Customer& other);
     ~Customer();
 };

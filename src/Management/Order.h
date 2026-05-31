@@ -1,40 +1,42 @@
 #pragma once
 
-#include "Customer.h"
+# include "Customer.h"
+# include "Enums.h"
 
-enum OrderStatus{
-    InPreparation,
-    ReadyToSend,
-    Delivered
-};
 bool orderStatus2IsPrepared(OrderStatus s);
 string orderStatus2String(OrderStatus s);
 OrderStatus orderStatusString2Enum(string s);
 
 class Order{
-    const string id = IDGenerator::uuid();
-    Customer *orderer {nullptr};
-    vector<MenuItem> order;
-    OrderStatus orderStatus {InPreparation};
-    // In-Preparation, Ready-To-Send, Delivered
 public:
-    Order(   );
-    Order(   const Order const *o);
-    Order::Order(   const Customer const *initOrderer, const vector<MenuItem> &initOrder = {});
+    Order() = default;
+    Order(const Order& o);
+    Order::Order(string oID, const vector<OrderLine> &initOrder = {});
+    // For that time, the correctness of oID(ordererID) is 
+    // the responsibility of the caller function,
+    //  but we can add some authentication process to it in the future
 
     string getID() const;
-    Customer *getOrderer() const;
-    vector<MenuItem> getOrder() const;
+    string getOrderer() const;
+    vector<OrderLine> getOrder() const;
     OrderStatus getOrderStatus() const;
+    cost getTotalPrice() const;
 
-    void setOrderer(const Customer const *newOrderer);
-    void setOrder(const vector<MenuItem> &newOrder);
+    void setOrderer(string newOrdererID);
     void setOrderStatus(OrderStatus newStatus);
     void copyFromOrder(const Order newOrder);
+    Order& operator=(const Order& newOrder);
+    // There isn't setOrderCost, because it's calculation depends on vector<OrderLine>
 
-    bool addItem(const MenuItem const *newItem);       // returns true if it hasn't been in the order and the quantity is on the kitchen
-    bool removeItem(string menuItemID); // returns true if it has been in the order and the removing quantity isn't more than the ordered quantity
+    bool addItem(const MenuItem& newItem, double quantity);       
+    // returns true if it hasn't been in the order and the quantity is on the kitchen
+    bool removeItem(string menuItemID);
+    // returns true if it has been in the order and the removing quantity isn't more than the ordered quantity
 
     ~Order();
-
+private:
+    const string id = IDGenerator::uuid();
+    string ordererID;
+    vector<OrderLine> order;
+    OrderStatus orderStatus {OrderStatus::InPreparation};
 };

@@ -4,39 +4,51 @@
 #include "./Utils/IDGenerator.h"
 #include "./Management/Admin.h"
 
-void CustomerDashboard();
-void RestaurateurDashboard();
-void AdminDashboard();
+bool CustomerDashboard();
+bool RestaurateurDashboard();
+bool AdminDashboard();
 
 int main()
 {
     // User logins and chooses the rule
-    switch(Login())
-    {
-        case 1:
-            CustomerDashboard();
-            break;
-        case 2:
-            RestaurateurDashboard();
-            break;
-        case 3:
-            AdminDashboard();
-            break;
+    while (true)
+    {    
+        switch(Login())
+        {
+            case 1:
+                if(CustomerDashboard()){
+                    return 0;
+                }
+                break;
+            case 2:
+                if(RestaurateurDashboard()){
+                    return 0;
+                }
+                break;
+            case 3:
+                if(AdminDashboard()){
+                    return 0;
+                }
+                break;
+            default:
+                Printer::InvalidInput();
+        }
     }
-
     return 0;
 }
 
 
-void CustomerDashboard(){
-    Customer *user = enterAsCustomer();
-    if(!user) return;   
-    size_t restaurantID = chooseRestaurant();
-    Menu menu = giveMenu(restaurantID);
-    Printer::menu(&menu);
-    Order order = Order(user);
-    while(orderAtGivenBuffer(&order));
-    return;
+bool CustomerDashboard(){
+    Customer user;
+    if (!enterAsCustomer(user)){    // If the user doesn't want to enter as a customer, just return to the main menu
+        return false;
+    }
+    string restaurantID = chooseRestaurant();
+    string menuID = giveMenu(restaurantID);
+    Printer::menu(menuID);
+    Order order = Order(user.getID(), {});
+    orderOut(menuID, order);
+    return true;
 }
 void RestaurateurDashboard(){
     Restaurateur *user = enterAsRestaurateur();

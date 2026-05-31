@@ -2,11 +2,12 @@
 
 # include "Restaurateur.h"
 
+typedef map<string, Restaurateur *> ResturateurMap; // first: the name of the option, second: the description of the option
 
 class AdminOfSystem{
     const string id = IDGenerator::uuid();
     string name;
-    map<string, Restaurateur *> restaurateurs;
+    ResturateurMap restaurateurs;
     map<Restaurant *, map<MenuItem, cost>> totalSaleStatistics{};
     map<Restaurant *, map<Customer, vector<Order>>> totalCustomerStatistics{};
 

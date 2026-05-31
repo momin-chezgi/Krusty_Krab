@@ -2,6 +2,7 @@
 
 # include "../neededLibs.h"
 # include "../IO/Interface.h"
+# include "../IO/InOut.h"
 
 class MenuItem
 {
@@ -13,7 +14,7 @@ private:
     // For more informations (i.e. Vegie Pizza, ...)
     cost pricePerUnit{};
 public:
-    MenuItem();
+    MenuItem() = default;
     MenuItem(string initName, cost initPrice, string initBio = "");
 
     string getID() const;
@@ -34,12 +35,13 @@ public:
     virtual string getItemType();
     virtual string getFoodType();
     virtual bool isAvailable() const = 0;
-    virtual bool addFoodQuantity(double quantity) = 0;
-    virtual bool delFoodQuantity(double quantity) = 0;
-    virtual bool setFoodQuantity(double quantity) = 0;
-    virtual void clrFoodQuantity() = 0;
+    virtual bool addItemQuantity(double quantity) = 0;
+    virtual bool delItemQuantity(double quantity) = 0;
+    virtual bool setItemQuantity(double quantity) = 0;
+    virtual void clrItemQuantity() = 0;
+    virtual MenuItem* clone() const = 0;
 
-    ~MenuItem();
+    virtual ~MenuItem();
 protected:
     const string id = IDGenerator::uuid();
     // For the type of food(i.e. Pizza)
@@ -47,3 +49,5 @@ protected:
     // For more informations (i.e. Vegie Pizza, ...)
     string foodType{};
 };
+
+typedef pair<MenuItem*, double> OrderLine;

@@ -1,4 +1,5 @@
 # include "Restaurant.h"
+# include "../IO/InOut.h"
 
 Restaurant::Restaurant(   ){}
 Restaurant::Restaurant(   Restaurant* r) 
@@ -9,7 +10,7 @@ Restaurant::Restaurant(   Restaurant* r)
     standardTimeOfPreparation = r->getMinutesFoodPrepare();
     phoneNumber = r->getPhone();
     bio = r->getBio();
-    orders = r->getOrders();
+    orderIDs = r->getOrderIDs();
 }
 Restaurant::Restaurant(   string initName, vector<string> initAddress, string initPhoneNumber, string initBio = "", size_t minutesPrepared = 0) :
     name(initName), address(initAddress), phoneNumber(initPhoneNumber), bio(initBio), standardTimeOfPreparation(minutesPrepared){}
@@ -42,9 +43,9 @@ string Restaurant::getBio() const
 {
     return bio;
 }
-const vector<Order> &Restaurant::getOrders() const
+const vector<string> &Restaurant::getOrderIDs() const
 {
-    return orders;
+    return orderIDs;
 }
 Menu Restaurant::getMenu() const
 {
@@ -90,45 +91,50 @@ void Restaurant::setBio(const string newBio)
 }
 
 // Orders and Menu:-------------------------------------------------------
-bool Restaurant::AddItemToOrder(string orderID, const MenuItem const* item)
-{
-    auto iter = find_if(orders.begin(), orders.end(), [orderID](const Order &inQ)
-                        { return inQ.getID() == orderID;
-                     });
-    if(iter != orders.end()){
-        return false;
-    }
-    return iter->addItem(item);
-}
-bool Restaurant::RemoveItemFromOrder(string orderID, string itemID)
-{
-    auto iter = find_if(orders.begin(), orders.end(), [orderID](const Order &inQ)
-                        { return orderID == inQ.getID();});
-    if(iter == orders.end()){
-        return false;
-    }
-    return iter->removeItem(itemID);
-}
+// bool Restaurant::AddItemToOrder(string orderID, const MenuItem const* item)
+// {
+//     auto iter = find_if(orders.begin(), orders.end(), [orderID](const Order &inQ)
+//                         { return inQ.getID() == orderID;
+//                      });
+//     if(iter != orders.end()){
+//         return false;
+//     }
+//     return iter->addItem(item);
+// }
+// bool Restaurant::RemoveItemFromOrder(string orderID, string itemID)
+// {
+//     auto iter = find_if(orders.begin(), orders.end(), [orderID](const Order &inQ)
+//                         { return orderID == inQ.getID();});
+//     if(iter == orders.end()){
+//         return false;
+//     }
+//     return iter->removeItem(itemID);
+// }
 
-bool Restaurant::AddOrderToQueue(const Order newOrder)
+bool Restaurant::AddOrderToQueue(string newOrderID)
 {
-    auto  iter = find_if(orders.begin(), orders.end(), [newOrder](const Order &inQ)
-                      { return newOrder.getID() == inQ.getID(); });
-    if( iter != orders.end()){
+    // Check if the given ID is valid or not
+    OrderStorage storage;
+    if(!storage.isValidOrder(newOrderID)){
         return false;
     }
-    orders.push_back(newOrder);
+    // Check whether the order with the given ID is already in the queue or not
+    auto  iter = find_if(orderIDs.begin(), orderIDs.end(), [newOrderID](const string &inQ)
+                      { return newOrderID == inQ; });
+    if( iter != orderIDs.end()){
+        return false;
+    }
+    orderIDs.push_back(newOrderID);
     return true;
 }
-bool Restaurant::removeOrderFromQueue(const Order removingOrder)
+bool Restaurant::removeOrderFromQueue(string removingOrderID)
 {
-    auto iter = find_if(orders.begin(), orders.end(), [removingOrder](const Order &inQ)
-                        { return removingOrder.getID() == inQ.getID();
-                         });
-    if( iter == orders.end()){
+    auto iter = find_if(orderIDs.begin(), orderIDs.end(), [removingOrderID](const string &inQ)
+                        { return removingOrderID == inQ; });
+    if( iter == orderIDs.end()){
         return false;
     }
-    orders.erase(iter);
+    orderIDs.erase(iter);
     return true;
 }
 

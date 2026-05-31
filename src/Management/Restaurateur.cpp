@@ -34,9 +34,9 @@ Menu Restaurateur::getMenu() const
 {
     return restaurant->getMenu();
 }
-vector<Order> Restaurateur::getOrders() const
+vector<string> Restaurateur::getOrderIDs() const
 {
-    return restaurant->getOrders();
+    return restaurant->getOrderIDs();
 }
 string Restaurateur::getID() const
 {
@@ -106,13 +106,13 @@ bool Restaurateur::removeItemFromMenu( const MenuItem const * item)
     return restaurant->removeItemFromMenu(item);
 }
 
-bool Restaurateur::AddOrderToQueue(const Order newOrder)
+bool Restaurateur::AddOrderToQueue(string orderID)
 {
-    return restaurant->AddOrderToQueue(newOrder);
+    return restaurant->AddOrderToQueue(orderID);
 }
-bool Restaurateur::removeOrderFromQueue(const Order removingOrder)
+bool Restaurateur::removeOrderFromQueue(string orderID)
 {
-    return restaurant->removeOrderFromQueue(removingOrder);
+    return restaurant->removeOrderFromQueue(orderID);
 }
 
 Restaurateur::~Restaurateur(){}

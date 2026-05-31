@@ -3,7 +3,7 @@
 
 namespace Printer{
     void wellcome();
-    void menu(const Menu *menu);
+    void menu(string menuID);
     void restaurateurDashboard(string nm, vector<string> ad, bool isactive, size_t averaget);
     void InvalidInput();
     auto RestaurateurChoices();
@@ -12,4 +12,6 @@ namespace Printer{
     void saleStatistics(const map<MenuItem, cost> &ss);
     void customerStatistics(const map<Customer, vector<Order>> &cs);
     void chooseRestaurant();
+    void orderOut();
+    void addItemToCart();
 };

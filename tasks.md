@@ -4,15 +4,16 @@
 3. Learn about safer pointers
 4. Learn in detail about maps(done)
 5. Implement id assignment for each class
-6. List all of the types of food(done)
+6. List all the types of food(done)
 7. Learning about 'cast' types in modern C++
+8. Learn about default constructors
 
 ### Optionals:
-1. Design a cancle choice for each order and item
+1. Design a cancel choice for each order and item
 2. Made this system to be more secure by passwords and access-controlers
 
 ### Steps:
-1. Create all of the prototypes of needed classes in header files. (almost done)
+1. Create all the prototypes of needed classes in header files. (almost done)
 2. Write interface/ completely(Interface -> Getinf -> Printer), You can do it at the end if the time seems short
 3. ~~Code (or maybe redesign) completely FoodTypes/ (The foundations are typed)~~
 4. ~~Code (or maybe redesighn) completely Container/ (The foundations are typed)~~
@@ -30,5 +31,10 @@
 ### At the very end:
 1. Create UUID
 2. Implement repositories
-3. Organize all of the files in a well-organized form(like domain/ headers/ repository/ etc.)
+3. Organize all the files in a well-organized form(like domain/ headers/ repository/ etc.)
+4. Use namespaces for each logical space
+5. Use smart pointers
+6. Use Cpp modern casting
+7. Add operator overloadings
+8. Catch errors
 -1. Use MySQL

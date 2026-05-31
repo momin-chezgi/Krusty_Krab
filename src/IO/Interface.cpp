@@ -7,19 +7,37 @@ int Login()
     return GetInf::loginRule();
 }
 
-Customer* enterAsCustomer(){
-    return GetInf::customer();
+bool enterAsCustomer(Customer &buffer)
+{
+    return GetInf::customer(buffer);
 }
-size_t chooseRestaurant(){
+string chooseRestaurant(){
     Printer::chooseRestaurant();
     return GetInf::chooseRestaurant();
 }
-Menu giveMenu(string restaurantID){
+string giveMenu(string restaurantID){
     return GetInf::menu(restaurantID);
 }
 
-bool orderAtGivenBuffer(const Order const *resultOrder){
-    return GetInf::order(resultOrder);
+bool orderOut(string RestaurantID, string menuID, Order& resultOrder){
+    OrderStorage storage;
+    RestaurantStorage restaurantStorage;
+    Printer::orderOut();
+    string decision;
+    cin >> decision;
+    if(decision == "y" || decision == "Y" || decision == "yes" || decision == "YES"){
+        bool adding = true;
+        while(adding){
+            Printer::addItemToCart();
+            adding = GetInf::addItemToCart(menuID, resultOrder);
+        }
+    }
+    if (resultOrder.getOrder().empty()) {
+        return false;
+    }
+    storage.saveOrder(resultOrder);
+    restaurantStorage.AddOrderToRestaurant(RestaurantID, resultOrder.getID());
+    return true;
 }
 
 auto restaurateurOptions(string givenName, const vector<string>& givenAddress, bool givenStatus, size_t givenMinutes){
@@ -38,7 +56,7 @@ AdminOfSystem *enterAsAdmin()
 
 auto adminOptions()
 {
-    
+    Printer::adminDashboard();
 }
 
 Restaurateur findForRestaurant(string givenID)

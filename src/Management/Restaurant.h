@@ -10,7 +10,7 @@ class Restaurant{
     size_t standardTimeOfPreparation;   // per minute
     string phoneNumber;
     string bio;
-    vector<Order> orders{};
+    vector<string> orderIDs{};
     Menu menu = Menu({});
 
 public:
@@ -26,7 +26,7 @@ public:
     size_t getMinutesFoodPrepare() const;
     string getPhone() const;
     string getBio() const;
-    const vector<Order> &getOrders() const;
+    const vector<string> &getOrderIDs() const;
     Menu getMenu() const;
 
     void setName(const string newName);
@@ -41,8 +41,11 @@ public:
     bool AddItemToOrder(string orderID, const MenuItem const* item);
     bool RemoveItemFromOrder(string orderID, string itemID);
 
-    bool AddOrderToQueue(const Order newOrder);
-    bool removeOrderFromQueue(const Order removingOrder);
+    bool AddOrderToQueue(string newOrderID);
+    // The input is the ID of the order, 
+    // Because we believe that the order has been created before
+    // In the 'RestaurantStorage'
+    bool removeOrderFromQueue(string removingOrderID);
 
     bool addItemToMenu( const MenuItem const *item);
     // 'addItemToMenu' returns true if the item wasn't in the menu and has been added
