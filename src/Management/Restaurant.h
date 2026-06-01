@@ -3,7 +3,7 @@
 #include "Order.h"
 
 class Restaurant{
-    const string id = IDGenerator::uuid();
+    string id = IDGenerator::uuid();
     string name;
     string address;          // city/street/building No
     bool activationStatus{true};
@@ -14,9 +14,9 @@ class Restaurant{
     Menu menu = Menu({});
 
 public:
-    Restaurant(   );
-    Restaurant(   Restaurant* r);
-    Restaurant(   string initName, vector<string> initAddress, string initPhoneNumber, string initBio = "", size_t minutesPrepared = 0);
+    Restaurant();
+    Restaurant(Restaurant* r);
+    Restaurant(string initName, vector<string> initAddress, string initPhoneNumber, string initBio = "", size_t minutesPrepared = 0);
 
     string getID() const;
     string getName() const;

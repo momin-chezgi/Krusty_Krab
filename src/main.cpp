@@ -49,14 +49,15 @@ bool CustomerDashboard(){
     string menuID = giveMenu(restaurantID);
     Printer::menu(menuID);
     Order order = Order(user.getID(), {});
-    orderOut(menuID, order);
+    orderOut(restaurantID, menuID, order);
     return true;
 }
 
 bool RestaurateurDashboard(){
     
-    Restaurateur user;
-    if(!enterAsRestaurateur(user)){
+    Restaurateur user = move(enterAsRestaurateur());
+
+    if(user.getName() == "Quit"){
         return false;
     }
 
@@ -71,25 +72,25 @@ bool RestaurateurDashboard(){
         
         // Restaurant editing options-----------------------
         case 1: // edit restaurant name
-            user.editRestaurantName(GetInf::modifyRestaurant(chosenOption));
+            user.editRestaurantName(GetInf::modifyRestaurantString(chosenOption));
             break;
         case 2: // edit restaurant address
-            user.editRestaurantAddress(GetInf::modifyRestaurant(chosenOption));
+            user.editRestaurantAddress(GetInf::modifyRestaurantString(chosenOption));
             break;
         case 3: // activate restaurant
-            user.activateRestaurant(GetInf::modifyRestaurant(chosenOption));
+            user.activateRestaurant();
             break;
         case 4: // deactivate restaurant
-            user.deactivateRestaurant(GetInf::modifyRestaurant(chosenOption));
+            user.deactivateRestaurant();
             break;
         case 5: // edit restaurant preparation time
-            user.setPreparationTime(GetInf::modifyRestaurant(chosenOption));
+            user.setPreparationTime(GetInf::modifyRestaurantTime(chosenOption));
             break;
         case 6: // edit restaurant phone number
             user.setPhoneNumber(GetInf::modifyRestaurant(chosenOption));
             break;
         case 7: // edit restaurant bio
-            user.setBio(GetInf::modifyRestaurant(chosenOption));
+            user.setBio(GetInf::modifyRestaurantString(chosenOption));
             break;
         
         // Menu editing options----------------------------
@@ -100,17 +101,26 @@ bool RestaurateurDashboard(){
             user.removeItemFromMenu(GetInf::menuItem());
             break;
         case 13: // replace an item from menu
-            user.replaceItemFromMenu(GetInf::menuItem(), GetInf::menuItem());
+            user.replaceItemInMenu(GetInf::menuItem(), GetInf::menuItem());
             break;
         
         
         // Order editing options----------------------------
-        case 21: // add an order to the order queue
-            user.AddOrderToQueue(GetInf::orderOut());
+        case 21: { // add an order to the order queue
+            Order newOrder;
+            OrderStorage storage;
+            orderOut(user.getRestaurantID(), user.getMenuID(), newOrder);
+            storage.saveOrder(newOrder);
+            user.addOrderToQueue(newOrder.getID());
             break;
-        case 22: // remove an order from the order queue
-            user.removeOrderFromQueue(GetInf::orderOut());
+        }
+        case 22: { // remove an order from the order queue
+            OrderStorage storage;
+            string deletingOrderID = GetInf::OrderID();
+            storage.deleteOrder(deletingOrderID);
+            user.removeOrderFromQueue(deletingOrderID);
             break;
+        }
         case 23: // replace an order to the order queue
             user.editThisOrder(GetInf::orderOut(), GetInf::orderOut());
             break;
@@ -122,12 +132,16 @@ bool RestaurateurDashboard(){
         case 32: // update and print customer statistics
             user.updateAndPrintCustomerStatistics();
             break;
+        
         // Restaurateur editing options-----------------------
         case 41: // edit restaurateur name
-            user.setName(GetInf::modifyRestaurant());
+            user.setName(GetInf::modifyRestaurantString(chosenOption));
             break;
         case 42: // edit restaurateur's restaurant
+            user.setRestaurantID(GetInf::modifyRestaurantString(chosenOption));
             break;
+        default:
+            Printer::InvalidInput();
     }
     
     return true;

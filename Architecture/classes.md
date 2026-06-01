@@ -71,7 +71,7 @@ _Date: May 14, 2026 / Ordibehesht 24 1405_
 
 11.  bool addItemToMenu (MenuItem mi );          
 12. bool removeItemFromMenu (MenuItem mi)  
-13. bool replaceItemFromMenu (MenuItem previousItem, replacedItem)  
+13. bool replaceItemInMenu (MenuItem previousItem, replacedItem)  
 
 14. bool editThisOrder (Order* previousOrder, replacedOrder)  
 

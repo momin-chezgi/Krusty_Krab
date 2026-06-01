@@ -3,61 +3,77 @@
 #include "Restaurant.h"
 
 class Restaurateur{
-    const string id = IDGenerator::uuid();
+    string id = IDGenerator::uuid();
     
     string name;
     string restaurantID;
 
-    map<string, cost> saleStatisics{};
-    // Some of costs of a 'MenuItem'(distinguished by id)
-    map<string, vector<Order>> customerStatistics{};
-    // Orders of a 'Customer'(distinguished by id)
+    map<string, cost> saleStatisics{}; // Some of costs of a 'MenuItem'(distinguished by id)
+    map<string, vector<Order>> customerStatistics{}; // Orders of a 'Customer'(distinguished by id)
+
 public:
-    Restaurateur(string initName="");
-    Restaurateur(const Restaurant& initRestaurant, string initName="");
+    Restaurateur() = default;
+    Restaurateur(string initRestaurantID, string initName="");
+    ~Restaurateur();
 
     Restaurateur& operator=(const Restaurateur& newRestaurateur);
 
-    string myRestaurant() const;
-    Restaurant getRestaurant() const;
-    string getRestaurantName() const;
-    string getRestaurantAddress() const;
-    bool getRestaurantStatus() const;
-    size_t getRestaurantPreparationMinutes() const;
-    Menu getMenu() const;
-    vector<string> getOrderIDs() const;
+    // Getters and Setters:---------------------------------
+    
+    // Itself:
+    
     string getID() const;
     string getName() const;
 
     void setName(string newName);
 
-    void editRestaurantName(string newName);
-    void editRestaurantAddress(vector<string> newAddress);
-    void activateRestaurant();
-    void deactivateRestaurant();
+    // Restaurant:
 
-    // bool addItemToMenu(const MenuItem const *mi);
-    // bool removeItemFromMenu(MenuItem previousOrder, MenuItem replacedOrder);
-    // bool replaceItemFromMenu(MenuItem previousItem, MenuItem replacedItem);
+    string getRestaurantID() const;
+    string getRestaurantName() const;
+    string getRestaurantAddress() const;
+    bool getRestaurantStatus() const;
+    size_t getRestaurantPreparationMinutes() const;
+    string getRestaurantPhone() const;
+    string getRestaurantBio() const;
 
-    // bool editThisOrder(Order *previousOrderptr, Order replacedOrder);
+    bool setRestaurantID(string newRestaurantID); // And updates statistics, so on.
+    bool editRestaurantName(string newName);
+    bool editRestaurantAddress(string newAddress);
+    bool activateRestaurant();
+    bool deactivateRestaurant();
+    bool setPreparationTime(const size_t minutes);
+    bool setPhoneNumber(const string newPhoneNumber);
+    bool setBio(const string newBio);
 
-    void updateAndPrintSaleStatistics();
-    void updateAndPrintCustomerStatistics();
-
-    bool AddItemToOrder(string orderID, const MenuItem const* item);
-    bool RemoveItemFromOrder(string orderID, string itemID);
-
-    bool addItemToMenu( const MenuItem const *item);
-    // 'addItemToMenu' returns true if the item wasn't in the menu and has been added
-    bool removeItemFromMenu(const MenuItem const *item);
-    // 'removeItemFromMenu' returns true if the item was in the menu and has been deleted
+    // Menu:
     
-    bool AddOrderToQueue(string orderID);
-    // AddToQueue returns true if the order hasn't been in the orders(distinguished by id)
+    string getMenuID() const;
+    
+    bool addItemToMenu( const MenuItem& item);
+    // 'addItemToMenu' returns true if the item wasn't in the menu and has been added
+    bool removeItemFromMenu(string itemID);
+    // 'removeItemFromMenu' returns true if the item was in the menu and has been deleted
+    bool replaceItemInMenu(string previousItemID, const MenuItem& replacedItem);
+
+    // Order
+    
+    
+    bool addItemToOrder(string orderID, const MenuItem& item, double quantity = 1);
+    bool removeItemFromOrder(string orderID, string itemID);
+
+    // Queue:
+
+    vector<string> getOrderIDs() const;
+
+    bool addOrderToQueue(string orderID);
+    // addOrderToQueue returns true if the order hasn't been in the orders(distinguished by id)
     // and carefully added
     bool removeOrderFromQueue( string orderID);
 
-    ~Restaurateur();
+    // statistics:
+
+    bool updateAndPrintSaleStatistics();
+    bool updateAndPrintCustomerStatistics();
 
 };
