@@ -87,7 +87,7 @@ bool RestaurateurDashboard(){
             user.setPreparationTime(GetInf::modifyRestaurantTime(chosenOption));
             break;
         case 6: // edit restaurant phone number
-            user.setPhoneNumber(GetInf::modifyRestaurant(chosenOption));
+            user.setPhoneNumber(GetInf::modifyRestaurantString(chosenOption));
             break;
         case 7: // edit restaurant bio
             user.setBio(GetInf::modifyRestaurantString(chosenOption));
@@ -122,7 +122,7 @@ bool RestaurateurDashboard(){
             break;
         }
         case 23: // replace an order to the order queue
-            user.editThisOrder(GetInf::orderOut(), GetInf::orderOut());
+            user.replaceOrderInQueue(GetInf::OrderID(chosenOption), GetInf::OrderID(chosenOption));
             break;
 
         // Statistics options----------------------------
@@ -185,4 +185,3 @@ bool AdminDashboard()
     return true;
 
 }
-
