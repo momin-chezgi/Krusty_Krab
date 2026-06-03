@@ -55,7 +55,7 @@ bool CustomerDashboard(){
 
 bool RestaurateurDashboard(){
     
-    Restaurateur user = move(enterAsRestaurateur());
+    Restaurateur user = enterAsRestaurateur();
 
     if(user.getName() == "Quit"){
         return false;
@@ -150,35 +150,37 @@ bool RestaurateurDashboard(){
 
 bool AdminDashboard()
 {
-    AdminOfSystem* user = enterAsAdmin();
-    if(!user){
+    AdminOfSystem user = enterAsAdmin();
+
+    if(user.getName() == "Quit"){
         return false;
     }
-    int chosenOption = adminOptions(
 
-    );
+    int chosenOption = adminOptions(user.getRestaurateurIDs());
+
     switch (chosenOption){
         case 1:         // creates restaurant
-            user->addRestaurant(x);
+            user.addRestaurant(GetInf::restaurateur(),GetInf::newRestaurant());
             break;
         case 2: // activates restaurant (x: id of the restaurant)
-            user->accessRestaurant(x)->activateRestaurant();
+            user.activateRestaurant(GetInf::modifyRestaurantString(chosenOption));
             break;
         case 3: // disactivates restaurant
-            user->accessRestaurant(x)->deactivateRestaurant();
+            user.deactivateRestaurant(GetInf::modifyRestaurantString(chosenOption));
             break;
-        case 11: // receives sale statistics
-            user->updateAndPrintTotalSaleStatistics();
-            break;
-        case 12: // recieves customers statistics
-            user->updateAndPrintTotalCustomerStatistics();
-            break;
+        
         // Statistics options----------------------------
-        case 31: // update and print sale statistics
-            user->updateAndPrintSaleStatistics();
+        case 31: // receives sale statistics
+            user.updateAndPrintTotalSaleStatistics();
             break;
-        case 32: // update and print customer statistics
-            user->updateAndPrintCustomerStatistics();
+        case 32: // recieves customers statistics
+            user.updateAndPrintTotalCustomerStatistics();
+            break;
+        case 33: // update and print sale statistics
+            user.updateAndPrintTotalSaleStatistics();
+            break;
+        case 34: // update and print customer statistics
+            user.updateAndPrintTotalCustomerStatistics();
             break;
     }
     

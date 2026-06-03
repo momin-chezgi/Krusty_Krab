@@ -11,6 +11,7 @@
 ### Optionals:
 1. Design a cancel choice for each order and item
 2. Made this system to be more secure by passwords and access-controlers
+3. Use set instead of vector in places you want not to store an ID in two times
 
 ### Steps:
 1. Create all the prototypes of needed classes in header files. (almost done)

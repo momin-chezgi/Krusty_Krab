@@ -50,7 +50,7 @@ public:
     
     string getMenuID() const;
     
-    bool addItemToMenu( const MenuItem& item);
+    bool addItemToMenu(const MenuItem& item);
     // 'addItemToMenu' returns true if the item wasn't in the menu and has been added
     bool removeItemFromMenu(string itemID);
     // 'removeItemFromMenu' returns true if the item was in the menu and has been deleted
@@ -70,6 +70,11 @@ public:
     // addOrderToQueue returns true if the order hasn't been in the orders(distinguished by id)
     // and carefully added
     bool removeOrderFromQueue( string orderID);
+    // removeOrderFromQueue returns true if the order has been in the orders(distinguished by id)
+    // and carefully removed
+    bool replaceOrderInQueue(string previousOrderID, string newOrderID);
+    // replaceOrderInQueue returns true if the previous order has been in the orders(distinguished by id)
+    // and the new order hasn't been in the orders(distinguished by id) and
 
     // statistics:
 

@@ -216,7 +216,14 @@ bool Restaurateur::removeOrderFromQueue(string orderID)
     RestaurantStorage storage;
     return storage.deleteOrderFromRestaurant(restaurantID, orderID);
 }
-
+bool Restaurateur::replaceOrderInQueue(string previousOrderID, string newOrderID)
+{
+    OrderStorage storage;
+    RestaurantStorage rStorage;
+    if(!storage.isValidOrder(newOrderID)) return false;
+    if(!storage.isValidOrder(previousOrderID)) return false;
+    return rStorage.deleteOrderFromRestaurant(restaurantID, previousOrderID) && rStorage.addOrderToRestaurant(restaurantID, newOrderID);
+}
 // statistics:
 
 bool Restaurateur::updateAndPrintSaleStatistics(){}
