@@ -1,6 +1,5 @@
 #include "MenuItem.h"
 
-MenuItem::MenuItem(   ){}
 MenuItem::MenuItem(   string initName, cost initPrice, string initBio = ""){
     setName(initName);
     setPricePerUnit(initPrice);

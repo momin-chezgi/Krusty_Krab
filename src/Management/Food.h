@@ -6,7 +6,6 @@ class Food : public MenuItem
 {
     double weight{};
 public:
-    Food();
     Food(Food* f);
     Food(string initName, cost initPrice, double initWeight, string initBio = "");
 

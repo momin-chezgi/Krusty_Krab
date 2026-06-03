@@ -1,13 +1,13 @@
 # include "Drink.h"
 
-Drink::Drink(   ) : MenuItem() {}
-Drink::Drink(   string initName, cost initPrice, double initVolume, string initBio) : 
+Drink::Drink(string initName, cost initPrice, double initVolume, string initBio) : 
 MenuItem(initName, initPrice, initBio) {
     setVolume(initVolume);
 }
 Drink::Drink(Drink *d) : MenuItem(d->getName(), d->getPricePerUnit(), d->getBio()) {
     setVolume(d->getVolume());
 }
+
 
 double Drink::getVolume() const {
     return volume;

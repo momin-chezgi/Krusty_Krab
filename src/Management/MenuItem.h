@@ -14,7 +14,6 @@ private:
     // For more informations (i.e. Vegie Pizza, ...)
     cost pricePerUnit{};
 public:
-    MenuItem() = default;
     MenuItem(string initName, cost initPrice, string initBio = "");
 
     string getID() const;
@@ -44,10 +43,10 @@ public:
     virtual ~MenuItem();
 protected:
     string id = IDGenerator::uuid();
-    // For the type of food(i.e. Pizza)
-    string itemType{};
-    // For more informations (i.e. Vegie Pizza, ...)
-    string foodType{};
+    
+    string itemType{};      // For the type of food(i.e. Pizza)
+
+    string foodType{};      // For more informations (i.e. Vegie Pizza, ...)
 };
 
 typedef pair<MenuItem*, double> OrderLine;

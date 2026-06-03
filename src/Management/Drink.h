@@ -7,7 +7,6 @@ class Drink : public MenuItem
     double volume{};
 
 public:
-    Drink();
     Drink(Drink *d);
     Drink(string initName, cost initPrice, double initVolume, string initBio = "");
 
