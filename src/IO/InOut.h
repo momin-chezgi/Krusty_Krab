@@ -100,6 +100,7 @@ public:
 
     bool addOrderToRestaurant(string restaurantID, string orderID);
     bool deleteOrderFromRestaurant(string restaurantID, string orderID);
+    bool orderIsInQueue(string restaurantID, string orderID);
     
     Restaurant giveRestaurant(string restaurantID);
 
@@ -108,7 +109,7 @@ public:
     bool replaceRestaurant(string prerestaurantID, const Restaurant& updatingRestaurant);  // returns true if the restaurant with the given ID exists and has been updated, otherwise returns false
 
 private:
-    static map<string, Restaurant> restaurants;
+    static map<RestID_tp, Restaurant> restaurants;
 };
 
 

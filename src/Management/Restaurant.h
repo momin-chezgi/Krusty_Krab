@@ -40,7 +40,8 @@ public:
 
     bool AddItemToOrder(string orderID, const MenuItem const* item);
     bool RemoveItemFromOrder(string orderID, string itemID);
-
+    bool orderIsInQueue(string orderID) const;
+    
     bool AddOrderToQueue(string newOrderID);
     // The input is the ID of the order, 
     // Because we believe that the order has been created before

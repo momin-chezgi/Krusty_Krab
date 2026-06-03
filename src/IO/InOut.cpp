@@ -13,7 +13,7 @@ map<string, Order> OrderStorage::orders = {
     {"TestOrder", Order("TestOrder", {seedOrderLine(Food("TestMenuItem", 10.0, 20.0), 1.0)})}
 };
 map<string, Menu> MenuStorage::menus = {
-    {"TestMenu", Menu({&Drink("TestMenuItem", 10.0, 20.0)})}
+    {"TestMenu", Menu({Drink("TestMenuItem", 10.0, 20.0)})}
 };
 map<string, Restaurateur> RestaurateurStorage::restaurateurs = {
     {"TestRestaurateur", Restaurateur("TestRestaurateur")}
@@ -92,6 +92,15 @@ bool RestaurantStorage::addOrderToRestaurant(string restaurantID, string orderID
     auto it = restaurants.find(restaurantID);
     if (it != restaurants.end()) { 
         return it->second.AddOrderToQueue(orderID);
+    }
+    return false;
+}
+
+bool RestaurantStorage::orderIsInQueue(string restaurantID, string orderID)
+{
+    auto it = restaurants.find(restaurantID);
+    if (it != restaurants.end()) { 
+        return it->second.orderIsInQueue(orderID);
     }
     return false;
 }

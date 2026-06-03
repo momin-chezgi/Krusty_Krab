@@ -222,6 +222,8 @@ bool Restaurateur::replaceOrderInQueue(string previousOrderID, string newOrderID
     RestaurantStorage rStorage;
     if(!storage.isValidOrder(newOrderID)) return false;
     if(!storage.isValidOrder(previousOrderID)) return false;
+    // if provious order is in queue and the new order, too:
+    if(rStorage.orderIsInQueue(restaurantID, previousOrderID) && rStorage.orderIsInQueue(restaurantID, newOrderID)) return false;
     return rStorage.deleteOrderFromRestaurant(restaurantID, previousOrderID) && rStorage.addOrderToRestaurant(restaurantID, newOrderID);
 }
 // statistics:

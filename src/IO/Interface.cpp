@@ -17,7 +17,7 @@ Restaurateur enterAsRestaurateur()
     return GetInf::restaurateur();
 }
 
-bool enterAsAdmin(AdminOfSystem &buffer)
+AdminOfSystem enterAsAdmin(AdminOfSystem &buffer)
 {
     return GetInf::admin(buffer);
 }

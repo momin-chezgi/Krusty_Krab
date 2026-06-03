@@ -89,7 +89,7 @@ RestID_tp AdminOfSystem::addRestaurant(ManagerID_tp restaurateurID,
    const Restaurant& copyingRestaurant,
    string initName)
 {
-   if(hasRestaurateur(restaurateurID)) return "AlreasdyHasRestaurateur";
+   if(!hasRestaurateur(restaurateurID)) return "Admin doesn't have the restaurateur with the given ID.";
    RestaurantStorage storage;
    RestID_tp newRestaurantID = storage.saveRestaurant(copyingRestaurant);
    if(newRestaurantID == ""){

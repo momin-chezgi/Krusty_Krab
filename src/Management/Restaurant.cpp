@@ -138,6 +138,13 @@ bool Restaurant::removeOrderFromQueue(string removingOrderID)
     return true;
 }
 
+bool Restaurant::orderIsInQueue(string orderID) const
+{
+    auto iter = find_if(orderIDs.begin(), orderIDs.end(), [orderID](const string &inQ)
+                        { return orderID == inQ; });
+    return iter != orderIDs.end();
+}
+
 bool Restaurant::addItemToMenu( const MenuItem const *item)
 {
     return menu.addItem(item);
