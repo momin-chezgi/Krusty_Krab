@@ -35,7 +35,7 @@ public:
 
     ~Order();
 private:
-    const string id = IDGenerator::uuid();
+    string id = IDGenerator::uuid();
     string ordererID;
     vector<OrderLine> order;
     OrderStatus orderStatus {OrderStatus::InPreparation};

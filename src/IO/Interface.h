@@ -10,11 +10,11 @@
 
 int Login();
 bool enterAsCustomer(Customer &buffer);
-bool enterAsRestaurateur(Restaurateur &buffer);
-AdminOfSystem *enterAsAdmin();
+Restaurateur enterAsRestaurateur();
+AdminOfSystem enterAsAdmin();
 string giveMenu(string restaurantID);
-bool orderOut(string menuID, Order& resultOrder);
+bool orderOut(string RestaurantID, string menuID, Order& resultOrder);
 int restaurateurOptions(string givenName, const string& givenAddress, bool givenStatus, size_t givenMinutes);
-auto adminOptions();
+int adminOptions(vector<ManagerID_tp> restaurateurIDs);
 Restaurateur findForRestaurant(string givenID);
 string chooseRestaurant();

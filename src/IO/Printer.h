@@ -17,4 +17,5 @@ namespace Printer{
     void chooseRestaurant();
     void orderOut();
     void addItemToCart();
+    void adminDashboard(const vector<ManagerID_tp> &restaurateurIDs);
 };

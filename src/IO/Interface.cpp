@@ -12,9 +12,9 @@ bool enterAsCustomer(Customer &buffer)
     return GetInf::customer(buffer);
 }
 
-bool enterAsRestaurateur(Restaurateur &buffer)
+Restaurateur enterAsRestaurateur()
 {
-    return GetInf::restaurateur(buffer);
+    return GetInf::restaurateur();
 }
 
 bool enterAsAdmin(AdminOfSystem &buffer)
@@ -58,7 +58,10 @@ int restaurateurOptions(string givenName, const string& givenAddress, bool given
 }
 
 
-int adminOptions()
+int adminOptions(vector<ManagerID_tp> restaurateurIDs){
+    Printer::adminDashboard(restaurateurIDs);
+    return GetInf::adminOptions(restaurateurIDs);
+}
 {
     Printer::adminDashboard();
     return 0;

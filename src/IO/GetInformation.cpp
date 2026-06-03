@@ -25,7 +25,7 @@ bool GetInf::customer(Customer &buffer){
     // But for now, we just return the customer with the given ID
 }
 
-bool GetInf::restaurateur(Restaurateur &buffer){
+Restaurateur GetInf::restaurateur(){
     RestaurateurStorage storage;
     //SQLReader reader;
 
@@ -35,12 +35,11 @@ bool GetInf::restaurateur(Restaurateur &buffer){
         cout << "Enter your ID: ";
         cin >> givenID;
         if(givenID == "q" || givenID == "Q" || givenID == "quit" || givenID == "QUIT"){
-            return false;
+            return Restaurateur("Quit", "Quit");
         }
         //if (reader.getRestaurateur(givenID, buffer)){
         if(storage.isValidRestaurateur(givenID)){
-            buffer = storage.giveRestaurateur(givenID);
-            return true;
+            return storage.giveRestaurateur(givenID);
         }
         cout << "Invalid ID, ";
     }
@@ -117,7 +116,7 @@ bool GetInf::addItemToCart(string menuID, Order& resultOrder)
     // SQLReader reader;
 
     // if (!reader.isValidMenuItem(itemID)){
-    if (!storage.isValidMenu(menuID) || !storage.giveMenu(menuID).thereIsThatItem(itemID)){
+    if (!storage.isValidMenu(menuID) || !storage.giveMenu(menuID).has(itemID)){
         Printer::InvalidInput();
         return true; 
         // we return true because the user can still
@@ -142,4 +141,37 @@ bool GetInf::addItemToCart(string menuID, Order& resultOrder)
     }
 
     return true;
+}
+
+string GetInf::OrderID(int option)
+{
+    OrderStorage storage;
+    // SQLReader reader;
+
+    string orderID;
+
+    while(true){
+        switch(option){
+            case 22:
+                cout << "Enter the ID of the order you want to delete: ";
+                break;
+            case 23:
+                cout << "Enter the ID of the order you want to replace: ";
+                break;
+            default:
+                cout << "Enter the ID of the order: ";
+        }
+        cout << "Enter the ID of the order: ";
+        cin >> orderID;
+
+        if(orderID == "q" || orderID == "Q" || orderID == "quit" || orderID == "QUIT"){
+            return "";
+        }
+
+        // if (reader.isValidOrder(orderID)){
+        if (storage.isValidOrder(orderID)){
+            return orderID;
+        }
+        Printer::InvalidInput();
+    }   
 }

@@ -2,14 +2,18 @@
 # include "../Management/Food.h"
 # include "../Management/Drink.h"
 
+OrderLine seedOrderLine(const MenuItem& item, double quantity)
+{
+    OrderLine line;
+    line.first = item.clone();
+    line.second = quantity;
+    return line;
+}
 map<string, Order> OrderStorage::orders = {
-    {"TestOrder", Order("TestOrder", {OrderLine(Food("TestMenuItem", "TestDescription", 10.0), 1)})}
+    {"TestOrder", Order("TestOrder", {seedOrderLine(Food("TestMenuItem", 10.0, 20.0), 1.0)})}
 };
 map<string, Menu> MenuStorage::menus = {
-    {"TestMenu", Menu({new Drink("TestMenuItem", "TestDescription", 10.0)})}
-};
-map<string, Customer> CustomerStorage::customers = {
-    {"TestCustomer", Customer("TestCustomer")}
+    {"TestMenu", Menu({&Drink("TestMenuItem", 10.0, 20.0)})}
 };
 map<string, Restaurateur> RestaurateurStorage::restaurateurs = {
     {"TestRestaurateur", Restaurateur("TestRestaurateur")}
@@ -18,7 +22,7 @@ map<string, Restaurant> RestaurantStorage::restaurants = {
     {"TestRestaurant", Restaurant("TestRestaurant", {"TestCity", "TestStreet", "TestBuilding"}, "1234567890")}
 };
 map<string, AdminOfSystem> AdminStorage::admins = {
-    {"TestAdmin", AdminOfSystem("TestAdmin")}
+    {"TestAdmin", AdminOfSystem({"TestRestaurateur"}, "TestAdmin")}
 };
 
 
@@ -143,3 +147,11 @@ bool RestaurantStorage::deactivateRestaurant(string restaurantID)
     return false;
 }
 
+vector<string> RestaurantStorage::getOrderIDs(string restaurantID) const
+{
+    auto it = restaurants.find(restaurantID);
+    if (it != restaurants.end()){
+        return it->second.getOrderIDs();
+    }
+    return vector<string>{};
+}

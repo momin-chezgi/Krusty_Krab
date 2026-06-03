@@ -1,7 +1,7 @@
 # include "Admin.h"
 
 AdminOfSystem::AdminOfSystem(const vector<ManagerID_tp> &initRestaurateurIDs,
-   string initName="") :
+   string initName) :
    id(IDGenerator::uuid()), name(initName)
 {
    for(auto r : initRestaurateurIDs){

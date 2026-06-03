@@ -4,7 +4,7 @@
 #include "Menu.h"
 
 class Customer{
-    const string id = IDGenerator::uuid();
+    string id = IDGenerator::uuid();
     string name;
     vector<Order *> myOrders {nullptr};
     // It just saves the current orders, not all history of orders
