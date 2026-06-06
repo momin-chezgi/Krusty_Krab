@@ -27,17 +27,17 @@
 ... And It's time for InOut/ and MySQL for data storage
 ... Maybe after finishing InOut/ it's vital to redesign and rewrite the codes !
 11. Think how to deal with statistics 
-12. ID Management: hide, change them to string(from size_t) and use UUID
+12. ID Management: hide, change them to string(from size_t) and use UUID(Done!)
 
 ### At the very end:
 1. Add the option of creating a user
-2. Create UUID
-3. Implement repositories
-4. Organize all the files in a well-organized form(like domain/ headers/ repository/ etc.)
+2. Create UUID(Done!)
+3. Implement repositories(Done!)
+4. Organize all the files in a well-organized form(like domain/ headers/ repository/ etc.) (Done!)
 5. Use namespaces for each logical space
 6. Use smart pointers
 7. Use Cpp modern casting
-8. Add operator overloadings
+8. Add operator overloadings(Used!)
 9. Catch errors
 10. Consider the quantities in the order and menu(stock)
 -1. Use MySQL
