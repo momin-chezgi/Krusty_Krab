@@ -19,9 +19,13 @@ Restaurateur enterAsRestaurateur()
     return GetInf::restaurateur();
 }
 
-AdminOfSystem enterAsAdmin(AdminOfSystem &buffer)
+AdminOfSystem enterAsAdmin()
 {
-    return GetInf::admin(buffer);
+    AdminOfSystem buffer;
+    if (GetInf::admin(buffer)) {
+        return buffer;
+    }
+    return AdminOfSystem({}, "Quit");
 }
 
 RestID_tp chooseRestaurant(){
@@ -49,7 +53,7 @@ bool orderOut(RestID_tp RestaurantID, MenuID_tp menuID, Order& resultOrder){
         return false;
     }
     storage.saveOrder(resultOrder);
-    restaurantStorage.AddOrderToRestaurant(RestaurantID, resultOrder.getID());
+    restaurantStorage.addOrderToRestaurant(RestaurantID, resultOrder.getID());
     return true;
 }
 
@@ -63,10 +67,6 @@ int restaurateurOptions(string givenName, const string& givenAddress, bool given
 int adminOptions(vector<ManagerID_tp> restaurateurIDs){
     Printer::adminDashboard(restaurateurIDs);
     return GetInf::adminOptions(restaurateurIDs);
-}
-{
-    Printer::adminDashboard();
-    return 0;
 }
 
 Restaurateur findForRestaurant(RestID_tp givenID)

@@ -4,6 +4,8 @@
 #include "Repository/OrderStorage.h"
 #include "Repository/RestaurantStorage.h"
 #include "Repository/RestaurateurStorage.h"
+#include "Domain/Drink.h"
+#include "Domain/Food.h"
 
 bool GetInf::customer(Customer &buffer){
     
@@ -30,6 +32,39 @@ bool GetInf::customer(Customer &buffer){
     // But for now, we just return the customer with the given ID
 }
 
+Restaurant* GetInf::restaurant()
+{
+    RestaurantStorage storage;
+    RestID_tp restaurantID = chooseRestaurant();
+    Restaurant* result = new Restaurant(storage.giveRestaurant(restaurantID));
+    return result;
+}
+
+Restaurant GetInf::newRestaurant()
+{
+    string menuID;
+    string name;
+    string address;
+    string phone;
+    string bio;
+    size_t minutes;
+
+    cout << "Enter menu ID: ";
+    cin >> menuID;
+    cout << "Enter restaurant name: ";
+    cin >> name;
+    cout << "Enter address: ";
+    cin >> address;
+    cout << "Enter phone number: ";
+    cin >> phone;
+    cout << "Enter bio: ";
+    cin >> bio;
+    cout << "Enter preparation minutes: ";
+    cin >> minutes;
+
+    return Restaurant(menuID, name, address, phone, bio, minutes);
+}
+
 Restaurateur GetInf::restaurateur(){
     RestaurateurStorage storage;
     //SQLReader reader;
@@ -52,11 +87,43 @@ Restaurateur GetInf::restaurateur(){
     // But for now, we just return the restaurateur with the given ID
 }
 
+bool GetInf::admin(AdminOfSystem &buffer)
+{
+    AdminID_tp givenID;
+
+    while(true){
+        cout << "Enter admin ID: ";
+        cin >> givenID;
+        if(givenID == "q" || givenID == "Q" || givenID == "quit" || givenID == "QUIT"){
+            buffer = AdminOfSystem({}, "Quit");
+            return false;
+        }
+        if(givenID == "TestAdmin"){
+            buffer = AdminOfSystem({"TestRestaurateur"}, "TestAdmin");
+            return true;
+        }
+        cout << "Invalid ID, ";
+    }
+}
+
 string GetInf::customerName(){
     cout << "What is your name? ";
     string enteredName;
     cin >> enteredName;
     return enteredName;
+}
+
+int GetInf::adminOptions(const vector<ManagerID_tp> &restaurateurIDs)
+{
+    (void)restaurateurIDs;
+    int action{-1};
+    cin >> action;
+    while(action != 1 && action != 2 && action != 3 &&
+          action != 31 && action != 32 && action != 33 && action != 34){
+        Printer::InvalidInput();
+        cin >> action;
+    }
+    return action;
 }
 int GetInf::loginRule()
 {
@@ -97,17 +164,82 @@ RestID_tp GetInf::chooseRestaurant()
     return restaurantID;
 }
 
-bool GetInf::orderOut(Order& buffer)
+bool GetInf::orderOut(RestID_tp restaurantID, Order& buffer)
 {
-    
+    (void)restaurantID;
+    return !buffer.getOrder().empty();
 }
 
 MenuID_tp GetInf::menu(RestID_tp restaurantID)
 {
     RestaurantStorage storage;
+    return storage.getMenuID(restaurantID);
+}
 
-    Restaurant restaurant = storage.giveRestaurant(restaurantID);
-    return restaurant.getMenu().getID();
+string GetInf::modifyRestaurantString(int choosenOption)
+{
+    string value;
+    switch(choosenOption){
+        case 1:
+            cout << "Enter the new restaurant name: ";
+            break;
+        case 2:
+            cout << "Enter the new restaurant address: ";
+            break;
+        case 6:
+            cout << "Enter the new phone number: ";
+            break;
+        case 7:
+            cout << "Enter the new bio: ";
+            break;
+        default:
+            cout << "Enter the ID/value: ";
+            break;
+    }
+    cin >> value;
+    return value;
+}
+
+size_t GetInf::modifyRestaurantTime(size_t choosenOption)
+{
+    (void)choosenOption;
+    size_t minutes{};
+    cout << "Enter preparation minutes: ";
+    cin >> minutes;
+    return minutes;
+}
+
+MenuItem* GetInf::menuItem()
+{
+    int type{};
+    string name;
+    string bio;
+    cost price{};
+    double quantity{};
+
+    cout << "Choose item type (1. Food, 2. Drink): ";
+    cin >> type;
+    cout << "Enter item name: ";
+    cin >> name;
+    cout << "Enter item price: ";
+    cin >> price;
+    cout << "Enter item quantity/volume: ";
+    cin >> quantity;
+    cout << "Enter item bio: ";
+    cin >> bio;
+
+    if(type == 2){
+        return new Drink(name, price, quantity, bio);
+    }
+    return new Food(name, price, quantity, bio);
+}
+
+ItemID_tp GetInf::menuItemID()
+{
+    ItemID_tp itemID;
+    cout << "Enter item ID: ";
+    cin >> itemID;
+    return itemID;
 }
 
 bool GetInf::addItemToCart(MenuID_tp menuID, Order& resultOrder)
@@ -131,21 +263,31 @@ bool GetInf::addItemToCart(MenuID_tp menuID, Order& resultOrder)
     cout << "Enter the quantity: ";
     cin >> quantity;
 
-    vector <MenuItem*> menu = storage.giveMenu(menuID).getMenu();
+    Menu menuObject = storage.giveMenu(menuID);
+    vector <MenuItem*> menu = menuObject.getMenu();
     for (const auto& item : menu){
         if(item->getID() == itemID){
-             if(!item->isAvailable() || !item->addItemQuantity(quantity)){
+             if(!item->isAvailable() || quantity <= 0){
                 cout << "Sorry, the item is not available in the kitchen right now" << endl;
                 return true; 
                 // we return true because the user can still
                 // add items to the cart
             }
-            resultOrder.addItem(*item, quantity);
+            resultOrder.addItem(menuID, itemID, quantity);
             return true;
         }
     }
 
     return true;
+}
+
+Restaurateur GetInf::findRestaurant(RestID_tp restaurantID)
+{
+    RestaurateurStorage storage;
+    if (storage.getRestaurantID("TestRestaurateur") == restaurantID) {
+        return storage.giveRestaurateur("TestRestaurateur");
+    }
+    return Restaurateur("NotFound", "NotFound");
 }
 
 OrderID_tp GetInf::OrderID(int option)

@@ -59,6 +59,11 @@ bool Customer::isReady (OrderID_tp orderID) const
     return orderStatus2IsPrepared(storage.getOrderStatus(orderID));
 }
 
+vector<Order> Customer::historyOfOrders() const
+{
+    return {};
+}
+
 CustID_tp Customer::getID() const
 {
     return id;
@@ -69,7 +74,7 @@ Customer& Customer::operator=(const Customer& other)
 {
     if (this != &other)
     {
-        // We don't copy the ID because it is unique for each customer
+        id = other.id;
         name = other.name;
         myOrders = other.myOrders;
     }

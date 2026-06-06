@@ -246,7 +246,7 @@ bool AdminOfSystem::removeRestaurant(RestID_tp restaurantID)
    }
    
 
-   bool AdminOfSystem::addItemToMenu(ManagerID_tp restaurateurID, const MenuItem& item)
+   bool AdminOfSystem::addItemToMenu(ManagerID_tp restaurateurID, const MenuItem* item)
    {
       if(!hasRestaurateur(restaurateurID)) return false;
       RestaurantStorage storage;
@@ -266,15 +266,15 @@ bool AdminOfSystem::removeRestaurant(RestID_tp restaurantID)
       return mStorage.deleteItem(menuID, itemID);
    }
 
-   bool AdminOfSystem::replaceItemInMenu(ManagerID_tp restaurateurID, ItemID_tp previousItemID, const MenuItem& replacedItem)
+   bool AdminOfSystem::replaceItemInMenu(ManagerID_tp restaurateurID, ItemID_tp previousItemID, const MenuItem* replacedItem)
    {      
       if(!hasRestaurateur(restaurateurID)) return false;
       RestaurantStorage storage;
       RestID_tp restaurantID = getRestaurantID(restaurateurID);
       MenuID_tp menuID = storage.getMenuID(restaurantID);
       MenuStorage mStorage;
-      if(replacedItem.getID() == previousItemID) return false;
-      if(mStorage.has(menuID, replacedItem.getID())) return false;
+      if(replacedItem->getID() == previousItemID) return false;
+      if(mStorage.has(menuID, replacedItem->getID())) return false;
       if(!mStorage.has(menuID, previousItemID)) return false; 
       return mStorage.addItem(menuID,replacedItem) && mStorage.deleteItem(menuID, previousItemID);
    }
@@ -282,11 +282,17 @@ bool AdminOfSystem::removeRestaurant(RestID_tp restaurantID)
 
    // order:
 
-   bool AdminOfSystem::addItemToOrder(ManagerID_tp restaurateurID, OrderID_tp orderID, const MenuItem& item, double quantity)
+   bool AdminOfSystem::addItemToOrder(ManagerID_tp restaurateurID, OrderID_tp orderID, ItemID_tp itemID, double quantity)
    {      
       if(!hasRestaurateur(restaurateurID)) return false;
-      OrderStorage storage;
-      return storage.addItem(orderID, item.getID(), quantity);
+      OrderStorage ostorage;
+      RestaurantStorage rstorage;
+      RestaurateurStorage storage; 
+      return ostorage.addItem(orderID, 
+         rstorage.getMenuID(storage.getRestaurantID(restaurateurID)),
+         itemID,
+         quantity
+      );
    }
 
    bool AdminOfSystem::removeItemFromOrder(ManagerID_tp restaurateurID, OrderID_tp orderID, ItemID_tp itemID)

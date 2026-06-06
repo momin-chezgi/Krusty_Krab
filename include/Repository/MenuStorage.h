@@ -11,7 +11,7 @@ public:
     Menu giveMenu(MenuID_tp menuID);  // returns the menu with the given ID, if it doesn't exist, it returns a default menu with no items
     bool deleteMenu(MenuID_tp menuID);  // returns true if the menu with the given ID exists and has been deleted, otherwise returns false
     bool updateMenu(const Menu& updatingMenu);  // returns true if the menu with the given ID exists and has been updated, otherwise returns false
-    bool addItem(MenuID_tp menuID, const MenuItem& newItem);
+    bool addItem(MenuID_tp menuID, const MenuItem * newItem);
     bool deleteItem(MenuID_tp menuID, ItemID_tp itemID);
     MenuItem* cloneItem(ItemID_tp itemID);
 private:

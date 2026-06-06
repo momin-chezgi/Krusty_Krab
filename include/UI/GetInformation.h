@@ -12,8 +12,7 @@ namespace GetInf{
     Restaurant *restaurant(); // inputs the id of the restaurant and return a pointer to restaurant
     Restaurant newRestaurant();
     bool customer(Customer &buffer); // like restaurant() function
-    // Restaurateur restaurateur();
-    ManagerID_tp restaurateur();
+    Restaurateur restaurateur();
     bool admin(AdminOfSystem &buffer);
 
     int adminOptions(const vector<ManagerID_tp> &restaurateurIDs);
@@ -21,9 +20,10 @@ namespace GetInf{
     string modifyRestaurantString(int choosenOption);
     size_t modifyRestaurantTime(size_t choosenOption);
     MenuID_tp menu(RestID_tp restaurantID);
-    bool order(const Order const *resultOrder);
+    bool order(const Order *resultOrder);
     // returns false if user doesn't want to order
-    auto menuItem();
+    MenuItem* menuItem();
+    ItemID_tp menuItemID();
     string customerName();
     int loginRule();
     int restaurateurAction();

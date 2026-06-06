@@ -39,4 +39,5 @@
 7. Use Cpp modern casting
 8. Add operator overloadings
 9. Catch errors
+10. Consider the quantities in the order and menu(stock)
 -1. Use MySQL

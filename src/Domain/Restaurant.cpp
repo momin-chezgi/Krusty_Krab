@@ -11,18 +11,21 @@ Restaurant::Restaurant(Restaurant* r)
     phoneNumber = r->getPhone();
     bio = r->getBio();
     orderIDs = r->getOrderIDs();
+    menuID = r->getMenuID();
 }
 
-Restaurant::Restaurant(string initName,
+Restaurant::Restaurant(string initMenuID,
+     string initName,
      string initAddress,
      string initPhoneNumber,
      string initBio,
      size_t minutesPrepared) :
     name(initName), 
     address(initAddress),
+    standardTimeOfPreparation(minutesPrepared),
     phoneNumber(initPhoneNumber),
     bio(initBio),
-    standardTimeOfPreparation(minutesPrepared)
+    menuID(initMenuID)
 {}
 
 Restaurant::~Restaurant(){}
@@ -30,6 +33,8 @@ Restaurant::~Restaurant(){}
 
 
 // Getters:-----------------------------------------------------------------
+
+RestID_tp Restaurant::getID() const {return id;}
 
 string Restaurant::getName() const {return name;}
 
@@ -45,7 +50,7 @@ string Restaurant::getBio() const   {return bio;}
 
 const vector<OrderID_tp> &Restaurant::getOrderIDs() const   {return orderIDs;}
 
-Menu Restaurant::getMenu() const    {return menu;}
+MenuID_tp Restaurant::getMenuID() const    {return menuID;}
 
 
 
@@ -97,15 +102,17 @@ bool Restaurant::AddItemToOrder(OrderID_tp orderID ,
     double quantity
 ){ 
     OrderStorage ostorage;
-    MenuStorage mstorage;
     if(!ostorage.isValidOrder(orderID)) return false;
+    MenuStorage mstorage;
     if(!mstorage.has(menuID,itemID))   return false;
-    ostorage.addItem(orderID, mstorage., quantity)
+    return ostorage.addItem(orderID, menuID, itemID, quantity);
 }
 
 bool Restaurant::RemoveItemFromOrder(OrderID_tp orderID, ItemID_tp itemID)
 {
-
+    OrderStorage ostorage;
+    if(!ostorage.isValidOrder(orderID)) return false;
+    return ostorage.removeItem(orderID, itemID);
 }
 
 // Queue:-----------------------------------------------------------------
@@ -149,14 +156,14 @@ bool Restaurant::orderIsInQueue(OrderID_tp orderID) const
 
 // Menu:----------------------------------------------------------------
 
-bool Restaurant::addItemToMenu( const MenuItem const *item)
+bool Restaurant::addItemToMenu(const MenuItem *item)
 {
-    return menu.addItem(item);
+    MenuStorage mstorage;
+    return mstorage.addItem(menuID, item);
 }
 
-bool Restaurant::removeItemFromMenu(const MenuItem const *item)
+bool Restaurant::removeItemFromMenu(ItemID_tp itemID)
 {
-    return menu.removeItem(item);
+    MenuStorage mstorage;
+    return mstorage.deleteItem(menuID, itemID);
 }
-
-

@@ -1,18 +1,7 @@
 
 #include "Repository/OrderStorage.h"
-#include "Domain/Food.h"
 
-map<OrderID_tp, Order> OrderStorage::orders = {
-    {"TestOrder", Order("TestOrder", {seedOrderLine(Food("TestMenuItem", 10.0, 20.0), 1.0)})}
-};
-
-OrderLine seedOrderLine(const MenuItem& item, double quantity)
-{
-    OrderLine line;
-    line.first = item.clone();
-    line.second = quantity;
-    return line;
-}
+map<OrderID_tp, Order> OrderStorage::orders;
 
 bool OrderStorage::saveOrder(const Order& newOrder)
 {
@@ -20,6 +9,21 @@ bool OrderStorage::saveOrder(const Order& newOrder)
     return result.second; 
     // returns true if the order was inserted,
     //  false if it already exists
+}
+
+bool OrderStorage::deleteOrder(OrderID_tp orderID)
+{
+    return orders.erase(orderID) > 0;
+}
+
+bool OrderStorage::updateOrder(const Order& updatingOrder)
+{
+    auto it = orders.find(updatingOrder.getID());
+    if (it == orders.end()) {
+        return false;
+    }
+    it->second = updatingOrder;
+    return true;
 }
 
 bool OrderStorage::isValidOrder(OrderID_tp orderID)

@@ -11,6 +11,7 @@ class Customer{
 public:
     Customer();
     Customer(string initName, const vector<OrderID_tp> &initOrder = {});
+    Customer(const Customer& other) = default;
 
     void orderOut(OrderID_tp orderID);
     MenuID_tp getMenuID(RestID_tp restaurantID) const;

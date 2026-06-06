@@ -27,6 +27,7 @@ class AdminOfSystem{
 public:
     AdminOfSystem() = default;
     AdminOfSystem(const vector<ManagerID_tp> &initRestaurateurIDs, string initName="");
+    AdminOfSystem(const AdminOfSystem& other) = default;
     ~AdminOfSystem();
 
     AdminOfSystem& operator=(const AdminOfSystem& newAdmin);
@@ -97,16 +98,16 @@ public:
         // menu:
         MenuID_tp getMenuID(ManagerID_tp restaurateurID) const;
 
-        bool addItemToMenu(ManagerID_tp restaurateurID, const MenuItem& item);
+        bool addItemToMenu(ManagerID_tp restaurateurID, const MenuItem* item);
         // 'addItemToMenu' returns true if the item wasn't in the menu and has been added
         bool removeItemFromMenu(ManagerID_tp restaurateurID, ItemID_tp itemID);
         // 'removeItemFromMenu' returns true if the item was in the menu and has been deleted
-        bool replaceItemInMenu(ManagerID_tp restaurateurID, ItemID_tp previousItemID, const MenuItem& replacedItem);
+        bool replaceItemInMenu(ManagerID_tp restaurateurID, ItemID_tp previousItemID, const MenuItem* replacedItem);
         // 'replaceItemInMenu' returns true if the previous item has been in the menu and the replaced item hasn't been in the menu and carefully replaced
 
 
         // order:
-        bool addItemToOrder(ManagerID_tp restaurateurID, OrderID_tp orderID, const MenuItem& item, double quantity = 1);
+        bool addItemToOrder(ManagerID_tp restaurateurID, OrderID_tp orderID, ItemID_tp itemID, double quantity = 1);
         bool removeItemFromOrder(ManagerID_tp restaurateurID, OrderID_tp orderID, ItemID_tp itemID);   
 
 

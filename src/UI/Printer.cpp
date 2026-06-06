@@ -77,3 +77,18 @@ void Printer::RestaurateurChoices()
     cout << "22. Remove an order from the order queue" << endl;
     cout << "23. Replace an order in the order queue" << endl;
 }
+
+void Printer::adminDashboard(const vector<ManagerID_tp> &restaurateurIDs)
+{
+    cout << "Welcome to the admin dashboard" << endl;
+    cout << "Current restaurateurs:" << endl;
+    for (const auto& id : restaurateurIDs) {
+        cout << "- " << id << endl;
+    }
+    cout << "Please choose an option:" << endl;
+    cout << "1. Create restaurant" << endl;
+    cout << "2. Activate restaurant" << endl;
+    cout << "3. Deactivate restaurant" << endl;
+    cout << "31. Print total sale statistics" << endl;
+    cout << "32. Print total customer statistics" << endl;
+}

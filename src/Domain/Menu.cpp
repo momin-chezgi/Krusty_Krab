@@ -26,6 +26,11 @@ Menu& Menu::operator=(const Menu& other)
     return *this;
 }
 
+Menu::~Menu()
+{
+    clear();
+}
+
 
 // privates:
 
@@ -81,6 +86,10 @@ void Menu::setMenu(const vector<MenuItem*>& newMenu)
 
 bool Menu::addItem(const MenuItem* newItem)
 {
+    if (!newItem) {
+        return false;
+    }
+
     auto iter = find_if(menu.begin(), menu.end(), [&newItem](const MenuItem* mi)
     {
         return mi && mi->getID() == newItem->getID();
@@ -96,6 +105,10 @@ bool Menu::addItem(const MenuItem* newItem)
 
 bool Menu::removeItem(const MenuItem* item)
 {
+    if (!item) {
+        return false;
+    }
+
     auto iter = find_if(menu.begin(), menu.end(), [item](const MenuItem* mi)
     {
         return mi && mi->getID() == item->getID();
@@ -105,6 +118,7 @@ bool Menu::removeItem(const MenuItem* item)
         return false;
     }
 
+    delete *iter;
     menu.erase(iter);
     return true;
 }

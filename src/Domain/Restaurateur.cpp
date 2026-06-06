@@ -4,15 +4,8 @@
 # include "Repository/RestaurantStorage.h"
 
 Restaurateur::Restaurateur(RestID_tp initRestaurantID, string initName) :
-    name(initName) 
+    name(initName), restaurantID(initRestaurantID) 
 {
-    RestaurantStorage storage;
-    if(storage.isValidRestaurant(initRestaurantID)){
-        restaurantID = initRestaurantID;
-    }
-    else{
-        restaurantID = "NotFound";
-    }
 }
 Restaurateur::~Restaurateur(){}
 
@@ -20,6 +13,7 @@ Restaurateur::~Restaurateur(){}
 Restaurateur& Restaurateur::operator=(const Restaurateur& newRestaurateur)
 {
     if(this != &newRestaurateur){
+        id = newRestaurateur.id;
         restaurantID = newRestaurateur.restaurantID;
         name = newRestaurateur.name;
         saleStatisics = newRestaurateur.saleStatisics;
@@ -156,7 +150,7 @@ MenuID_tp Restaurateur::getMenuID() const
     return storage.getMenuID(restaurantID);
 }
 
-bool Restaurateur::addItemToMenu(const MenuItem& item)
+bool Restaurateur::addItemToMenu(const MenuItem* item)
 {
     MenuStorage storage;
     RestaurantStorage rStorage;
@@ -173,15 +167,15 @@ bool Restaurateur::removeItemFromMenu(ItemID_tp itemID)
     MenuID_tp menuID = rStorage.getMenuID(restaurantID);
     return storage.deleteItem(menuID, itemID);
 }
-bool Restaurateur::replaceItemInMenu(ItemID_tp previousItemID, const MenuItem& replacedItem)
+bool Restaurateur::replaceItemInMenu(ItemID_tp previousItemID, const MenuItem * replacedItem)
 {
     MenuStorage storage;
     RestaurantStorage rStorage;
     
     MenuID_tp menuID = rStorage.getMenuID(restaurantID);
     
-    if(replacedItem.getID() == previousItemID) return false;
-    if(storage.has(menuID, replacedItem.getID())) return false;
+    if(replacedItem->getID() == previousItemID) return false;
+    if(storage.has(menuID, replacedItem->getID())) return false;
     if(!storage.has(menuID, previousItemID)) return false; 
     
     return storage.addItem(menuID,replacedItem) && storage.deleteItem(menuID, previousItemID);
@@ -195,10 +189,10 @@ vector<OrderID_tp> Restaurateur::getOrderIDs() const
     return storage.getOrderIDs(restaurantID);
 }
 
-bool Restaurateur::addItemToOrder(OrderID_tp orderID, const MenuItem& item, double quantity)
+bool Restaurateur::addItemToOrder(OrderID_tp orderID, MenuID_tp menuID, ItemID_tp itemID, double quantity)
 {
     OrderStorage storage;
-    return storage.addItem(orderID, item, quantity);
+    return storage.addItem(orderID, menuID, itemID, quantity);
 }
 bool Restaurateur::removeItemFromOrder(OrderID_tp orderID, ItemID_tp itemID)
 {
@@ -231,5 +225,14 @@ bool Restaurateur::replaceOrderInQueue(OrderID_tp previousOrderID, OrderID_tp ne
 }
 // statistics:
 
-bool Restaurateur::updateAndPrintSaleStatistics(){}
-bool Restaurateur::updateAndPrintCustomerStatistics(){}
+bool Restaurateur::updateAndPrintSaleStatistics()
+{
+    cout << "Sale statistics are not available in mock storage yet." << endl;
+    return true;
+}
+
+bool Restaurateur::updateAndPrintCustomerStatistics()
+{
+    cout << "Customer statistics are not available in mock storage yet." << endl;
+    return true;
+}

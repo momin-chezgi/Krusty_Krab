@@ -1,6 +1,10 @@
 
 #include "Repository/CustomerStorage.h"
 
+map<CustID_tp, Customer> CustomerStorage::customers = {
+    {"TestCustomer", Customer("TestCustomer")}
+};
+
 Customer CustomerStorage::giveCustomer(CustID_tp customerID)
 {
     auto it = customers.find(customerID);
@@ -19,4 +23,14 @@ bool CustomerStorage::isValidCustomer(CustID_tp customerID)
 {
     auto it = customers.find(customerID);
     return it != customers.end();
+}
+
+bool CustomerStorage::saveCustomer(const Customer& newCustomer)
+{
+    return customers.insert({newCustomer.getID(), newCustomer}).second;
+}
+
+bool CustomerStorage::deleteCustomer(CustID_tp customerID)
+{
+    return customers.erase(customerID) > 0;
 }

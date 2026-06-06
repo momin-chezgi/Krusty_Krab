@@ -1,6 +1,7 @@
 #include "Common/Types.h"
 #include "Domain/Admin.h"
 #include "Domain/Order.h"
+#include "Repository/OrderStorage.h"
 #include "UI/Interface.h"
 #include "Utility/IDGenerator.h"
 
@@ -94,15 +95,22 @@ bool RestaurateurDashboard(){
             break;
         
         // Menu editing options----------------------------
-        case 11: // add an item to menu
-            user.addItemToMenu(GetInf::menuItem());
+        case 11: { // add an item to menu
+            MenuItem* item = GetInf::menuItem();
+            user.addItemToMenu(item);
+            delete item;
             break;
+        }
         case 12: // remove an item from menu
-            user.removeItemFromMenu(GetInf::menuItem());
+            user.removeItemFromMenu(GetInf::menuItemID());
             break;
-        case 13: // replace an item from menu
-            user.replaceItemInMenu(GetInf::menuItem(), GetInf::menuItem());
+        case 13: { // replace an item from menu
+            ItemID_tp oldItemID = GetInf::menuItemID();
+            MenuItem* item = GetInf::menuItem();
+            user.replaceItemInMenu(oldItemID, item);
+            delete item;
             break;
+        }
         
         
         // Order editing options----------------------------
@@ -160,7 +168,7 @@ bool AdminDashboard()
 
     switch (chosenOption){
         case 1:         // creates restaurant
-            user.addRestaurant(GetInf::restaurateur(),GetInf::newRestaurant());
+            user.addRestaurant(GetInf::modifyRestaurantString(chosenOption),GetInf::newRestaurant());
             break;
         case 2: // activates restaurant (x: id of the restaurant)
             user.activateRestaurant(GetInf::modifyRestaurantString(chosenOption));

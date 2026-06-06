@@ -24,7 +24,7 @@ public:
 
     void setOrderer(CustID_tp newOrdererID);
     void setOrderStatus(OrderStatus newStatus);
-    void copyFromOrder(const Order newOrder);
+    void copyFromOrder(const Order& newOrder);
     Order& operator=(const Order& newOrder);
     // There isn't setOrderCost, because it's calculation depends on vector<OrderLine>
 
@@ -39,4 +39,7 @@ private:
     CustID_tp ordererID;
     vector<OrderLine> order;
     OrderStatus orderStatus {OrderStatus::InPreparation};
+
+    void clear();
+    void copyFrom(const Order& other);
 };

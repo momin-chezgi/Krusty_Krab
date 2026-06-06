@@ -14,6 +14,7 @@ class Restaurateur{
 public:
     Restaurateur() = default;
     Restaurateur(RestID_tp initRestaurantID, string initName="");
+    Restaurateur(const Restaurateur& other) = default;
     ~Restaurateur();
 
     Restaurateur& operator=(const Restaurateur& newRestaurateur);
@@ -50,16 +51,16 @@ public:
     
     MenuID_tp getMenuID() const;
     
-    bool addItemToMenu(const MenuItem& item);
+    bool addItemToMenu(const MenuItem* item);
     // 'addItemToMenu' returns true if the item wasn't in the menu and has been added
     bool removeItemFromMenu(ItemID_tp itemID);
     // 'removeItemFromMenu' returns true if the item was in the menu and has been deleted
-    bool replaceItemInMenu(ItemID_tp previousItemID, const MenuItem& replacedItem);
+    bool replaceItemInMenu(ItemID_tp previousItemID, const MenuItem* replacedItem);
 
     // Order
     
     
-    bool addItemToOrder(OrderID_tp orderID, const MenuItem& item, double quantity = 1);
+    bool addItemToOrder(OrderID_tp orderID, MenuID_tp menuID, ItemID_tp itemID, double quantity = 1);
     bool removeItemFromOrder(OrderID_tp orderID, ItemID_tp itemID);
 
     // Queue:

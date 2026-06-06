@@ -12,13 +12,14 @@ class Restaurant{
     string phoneNumber;
     string bio;
     vector<OrderID_tp> orderIDs{};
-    Menu menu{};
+    MenuID_tp menuID {"NotDefined"};
 
 public:
     Restaurant() = default;
     Restaurant(Restaurant* r);
-    Restaurant(string initName, string initAddress, string initPhoneNumber, string initBio = "", size_t minutesPrepared = 0);
+    Restaurant(string initManuID, string initName, string initAddress, string initPhoneNumber, string initBio = "", size_t minutesPrepared = 0);
 
+    RestID_tp getID() const;
     string getName() const;
     string getAddress() const;
     // string getAddress() ;  //converts the vector<string> form to a pure string
@@ -27,7 +28,7 @@ public:
     string getPhone() const;
     string getBio() const;
     const vector<OrderID_tp> &getOrderIDs() const;
-    Menu getMenu() const;
+    MenuID_tp getMenuID() const;
 
     void setName(const string newName);
     void setAddress(const string& newAddress);
@@ -50,7 +51,7 @@ public:
 
     bool addItemToMenu(const MenuItem *item);
     // 'addItemToMenu' returns true if the item wasn't in the menu and has been added
-    bool removeItemFromMenu(const MenuItem const *item);
+    bool removeItemFromMenu(ItemID_tp itemID);
     // 'removeItemFromMenu' returns true if the item was in the menu and has been deleted
 
     ~Restaurant();

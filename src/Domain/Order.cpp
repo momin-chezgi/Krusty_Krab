@@ -4,13 +4,17 @@
 
 Order::Order(const Order& o)
 {
-    ordererID = o.getOrderer();
-    order = o.getOrder();
-    orderStatus = o.getOrderStatus();
+    copyFrom(o);
 }
 Order::Order(CustID_tp oID, const vector<OrderLine> &initOrder) :
-    ordererID(oID), order(initOrder)
-{}
+    ordererID(oID)
+{
+    for (const auto& line : initOrder) {
+        if (line.first) {
+            order.push_back({line.first->clone(), line.second});
+        }
+    }
+}
 
 OrderID_tp Order::getID() const
 {
@@ -18,10 +22,7 @@ OrderID_tp Order::getID() const
 }
 Order::~Order()
 {
-    for (auto &line : order)
-    {
-        delete line.first;
-    }
+    clear();
 }
 // (Arabic)'Fa taamal jaiiedan' that it is a good way to return a pointer
 // to the orderer ? 
@@ -58,21 +59,39 @@ void Order::setOrderStatus(OrderStatus newStatus)
     orderStatus = newStatus;
 }
 
-void Order::copyFromOrder(const Order newOrder)
+void Order::copyFromOrder(const Order& newOrder)
 {
-    ordererID = newOrder.getOrderer();
-    order = newOrder.getOrder();
-    orderStatus = newOrder.getOrderStatus();
+    clear();
+    copyFrom(newOrder);
 }
 
 Order& Order::operator=(const Order& other)
 {
     if(this != &other){
-        ordererID = other.getOrderer();
-        order = other.getOrder();
-        orderStatus = other.getOrderStatus();
+        clear();
+        copyFrom(other);
     }
     return *this;
+}
+
+void Order::clear()
+{
+    for (auto &line : order) {
+        delete line.first;
+    }
+    order.clear();
+}
+
+void Order::copyFrom(const Order& other)
+{
+    id = other.id;
+    ordererID = other.ordererID;
+    orderStatus = other.orderStatus;
+    for (const auto& line : other.order) {
+        if (line.first) {
+            order.push_back({line.first->clone(), line.second});
+        }
+    }
 }
 
 bool Order::addItem(MenuID_tp menuID,
@@ -80,7 +99,7 @@ bool Order::addItem(MenuID_tp menuID,
     double quantity
 ){
     auto iter = find_if(order.begin(), order.end(), [itemID](const OrderLine &line)
-                        { return itemID == line.first->getID(); });
+                        { return line.first && itemID == line.first->getID(); });
     if (iter != order.end())
     {
         iter->second += quantity;
@@ -88,8 +107,14 @@ bool Order::addItem(MenuID_tp menuID,
     }
     OrderLine line;
     MenuStorage mstorage;
+    if (!mstorage.has(menuID, itemID)) {
+        return false;
+    }
     auto newItem = mstorage.cloneItem(itemID);
-    line.first = newItem->clone();
+    if (!newItem) {
+        return false;
+    }
+    line.first = newItem;
     line.second = quantity;
     order.push_back(line);
     return true;
@@ -98,7 +123,7 @@ bool Order::addItem(MenuID_tp menuID,
 bool Order::removeItem(ItemID_tp menuItemID)
 {
     auto iter = find_if(order.begin(), order.end(), [menuItemID](const OrderLine &line)
-                      { return menuItemID == line.first->getID(); });
+                      { return line.first && menuItemID == line.first->getID(); });
     if(iter == order.end())
     {
         return false;
@@ -122,6 +147,8 @@ string orderStatus2String(OrderStatus s)
             return "Ready-To-Send";
         case Delivered:
             return "Delivered";
+        case Cancelled:
+            return "Cancelled";
         default:
             return "Unknown Status";
     }
@@ -136,6 +163,9 @@ OrderStatus orderStatusString2Enum(string s)
     }
     else if(s == "Delivered"){
         return Delivered;
+    }
+    else if(s == "Cancelled"){
+        return Cancelled;
     }
     else{
         throw invalid_argument("Invalid order status string: " + s);

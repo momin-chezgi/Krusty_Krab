@@ -29,5 +29,7 @@ public:
     bool removeItem(const MenuItem* item);       // If the item has been in the menu returns true, otherwise false
     
     bool has(ItemID_tp itemID) const;     // returns true if there is an item with the given ID in the menu, otherwise false
+
+    ~Menu();
     
 };

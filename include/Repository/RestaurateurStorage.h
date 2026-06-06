@@ -6,6 +6,7 @@
 class RestaurateurStorage{
 public:
     string getName(ManagerID_tp restaurateurID) const;
+    RestID_tp getRestaurantID(ManagerID_tp restaurateurID) const;
 
     bool setName(ManagerID_tp restaurateurID, string newName);
 
