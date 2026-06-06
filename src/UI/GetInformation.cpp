@@ -129,7 +129,7 @@ int GetInf::loginRule()
 {
     int chosenRule{-1};
     cin >> chosenRule;
-    while(chosenRule < 1 || chosenRule > 3){
+    while(chosenRule < 0 || chosenRule > 3){
         Printer::InvalidInput();
         cin >> chosenRule;
     }

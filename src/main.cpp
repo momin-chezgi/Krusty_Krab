@@ -5,32 +5,28 @@
 #include "UI/Interface.h"
 #include "Utility/IDGenerator.h"
 
-bool CustomerDashboard();
-bool RestaurateurDashboard();
-bool AdminDashboard();
+void CustomerDashboard();
+void RestaurateurDashboard();
+void AdminDashboard();
 
 int main()
 {
     // User logins and chooses the rule
     while (true)
-    {    
+    {
         switch(Login())
         {
             case 1:
-                if(CustomerDashboard()){
-                    return 0;
-                }
+                CustomerDashboard();
                 break;
             case 2:
-                if(RestaurateurDashboard()){
-                    return 0;
-                }
+                RestaurateurDashboard();
                 break;
             case 3:
-                if(AdminDashboard()){
-                    return 0;
-                }
+                AdminDashboard();
                 break;
+            case 0:
+                return 0;
             default:
                 Printer::InvalidInput();
         }
@@ -39,27 +35,27 @@ int main()
 }
 
 
-bool CustomerDashboard(){
+void CustomerDashboard(){
     Customer user;
     if (!enterAsCustomer(user)){  
         // If the user doesn't want to enter as a customer,
         //  just return to the main menu
-        return false;
+        return ;
     }
     RestID_tp restaurantID = chooseRestaurant();
     MenuID_tp menuID = giveMenu(restaurantID);
     Printer::menu(menuID);
     Order order = Order(user.getID(), {});
     orderOut(restaurantID, menuID, order);
-    return true;
+    return ;
 }
 
-bool RestaurateurDashboard(){
+void RestaurateurDashboard(){
     
     Restaurateur user = enterAsRestaurateur();
 
     if(user.getName() == "Quit"){
-        return false;
+        return ;
     }
 
     int chosenOption = restaurateurOptions(
@@ -152,16 +148,16 @@ bool RestaurateurDashboard(){
             Printer::InvalidInput();
     }
     
-    return true;
+    return;
 
 }
 
-bool AdminDashboard()
+void AdminDashboard()
 {
     AdminOfSystem user = enterAsAdmin();
 
     if(user.getName() == "Quit"){
-        return false;
+        return ;
     }
 
     int chosenOption = adminOptions(user.getRestaurateurIDs());
@@ -192,6 +188,6 @@ bool AdminDashboard()
             break;
     }
     
-    return true;
+    return ;
 
 }

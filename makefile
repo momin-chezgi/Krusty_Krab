@@ -22,5 +22,14 @@ SRCS := \
 	src/Utility/IDGenerator.cpp \
 	src/main.cpp
 
-krusty_krab: $(SRCS)
-	g++ -std=c++14 -Wall -Wextra -Iinclude $(SRCS) -o krusty_krab
+TARGET := bin/krusty_krab
+
+.PHONY: all clean
+
+all: $(TARGET)
+
+$(TARGET): $(SRCS)
+	g++ -std=c++14 -Wall -Wextra -Iinclude -g -O0 $(SRCS) -o $(TARGET)
+
+clean:
+	rm -f $(TARGET)
