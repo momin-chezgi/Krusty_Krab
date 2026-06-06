@@ -1,18 +1,26 @@
 
 SRCS := \
-	./src/Management/Admin.cpp   		\
-	./src/Management/Customer.cpp   		\
-	./src/Management/Food.cpp   		\
-	./src/Management/Drink.cpp   		\
-	./src/Management/Menu.cpp   		\
-	./src/Management/MenuItem.cpp   		\
-	./src/Management/Order.cpp   		\
-	./src/Management/Restaurant.cpp   		\
-	./src/Management/Restaurateur.cpp   		\
-	src/Utils/IDGenerator.cpp  \
-	src/IO/Interface.cpp  \
+	src/Domain/Admin.cpp \
+	src/Domain/Customer.cpp \
+	src/Domain/Drink.cpp \
+	src/Domain/Food.cpp \
+	src/Domain/Menu.cpp \
+	src/Domain/MenuItem.cpp \
+	src/Domain/Order.cpp \
+	src/Domain/Restaurant.cpp \
+	src/Domain/Restaurateur.cpp \
+	src/Repository/AdminStorage.cpp \
+	src/Repository/CustomerStorage.cpp \
+	src/Repository/MenuStorage.cpp \
+	src/Repository/OrderStorage.cpp \
+	src/Repository/RestaurantStorage.cpp \
+	src/Repository/RestaurateurStorage.cpp \
+	src/Repository/SQL.cpp \
+	src/UI/GetInformation.cpp \
+	src/UI/Interface.cpp \
+	src/UI/Printer.cpp \
+	src/Utility/IDGenerator.cpp \
 	src/main.cpp
 
 krusty_krab: $(SRCS)
-	g++ -std=c++14 -Wall -Wextra -Iinclude $(SRCS) -o krusty_krab	src/Management/FoodItem.cpp  \
-
+	g++ -std=c++14 -Wall -Wextra -Iinclude $(SRCS) -o krusty_krab

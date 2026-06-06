@@ -1,8 +1,8 @@
-#include "neededLibs.h"
-#include "./IO/Interface.h"
-#include "./Management/Order.h"
-#include "./Utils/IDGenerator.h"
-#include "./Management/Admin.h"
+#include "Common/Types.h"
+#include "Domain/Admin.h"
+#include "Domain/Order.h"
+#include "UI/Interface.h"
+#include "Utility/IDGenerator.h"
 
 bool CustomerDashboard();
 bool RestaurateurDashboard();
@@ -45,8 +45,8 @@ bool CustomerDashboard(){
         //  just return to the main menu
         return false;
     }
-    string restaurantID = chooseRestaurant();
-    string menuID = giveMenu(restaurantID);
+    RestID_tp restaurantID = chooseRestaurant();
+    MenuID_tp menuID = giveMenu(restaurantID);
     Printer::menu(menuID);
     Order order = Order(user.getID(), {});
     orderOut(restaurantID, menuID, order);
@@ -116,7 +116,7 @@ bool RestaurateurDashboard(){
         }
         case 22: { // remove an order from the order queue
             OrderStorage storage;
-            string deletingOrderID = GetInf::OrderID();
+            OrderID_tp deletingOrderID = GetInf::OrderID();
             storage.deleteOrder(deletingOrderID);
             user.removeOrderFromQueue(deletingOrderID);
             break;
