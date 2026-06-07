@@ -1,4 +1,5 @@
 #include "UI/GetInformation.h"
+#include "Repository/AdminStorage.h"
 #include "Repository/CustomerStorage.h"
 #include "Repository/MenuStorage.h"
 #include "Repository/OrderStorage.h"
@@ -6,44 +7,156 @@
 #include "Repository/RestaurateurStorage.h"
 #include "Domain/Drink.h"
 #include "Domain/Food.h"
+#include <limits>
 
-
-int GetInf::loginRule()
+static bool readInt(int &value)
 {
-    int chosenRule{-1};
-    cin >> chosenRule;
-    while(chosenRule < 0 || chosenRule > 3){
-        Printer::InvalidInput();
-        cin >> chosenRule;
+    cin >> value;
+    if(!cin){
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return false;
     }
-    return chosenRule;
+    return true;
 }
 
-// Customer:---------------------------------------------
+static Role readRole()
+{
+    while (true) {
+        int raw{};
+        if (!readInt(raw)) {
+            cin.clear();
+            continue;
+        }
+        Role value = static_cast<Role>(raw);
+        if (value == Role::Customer
+            || value == Role::Restaurateur
+            || value == Role::SystemAdmin
+            || value == Role::Quit) {
+            return value;
+        }
+        Printer::InvalidInput();
+    }
+}
+
+static CustomerAction readCustomerAction()
+{
+    while (true) {
+        cout << "Select an option: ";
+        int raw{};
+        if (!readInt(raw)) {
+            cin.clear();
+            continue;
+        }
+        CustomerAction value = static_cast<CustomerAction>(raw);
+        if (value == CustomerAction::Quit
+            || value == CustomerAction::PlaceOrder
+            || value == CustomerAction::ViewMyOrders
+            || value == CustomerAction::DebugStorage) {
+            return value;
+        }
+        Printer::InvalidInput();
+    }
+}
+
+static RestaurateurAction readRestaurateurAction()
+{
+    while (true) {
+        cout << "Select an option: ";
+        int raw{};
+        if (!readInt(raw)) {
+            cin.clear();
+            continue;
+        }
+        RestaurateurAction value = static_cast<RestaurateurAction>(raw);
+        if (value == RestaurateurAction::Quit
+            || value == RestaurateurAction::EditRestaurantName
+            || value == RestaurateurAction::EditRestaurantAddress
+            || value == RestaurateurAction::ActivateRestaurant
+            || value == RestaurateurAction::DeactivateRestaurant
+            || value == RestaurateurAction::EditRestaurantMinutes
+            || value == RestaurateurAction::EditRestaurantPhone
+            || value == RestaurateurAction::EditRestaurantBio
+            || value == RestaurateurAction::AddItemToMenu
+            || value == RestaurateurAction::RemoveItemFromMenu
+            || value == RestaurateurAction::ReplaceItemInMenu
+            || value == RestaurateurAction::AddOrderToQueue
+            || value == RestaurateurAction::RemoveOrderFromQueue
+            || value == RestaurateurAction::ReplaceOrderInQueue
+            || value == RestaurateurAction::PrintSaleStatistics
+            || value == RestaurateurAction::PrintCustomerStatistics
+            || value == RestaurateurAction::EditRestaurateurName
+            || value == RestaurateurAction::EditManagedRestaurant
+            || value == RestaurateurAction::DebugStorage) {
+            return value;
+        }
+        Printer::InvalidInput();
+    }
+}
+
+static AdminAction readAdminAction()
+{
+    while (true) {
+        cout << "Select an option: ";
+        int raw{};
+        if (!readInt(raw)) {
+            cin.clear();
+            continue;
+        }
+        AdminAction value = static_cast<AdminAction>(raw);
+        if (value == AdminAction::Quit
+            || value == AdminAction::CreateRestaurant
+            || value == AdminAction::ActivateRestaurant
+            || value == AdminAction::DeactivateRestaurant
+            || value == AdminAction::CreateRestaurateur
+            || value == AdminAction::PrintTotalSaleStatistics
+            || value == AdminAction::PrintTotalCustomerStatistics
+            || value == AdminAction::PrintRestaurantSaleStatistics
+            || value == AdminAction::PrintRestaurantCustomerStatistics
+            || value == AdminAction::DebugStorage) {
+            return value;
+        }
+        Printer::InvalidInput();
+    }
+}
+
+static void printInvalidInputAndFlush()
+{
+    Printer::InvalidInput();
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+Role GetInf::loginRule()
+{
+    return readRole();
+}
 
 bool GetInf::customer(Customer &buffer){
-    
     CustomerStorage storage;
-    //SQLReader reader;
-
-    CustID_tp givenID;
+    string givenID;
 
     while(true){
-        cout << "Enter your ID: ";
+        cout << "Enter your customer ID, 'new' to create an account, or q to quit: ";
         cin >> givenID;
         if(givenID == "q" || givenID == "Q" || givenID == "quit" || givenID == "QUIT"){
             return false;
         }
-        //if (reader.getCustomer(givenID, buffer)){
         if(storage.isValidCustomer(givenID)){
             buffer = storage.giveCustomer(givenID);
             return true;
         }
+        if(givenID == "new" || givenID == "NEW" || givenID == "create" || givenID == "CREATE"){
+            Customer newCustomer = GetInf::customerFactory();
+            if(storage.saveCustomer(newCustomer)){
+                buffer = newCustomer;
+                cout << "Customer created. Your ID is: " << newCustomer.getID() << endl;
+                return true;
+            }
+            cout << "Could not create customer at this time. Try again." << endl;
+            continue;
+        }
         cout << "Invalid ID, ";
     }
-    // Note: Add user creation---------------
-    // We can also add the password authentication process here
-    // But for now, we just return the customer with the given ID
 }
 
 string GetInf::customerName(){
@@ -53,8 +166,15 @@ string GetInf::customerName(){
     return enteredName;
 }
 
+Customer GetInf::customerFactory()
+{
+    return Customer(customerName());
+}
 
-// restaurant:--------------------------------------------
+CustomerAction GetInf::customerAction()
+{
+    return readCustomerAction();
+}
 
 Restaurant* GetInf::restaurant()
 {
@@ -91,14 +211,9 @@ Restaurant GetInf::newRestaurant()
 
 RestID_tp GetInf::chooseRestaurant()
 {
-    // SQLReader reader;
     RestaurantStorage storage;
-
-
     RestID_tp restaurantID;
-
     cin >> restaurantID;
-    // while(!reader.isValidRestaurant(restaurantID)){
     while(!storage.isValidRestaurant(restaurantID)){
         Printer::InvalidInput();
         cin >> restaurantID;
@@ -106,31 +221,37 @@ RestID_tp GetInf::chooseRestaurant()
     return restaurantID;
 }
 
-string GetInf::modifyRestaurantString(int choosenOption)
+string GetInf::modifyRestaurantString(RestaurateurAction choosenOption)
 {
     string value;
     switch(choosenOption){
-        case 1:
+        case RestaurateurAction::EditRestaurantName:
             cout << "Enter the new restaurant name: ";
             break;
-        case 2:
+        case RestaurateurAction::EditRestaurantAddress:
             cout << "Enter the new restaurant address: ";
             break;
-        case 6:
+        case RestaurateurAction::EditRestaurantPhone:
             cout << "Enter the new phone number: ";
             break;
-        case 7:
+        case RestaurateurAction::EditRestaurantBio:
             cout << "Enter the new bio: ";
             break;
+        case RestaurateurAction::EditRestaurateurName:
+            cout << "Enter the new restaurateur name: ";
+            break;
+        case RestaurateurAction::EditManagedRestaurant:
+            cout << "Enter the new managed restaurant ID: ";
+            break;
         default:
-            cout << "Enter the ID/value: ";
+            cout << "Enter an ID/value: ";
             break;
     }
     cin >> value;
     return value;
 }
 
-size_t GetInf::modifyRestaurantTime(size_t choosenOption)
+size_t GetInf::modifyRestaurantTime(RestaurateurAction choosenOption)
 {
     (void)choosenOption;
     size_t minutes{};
@@ -139,40 +260,42 @@ size_t GetInf::modifyRestaurantTime(size_t choosenOption)
     return minutes;
 }
 
-
-// resturateur:---------------------------------------------------------
-
-Restaurateur GetInf::restaurateur(){
+Restaurateur GetInf::restaurateur()
+{
     RestaurateurStorage storage;
-    //SQLReader reader;
-
     ManagerID_tp givenID;
 
     while(true){
         cout << "Enter your ID: ";
         cin >> givenID;
         if(givenID == "q" || givenID == "Q" || givenID == "quit" || givenID == "QUIT"){
-            return Restaurateur("Quit", "Quit");
+            return Restaurateur();
         }
-        //if (reader.getRestaurateur(givenID, buffer)){
         if(storage.isValidRestaurateur(givenID)){
             return storage.giveRestaurateur(givenID);
         }
         cout << "Invalid ID, ";
     }
-    // We can also add the password authentication process here
-    // But for now, we just return the restaurateur with the given ID
 }
 
-int GetInf::restaurateurAction()
+Restaurateur GetInf::restaurateurFactory()
 {
-    int action{-1};
-    cin >> action;
-    while(action < 1 || action > 23){
-        Printer::InvalidInput();
-        cin >> action;
+    string restaurateurName;
+    cout << "Enter restaurateur name: ";
+    cin >> restaurateurName;
+
+    string restaurantID;
+    cout << "Enter managed restaurant ID (or N if none): ";
+    cin >> restaurantID;
+    if (restaurantID == "n" || restaurantID == "N" || restaurantID == "none" || restaurantID == "NONE" || restaurantID == "-") {
+        return Restaurateur({}, restaurateurName);
     }
-    return action;
+    return Restaurateur(restaurantID, restaurateurName);
+}
+
+RestaurateurAction GetInf::restaurateurAction()
+{
+    return readRestaurateurAction();
 }
 
 Restaurateur GetInf::findRestaurant(RestID_tp restaurantID)
@@ -181,14 +304,12 @@ Restaurateur GetInf::findRestaurant(RestID_tp restaurantID)
     if (storage.getRestaurantID("TestRestaurateur") == restaurantID) {
         return storage.giveRestaurateur("TestRestaurateur");
     }
-    return Restaurateur("NotFound", "NotFound");
+    return Restaurateur();
 }
-
-
-// admin:--------------------------------------------------------------
 
 bool GetInf::admin(AdminOfSystem &buffer)
 {
+    AdminStorage storage;
     AdminID_tp givenID;
 
     while(true){
@@ -198,30 +319,19 @@ bool GetInf::admin(AdminOfSystem &buffer)
             buffer = AdminOfSystem({}, "Quit");
             return false;
         }
-        if(givenID == "TestAdmin"){
-            buffer = AdminOfSystem({"TestRestaurateur"}, "TestAdmin");
+        if(storage.isValidAdmin(givenID)){
+            buffer = storage.giveAdmin(givenID);
             return true;
         }
         cout << "Invalid ID, ";
     }
 }
 
-int GetInf::adminOptions(const vector<ManagerID_tp> &restaurateurIDs)
+AdminAction GetInf::adminOptions(const vector<ManagerID_tp> &restaurateurIDs)
 {
     (void)restaurateurIDs;
-    int action{-1};
-    cin >> action;
-    while(action != 1 && action != 2 && action != 3 &&
-          action != 31 && action != 32 && action != 33 && action != 34){
-        Printer::InvalidInput();
-        cin >> action;
-    }
-    return action;
+    return readAdminAction();
 }
-
-
-
-// menu:--------------------------------------------------------------------------
 
 MenuID_tp GetInf::menu(RestID_tp restaurantID)
 {
@@ -229,17 +339,27 @@ MenuID_tp GetInf::menu(RestID_tp restaurantID)
     return storage.getMenuID(restaurantID);
 }
 
-// menuItem:----------------------------------------------------------------------
 MenuItem* GetInf::menuItem()
 {
-    int type{};
+    ItemType type;
     string name;
     string bio;
     cost price{};
     double quantity{};
 
-    cout << "Choose item type (1. Food, 2. Drink): ";
-    cin >> type;
+    while(true){
+        cout << "Choose item type (1. Food, 2. Drink): ";
+        int rawType{};
+        if(!readInt(rawType)){
+            continue;
+        }
+        type = static_cast<ItemType>(rawType);
+        if(type == ItemType::Food || type == ItemType::Drink){
+            break;
+        }
+        printInvalidInputAndFlush();
+    }
+
     cout << "Enter item name: ";
     cin >> name;
     cout << "Enter item price: ";
@@ -249,7 +369,7 @@ MenuItem* GetInf::menuItem()
     cout << "Enter item bio: ";
     cin >> bio;
 
-    if(type == 2){
+    if(type == ItemType::Drink){
         return new Drink(name, price, quantity, bio);
     }
     return new Food(name, price, quantity, bio);
@@ -263,8 +383,6 @@ ItemID_tp GetInf::menuItemID()
     return itemID;
 }
 
-// order:------------------------------------------------------------------------
-
 bool GetInf::addItemToCart(MenuID_tp menuID, Order& resultOrder)
 {
     ItemID_tp itemID;
@@ -273,64 +391,51 @@ bool GetInf::addItemToCart(MenuID_tp menuID, Order& resultOrder)
         return false;
     }
     MenuStorage storage;
-    // SQLReader reader;
-
-    // if (!reader.isValidMenuItem(itemID)){
     if (!storage.isValidMenu(menuID) || !storage.giveMenu(menuID).has(itemID)){
         Printer::InvalidInput();
-        return true; 
-        // we return true because the user can still
-        //  add items to the cart
+        return true;
     }
-    double quantity;
+    double quantity{};
     cout << "Enter the quantity: ";
     cin >> quantity;
 
-    Menu menuObject = storage.giveMenu(menuID);
-    vector <MenuItem*> menu = menuObject.getMenu();
-    for (const auto& item : menu){
+    Menu menu = storage.giveMenu(menuID);
+    for (const auto& item : menu.getMenu()){
         if(item->getID() == itemID){
-             if(!item->isAvailable(quantity) || quantity <= 0){
+            if(!item->isAvailable(quantity) || quantity <= 0){
                 cout << "Sorry, the item is not available in the kitchen right now" << endl;
-                return true; 
-                // we return true because the user can still
-                // add items to the cart
+                return true;
             }
             resultOrder.addItem(menuID, itemID, quantity);
+            cout << "Current total: " << resultOrder.getTotalPrice() << endl;
             return true;
         }
     }
-
     return true;
 }
 
-
-OrderID_tp GetInf::OrderID(int option)
+OrderID_tp GetInf::OrderID(RestaurateurAction option)
 {
     OrderStorage storage;
-    // SQLReader reader;
-
     OrderID_tp orderID;
 
     while(true){
         switch(option){
-            case 22:
+            case RestaurateurAction::RemoveOrderFromQueue:
                 cout << "Enter the ID of the order you want to delete: ";
                 break;
-            case 23:
+            case RestaurateurAction::ReplaceOrderInQueue:
                 cout << "Enter the ID of the order you want to replace: ";
                 break;
             default:
                 cout << "Enter the ID of the order: ";
         }
-        cout << "Enter the ID of the order: ";
         cin >> orderID;
 
         if(orderID == "q" || orderID == "Q" || orderID == "quit" || orderID == "QUIT"){
             return "";
         }
 
-        // if (reader.isValidOrder(orderID)){
         if (storage.isValidOrder(orderID)){
             return orderID;
         }

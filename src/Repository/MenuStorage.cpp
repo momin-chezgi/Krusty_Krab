@@ -87,16 +87,18 @@ bool MenuStorage::deleteItem(MenuID_tp menuID, ItemID_tp itemID)
     return it->second.removeItem(*itemIt);
 }
 
-MenuItem* MenuStorage::cloneItem(ItemID_tp itemID)
+MenuItem* MenuStorage::cloneItem(MenuID_tp menuID, ItemID_tp itemID)
 {
-    for (const auto& menuEntry : menus) {
-        vector<MenuItem*> items = menuEntry.second.getMenu();
+    auto it = menus.find(menuID);
+    if (it == menus.end()) {
+        return nullptr;
+    }
+    vector<MenuItem*> items = it->second.getMenu();
         auto itemIt = find_if(items.begin(), items.end(), [itemID](const MenuItem* item) {
             return item && item->getID() == itemID;
         });
         if (itemIt != items.end()) {
             return (*itemIt)->clone();
         }
-    }
     return nullptr;
 }

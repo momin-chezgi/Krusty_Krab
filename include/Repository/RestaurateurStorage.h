@@ -9,7 +9,7 @@ public:
     RestID_tp getRestaurantID(ManagerID_tp restaurateurID) const;
 
     bool setName(ManagerID_tp restaurateurID, string newName);
-
+    bool updateRestaurateur(const Restaurateur& updatingRestaurateur);
     bool isValidRestaurateur(ManagerID_tp restaurateurID);
     Restaurateur giveRestaurateur(ManagerID_tp restaurateurID);  
     // returns the restaurateur with the given ID, if it doesn't exist, it returns a default restaurateur with empty name and no restaurant

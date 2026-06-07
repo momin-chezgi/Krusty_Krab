@@ -30,6 +30,16 @@ bool CustomerStorage::saveCustomer(const Customer& newCustomer)
     return customers.insert({newCustomer.getID(), newCustomer}).second;
 }
 
+bool CustomerStorage::updateCustomer(const Customer& updatingCustomer)
+{
+    auto it = customers.find(updatingCustomer.getID());
+    if (it == customers.end()) {
+        return false;
+    }
+    it->second = updatingCustomer;
+    return true;
+}
+
 bool CustomerStorage::deleteCustomer(CustID_tp customerID)
 {
     return customers.erase(customerID) > 0;

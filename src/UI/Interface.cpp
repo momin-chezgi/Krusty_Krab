@@ -1,9 +1,6 @@
 #include "UI/Interface.h"
-#include "Repository/OrderStorage.h"
-#include "Repository/RestaurantStorage.h"
 
-
-int Login()
+Role Login()
 {
     Printer::wellcome();
     return GetInf::loginRule();
@@ -32,13 +29,13 @@ RestID_tp chooseRestaurant(){
     Printer::chooseRestaurant();
     return GetInf::chooseRestaurant();
 }
+
 MenuID_tp giveMenu(RestID_tp restaurantID){
     return GetInf::menu(restaurantID);
 }
 
 bool orderOut(RestID_tp RestaurantID, MenuID_tp menuID, Order& resultOrder){
-    OrderStorage storage;
-    RestaurantStorage restaurantStorage;
+    (void)RestaurantID;
     Printer::orderOut();
     string decision;
     cin >> decision;
@@ -52,20 +49,25 @@ bool orderOut(RestID_tp RestaurantID, MenuID_tp menuID, Order& resultOrder){
     if (resultOrder.getOrder().empty()) {
         return false;
     }
-    storage.saveOrder(resultOrder);
-    restaurantStorage.addOrderToRestaurant(RestaurantID, resultOrder.getID());
     return true;
 }
 
-int restaurateurOptions(string givenName, const string& givenAddress, bool givenStatus, size_t givenMinutes){
+CustomerAction customerActions(const string& customerName)
+{
+    Printer::CustomerDashboard(customerName);
+    Printer::CustomerChoices();
+    return GetInf::customerAction();
+}
+
+RestaurateurAction restaurateurOptions(string givenName, const string& givenAddress, bool givenStatus, size_t givenMinutes){
     Printer::restaurateurDashboard(givenName, givenAddress,givenStatus, givenMinutes);
     Printer::RestaurateurChoices();
     return GetInf::restaurateurAction();
 }
 
-
-int adminOptions(vector<ManagerID_tp> restaurateurIDs){
+AdminAction adminOptions(vector<ManagerID_tp> restaurateurIDs){
     Printer::adminDashboard(restaurateurIDs);
+    Printer::adminChoices();
     return GetInf::adminOptions(restaurateurIDs);
 }
 

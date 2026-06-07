@@ -6,7 +6,16 @@ map<AdminID_tp, AdminOfSystem> AdminStorage::admins = {
     {"TestAdmin", AdminOfSystem({"TestRestaurateur"}, "TestAdmin")}
 };
 
-bool AdminStorage::isValidAdmin(AdminID_tp adminID)
+AdminOfSystem AdminStorage::giveAdmin(AdminID_tp adminID) const
+{
+    auto it = admins.find(adminID);
+    if (it != admins.end()) {
+        return it->second;
+    }
+    return AdminOfSystem({}, "");
+}
+
+bool AdminStorage::isValidAdmin(AdminID_tp adminID) const
 {
     auto it = admins.find(adminID);
     return it != admins.end();

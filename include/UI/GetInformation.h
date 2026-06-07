@@ -6,31 +6,35 @@
 #include "Domain/Order.h"
 #include "Domain/Restaurant.h"
 #include "Domain/Restaurateur.h"
+#include "Domain/Enums.h"
 #include "UI/Printer.h"
 
 namespace GetInf{
-    int loginRule();
+    Role loginRule();
 
     // customer:----------------------------------------
     bool customer(Customer &buffer); // like restaurant() function
     string customerName();
+    Customer customerFactory();
+    CustomerAction customerAction();
 
     // restaurant:--------------------------------------
     Restaurant *restaurant(); // inputs the id of the restaurant and return a pointer to restaurant
     Restaurant newRestaurant();
-    string modifyRestaurantString(int choosenOption);
-    size_t modifyRestaurantTime(size_t choosenOption);
+    string modifyRestaurantString(RestaurateurAction choosenOption);
+    size_t modifyRestaurantTime(RestaurateurAction choosenOption);
     Restaurateur findRestaurant(RestID_tp restaurantID);
     RestID_tp chooseRestaurant();
 
     // restaurateur:------------------------------------
     Restaurateur restaurateur();
-    int restaurateurAction();
+    RestaurateurAction restaurateurAction();
     // You can also add the pasword authantication proccess to admin and restaurateurs;
 
     // admin:-------------------------------------------
     bool admin(AdminOfSystem &buffer);
-    int adminOptions(const vector<ManagerID_tp> &restaurateurIDs);
+    AdminAction adminOptions(const vector<ManagerID_tp> &restaurateurIDs);
+    Restaurateur restaurateurFactory();
 
     // menu:--------------------------------------------
     MenuID_tp menu(RestID_tp restaurantID);
@@ -44,7 +48,7 @@ namespace GetInf{
     // returns false if the user hasn't ordered anything 
     // or doesn't want to order, otherwise returns true and saves the order in buffer
     bool addItemToCart(MenuID_tp menuID, Order& resultOrder);
-    OrderID_tp OrderID(int option=-1);
+    OrderID_tp OrderID(RestaurateurAction option = RestaurateurAction::Quit);
 
     // not implemented yet:
     bool order(const Order *resultOrder);
