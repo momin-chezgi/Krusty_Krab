@@ -2,9 +2,11 @@
 
 Drink::Drink(string initName, cost initPrice, double initVolume, string initBio) : 
 MenuItem(initName, initPrice, initBio) {
+    setItemType("Drink");
     setVolume(initVolume);
 }
 Drink::Drink(Drink *d) : MenuItem(d->getName(), d->getPricePerUnit(), d->getBio()) {
+    setItemType("Drink");
     setVolume(d->getVolume());
 }
 Drink::~Drink() {}

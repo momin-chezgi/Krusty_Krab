@@ -1,10 +1,12 @@
 # include "Domain/Food.h"
 
 Food::Food(Food* f) : MenuItem(f->getName(), f->getPricePerUnit(), f->getBio()) {
+    setItemType("Food");
     setWeight(f->getWeight());
 }
 Food::Food(string initName, cost initPrice, double initWeight, string initBio) : 
 MenuItem(initName, initPrice, initBio) {
+    setItemType("Food");
     setWeight(initWeight);
 }
 
