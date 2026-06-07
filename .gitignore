@@ -69,5 +69,6 @@ Testing/
 .cache/
 
 architectural-goals.md
+AGENTS.md
 bin/
 .vscode/
