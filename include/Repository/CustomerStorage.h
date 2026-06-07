@@ -14,6 +14,7 @@ public:
     // returns true if the customer with the given ID exists and has been updated, otherwise false
     bool deleteCustomer(CustID_tp customerID);
     // returns true if the customer with the given ID exists and has been deleted, otherwise returns false
+    map<CustID_tp, Customer> giveAllCustomers() const;
     
 private:
     static map<CustID_tp, Customer> customers;

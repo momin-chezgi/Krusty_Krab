@@ -58,3 +58,8 @@ OrderStatus OrderStorage::getOrderStatus(OrderID_tp orderID)
     }
     return it->second.getOrderStatus();
 }
+
+map<OrderID_tp, Order> OrderStorage::giveAllOrders() const
+{
+    return orders;
+}

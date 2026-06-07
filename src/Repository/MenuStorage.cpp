@@ -94,11 +94,16 @@ MenuItem* MenuStorage::cloneItem(MenuID_tp menuID, ItemID_tp itemID)
         return nullptr;
     }
     vector<MenuItem*> items = it->second.getMenu();
-        auto itemIt = find_if(items.begin(), items.end(), [itemID](const MenuItem* item) {
-            return item && item->getID() == itemID;
-        });
-        if (itemIt != items.end()) {
-            return (*itemIt)->clone();
-        }
+    auto itemIt = find_if(items.begin(), items.end(), [itemID](const MenuItem* item) {
+        return item && item->getID() == itemID;
+    });
+    if (itemIt != items.end()) {
+        return (*itemIt)->clone();
+    }
     return nullptr;
+}
+
+map<MenuID_tp, Menu> MenuStorage::giveAllMenus() const
+{
+    return menus;
 }

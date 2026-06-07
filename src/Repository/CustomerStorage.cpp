@@ -44,3 +44,8 @@ bool CustomerStorage::deleteCustomer(CustID_tp customerID)
 {
     return customers.erase(customerID) > 0;
 }
+
+map<CustID_tp, Customer> CustomerStorage::giveAllCustomers() const
+{
+    return customers;
+}

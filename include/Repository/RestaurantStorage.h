@@ -33,6 +33,7 @@ public:
     RestID_tp saveRestaurant(const Restaurant& newRestaurant);  // returns true if the restaurant has been saved successfully, otherwise false
     bool deleteRestaurant(RestID_tp restaurantID);  // returns true if the restaurant with the given ID exists and has been deleted, otherwise returns false
     bool replaceRestaurant(RestID_tp prerestaurantID, const Restaurant& updatingRestaurant);  // returns true if the restaurant with the given ID exists and has been updated, otherwise returns false
+    map<RestID_tp, Restaurant> giveAllRestaurants() const;
 
 private:
     static map<RestID_tp, Restaurant> restaurants;

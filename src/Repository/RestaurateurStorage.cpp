@@ -27,6 +27,16 @@ bool RestaurateurStorage::setName(ManagerID_tp restaurateurID, string newName)
     return true;
 }
 
+bool RestaurateurStorage::updateRestaurateur(const Restaurateur& updatingRestaurateur)
+{
+    auto it = restaurateurs.find(updatingRestaurateur.getID());
+    if (it == restaurateurs.end()) {
+        return false;
+    }
+    it->second = updatingRestaurateur;
+    return true;
+}
+
 bool RestaurateurStorage::isValidRestaurateur(ManagerID_tp restaurateurID)
 {
     return restaurateurs.find(restaurateurID) != restaurateurs.end();
@@ -49,4 +59,9 @@ bool RestaurateurStorage::saveRestaurateur(const Restaurateur& newRestaurateur)
 bool RestaurateurStorage::deleteRestaurateur(ManagerID_tp restaurateurID)
 {
     return restaurateurs.erase(restaurateurID) > 0;
+}
+
+map<ManagerID_tp, Restaurateur> RestaurateurStorage::giveAllRestaurateurs() const
+{
+    return restaurateurs;
 }

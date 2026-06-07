@@ -40,3 +40,8 @@ bool AdminStorage::updateAdmin(const AdminOfSystem& updatingAdmin)
     it->second = updatingAdmin;
     return true;
 }
+
+map<AdminID_tp, AdminOfSystem> AdminStorage::giveAllAdmins() const
+{
+    return admins;
+}

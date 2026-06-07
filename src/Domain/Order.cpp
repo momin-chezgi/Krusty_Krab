@@ -110,7 +110,7 @@ bool Order::addItem(MenuID_tp menuID,
     if (!mstorage.has(menuID, itemID)) {
         return false;
     }
-    auto newItem = mstorage.cloneItem(itemID);
+    auto newItem = mstorage.cloneItem(menuID, itemID);
     if (!newItem) {
         return false;
     }

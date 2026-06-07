@@ -195,3 +195,8 @@ vector<OrderID_tp> RestaurantStorage::getOrderIDs(RestID_tp restaurantID) const
     }
     return vector<OrderID_tp>{};
 }
+
+map<RestID_tp, Restaurant> RestaurantStorage::giveAllRestaurants() const
+{
+    return restaurants;
+}
