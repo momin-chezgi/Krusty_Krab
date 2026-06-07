@@ -32,7 +32,7 @@ public:
     
     virtual string getItemType();
     virtual string getFoodType();
-    virtual bool isAvailable() const = 0;
+    virtual bool isAvailable(double requested) const = 0;
     virtual bool addItemQuantity(double quantity) = 0;
     virtual bool delItemQuantity(double quantity) = 0;
     virtual bool setItemQuantity(double quantity) = 0;

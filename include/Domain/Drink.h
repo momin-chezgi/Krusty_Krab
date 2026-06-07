@@ -11,7 +11,7 @@ public:
     Drink(string initName, cost initPrice, double initVolume, string initBio = "");
 
     double getVolume() const;
-    bool isAvailable() const override;
+    bool isAvailable(double requested) const override;
 
     void setVolume(double newVolume);
     bool addItemQuantity(double quantity) override;

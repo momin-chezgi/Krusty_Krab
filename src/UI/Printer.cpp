@@ -28,7 +28,7 @@ void Printer::menu(MenuID_tp menuID)
     cout << "Menu: " << endl;
     for (const auto& item : menu.getMenu())
     {
-        if(item->isAvailable()){
+        if(item->isAvailable(1)){
             cout << item->getName() << " - " << item->getBio() << " - Cost: "<< item->getPricePerUnit() << " - Time: " << item->getPreparationMinutes() << " - ID: "<< item->getID() << endl;
         }
     }

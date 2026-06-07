@@ -7,6 +7,20 @@
 #include "Domain/Drink.h"
 #include "Domain/Food.h"
 
+
+int GetInf::loginRule()
+{
+    int chosenRule{-1};
+    cin >> chosenRule;
+    while(chosenRule < 0 || chosenRule > 3){
+        Printer::InvalidInput();
+        cin >> chosenRule;
+    }
+    return chosenRule;
+}
+
+// Customer:---------------------------------------------
+
 bool GetInf::customer(Customer &buffer){
     
     CustomerStorage storage;
@@ -31,6 +45,16 @@ bool GetInf::customer(Customer &buffer){
     // We can also add the password authentication process here
     // But for now, we just return the customer with the given ID
 }
+
+string GetInf::customerName(){
+    cout << "What is your name? ";
+    string enteredName;
+    cin >> enteredName;
+    return enteredName;
+}
+
+
+// restaurant:--------------------------------------------
 
 Restaurant* GetInf::restaurant()
 {
@@ -65,88 +89,6 @@ Restaurant GetInf::newRestaurant()
     return Restaurant(menuID, name, address, phone, bio, minutes);
 }
 
-Restaurateur GetInf::restaurateur(){
-    RestaurateurStorage storage;
-    //SQLReader reader;
-
-    ManagerID_tp givenID;
-
-    while(true){
-        cout << "Enter your ID: ";
-        cin >> givenID;
-        if(givenID == "q" || givenID == "Q" || givenID == "quit" || givenID == "QUIT"){
-            return Restaurateur("Quit", "Quit");
-        }
-        //if (reader.getRestaurateur(givenID, buffer)){
-        if(storage.isValidRestaurateur(givenID)){
-            return storage.giveRestaurateur(givenID);
-        }
-        cout << "Invalid ID, ";
-    }
-    // We can also add the password authentication process here
-    // But for now, we just return the restaurateur with the given ID
-}
-
-bool GetInf::admin(AdminOfSystem &buffer)
-{
-    AdminID_tp givenID;
-
-    while(true){
-        cout << "Enter admin ID: ";
-        cin >> givenID;
-        if(givenID == "q" || givenID == "Q" || givenID == "quit" || givenID == "QUIT"){
-            buffer = AdminOfSystem({}, "Quit");
-            return false;
-        }
-        if(givenID == "TestAdmin"){
-            buffer = AdminOfSystem({"TestRestaurateur"}, "TestAdmin");
-            return true;
-        }
-        cout << "Invalid ID, ";
-    }
-}
-
-string GetInf::customerName(){
-    cout << "What is your name? ";
-    string enteredName;
-    cin >> enteredName;
-    return enteredName;
-}
-
-int GetInf::adminOptions(const vector<ManagerID_tp> &restaurateurIDs)
-{
-    (void)restaurateurIDs;
-    int action{-1};
-    cin >> action;
-    while(action != 1 && action != 2 && action != 3 &&
-          action != 31 && action != 32 && action != 33 && action != 34){
-        Printer::InvalidInput();
-        cin >> action;
-    }
-    return action;
-}
-int GetInf::loginRule()
-{
-    int chosenRule{-1};
-    cin >> chosenRule;
-    while(chosenRule < 0 || chosenRule > 3){
-        Printer::InvalidInput();
-        cin >> chosenRule;
-    }
-    return chosenRule;
-}
-
-int GetInf::restaurateurAction()
-{
-    int action{-1};
-    cin >> action;
-    while(action < 1 || action > 23){
-        Printer::InvalidInput();
-        cin >> action;
-    }
-    return action;
-}
-
 RestID_tp GetInf::chooseRestaurant()
 {
     // SQLReader reader;
@@ -162,18 +104,6 @@ RestID_tp GetInf::chooseRestaurant()
         cin >> restaurantID;
     }
     return restaurantID;
-}
-
-bool GetInf::orderOut(RestID_tp restaurantID, Order& buffer)
-{
-    (void)restaurantID;
-    return !buffer.getOrder().empty();
-}
-
-MenuID_tp GetInf::menu(RestID_tp restaurantID)
-{
-    RestaurantStorage storage;
-    return storage.getMenuID(restaurantID);
 }
 
 string GetInf::modifyRestaurantString(int choosenOption)
@@ -209,6 +139,97 @@ size_t GetInf::modifyRestaurantTime(size_t choosenOption)
     return minutes;
 }
 
+
+// resturateur:---------------------------------------------------------
+
+Restaurateur GetInf::restaurateur(){
+    RestaurateurStorage storage;
+    //SQLReader reader;
+
+    ManagerID_tp givenID;
+
+    while(true){
+        cout << "Enter your ID: ";
+        cin >> givenID;
+        if(givenID == "q" || givenID == "Q" || givenID == "quit" || givenID == "QUIT"){
+            return Restaurateur("Quit", "Quit");
+        }
+        //if (reader.getRestaurateur(givenID, buffer)){
+        if(storage.isValidRestaurateur(givenID)){
+            return storage.giveRestaurateur(givenID);
+        }
+        cout << "Invalid ID, ";
+    }
+    // We can also add the password authentication process here
+    // But for now, we just return the restaurateur with the given ID
+}
+
+int GetInf::restaurateurAction()
+{
+    int action{-1};
+    cin >> action;
+    while(action < 1 || action > 23){
+        Printer::InvalidInput();
+        cin >> action;
+    }
+    return action;
+}
+
+Restaurateur GetInf::findRestaurant(RestID_tp restaurantID)
+{
+    RestaurateurStorage storage;
+    if (storage.getRestaurantID("TestRestaurateur") == restaurantID) {
+        return storage.giveRestaurateur("TestRestaurateur");
+    }
+    return Restaurateur("NotFound", "NotFound");
+}
+
+
+// admin:--------------------------------------------------------------
+
+bool GetInf::admin(AdminOfSystem &buffer)
+{
+    AdminID_tp givenID;
+
+    while(true){
+        cout << "Enter admin ID: ";
+        cin >> givenID;
+        if(givenID == "q" || givenID == "Q" || givenID == "quit" || givenID == "QUIT"){
+            buffer = AdminOfSystem({}, "Quit");
+            return false;
+        }
+        if(givenID == "TestAdmin"){
+            buffer = AdminOfSystem({"TestRestaurateur"}, "TestAdmin");
+            return true;
+        }
+        cout << "Invalid ID, ";
+    }
+}
+
+int GetInf::adminOptions(const vector<ManagerID_tp> &restaurateurIDs)
+{
+    (void)restaurateurIDs;
+    int action{-1};
+    cin >> action;
+    while(action != 1 && action != 2 && action != 3 &&
+          action != 31 && action != 32 && action != 33 && action != 34){
+        Printer::InvalidInput();
+        cin >> action;
+    }
+    return action;
+}
+
+
+
+// menu:--------------------------------------------------------------------------
+
+MenuID_tp GetInf::menu(RestID_tp restaurantID)
+{
+    RestaurantStorage storage;
+    return storage.getMenuID(restaurantID);
+}
+
+// menuItem:----------------------------------------------------------------------
 MenuItem* GetInf::menuItem()
 {
     int type{};
@@ -242,6 +263,8 @@ ItemID_tp GetInf::menuItemID()
     return itemID;
 }
 
+// order:------------------------------------------------------------------------
+
 bool GetInf::addItemToCart(MenuID_tp menuID, Order& resultOrder)
 {
     ItemID_tp itemID;
@@ -267,7 +290,7 @@ bool GetInf::addItemToCart(MenuID_tp menuID, Order& resultOrder)
     vector <MenuItem*> menu = menuObject.getMenu();
     for (const auto& item : menu){
         if(item->getID() == itemID){
-             if(!item->isAvailable() || quantity <= 0){
+             if(!item->isAvailable(quantity) || quantity <= 0){
                 cout << "Sorry, the item is not available in the kitchen right now" << endl;
                 return true; 
                 // we return true because the user can still
@@ -281,14 +304,6 @@ bool GetInf::addItemToCart(MenuID_tp menuID, Order& resultOrder)
     return true;
 }
 
-Restaurateur GetInf::findRestaurant(RestID_tp restaurantID)
-{
-    RestaurateurStorage storage;
-    if (storage.getRestaurantID("TestRestaurateur") == restaurantID) {
-        return storage.giveRestaurateur("TestRestaurateur");
-    }
-    return Restaurateur("NotFound", "NotFound");
-}
 
 OrderID_tp GetInf::OrderID(int option)
 {
@@ -321,4 +336,10 @@ OrderID_tp GetInf::OrderID(int option)
         }
         Printer::InvalidInput();
     }   
+}
+
+bool GetInf::orderOut(RestID_tp restaurantID, Order& buffer)
+{
+    (void)restaurantID;
+    return !buffer.getOrder().empty();
 }

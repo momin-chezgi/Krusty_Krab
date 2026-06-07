@@ -10,7 +10,7 @@ public:
     Food(string initName, cost initPrice, double initWeight, string initBio = "");
 
     double getWeight() const;
-    bool isAvailable() const override;
+    bool isAvailable(double requested) const override;
     bool addItemQuantity(double quantity) override;
     bool delItemQuantity(double quantity) override;
     bool setItemQuantity(double quantity) override;

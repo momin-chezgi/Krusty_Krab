@@ -103,7 +103,7 @@ bool Order::addItem(MenuID_tp menuID,
     if (iter != order.end())
     {
         iter->second += quantity;
-        return false;
+        return true;
     }
     OrderLine line;
     MenuStorage mstorage;
@@ -135,19 +135,19 @@ bool Order::removeItem(ItemID_tp menuItemID)
 
 bool orderStatus2IsPrepared(OrderStatus s)
 {
-    return s != InPreparation;
+    return s != OrderStatus::InPreparation && s != OrderStatus::Cancelled;
 }
 string orderStatus2String(OrderStatus s)
 {
     switch(s)
     {
-        case InPreparation:
+        case OrderStatus::InPreparation:
             return "In-Preparation";
-        case ReadyToSend:
+        case OrderStatus::ReadyToSend:
             return "Ready-To-Send";
-        case Delivered:
+        case OrderStatus::Delivered:
             return "Delivered";
-        case Cancelled:
+        case OrderStatus::Cancelled:
             return "Cancelled";
         default:
             return "Unknown Status";
@@ -156,16 +156,16 @@ string orderStatus2String(OrderStatus s)
 OrderStatus orderStatusString2Enum(string s)
 {
     if(s == "In-Preparation"){
-        return InPreparation;
+        return OrderStatus::InPreparation;
     }
     else if(s == "Ready-To-Send"){
-        return ReadyToSend;
+        return OrderStatus::ReadyToSend;
     }
     else if(s == "Delivered"){
-        return Delivered;
+        return OrderStatus::Delivered;
     }
     else if(s == "Cancelled"){
-        return Cancelled;
+        return OrderStatus::Cancelled;
     }
     else{
         throw invalid_argument("Invalid order status string: " + s);

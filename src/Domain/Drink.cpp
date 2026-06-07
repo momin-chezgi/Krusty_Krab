@@ -14,8 +14,8 @@ double Drink::getVolume() const {
     return volume;
 }
 
-bool Drink::isAvailable() const {
-    return volume > 0;
+bool Drink::isAvailable(double requested) const {
+    return volume >= requested && requested > 0;
 }
 
 void Drink::setVolume(double newVolume) {
@@ -32,7 +32,7 @@ bool Drink::addItemQuantity(double quantity) {
 
 
 bool Drink::delItemQuantity(double quantity) {
-    if(getVolume() >= quantity){
+    if(getVolume() >= quantity && quantity > 0){
         setVolume(getVolume() - quantity);
         return true;
     }

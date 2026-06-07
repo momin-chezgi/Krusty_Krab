@@ -12,8 +12,8 @@ double Food::getWeight() const {
     return weight;
 }
 
-bool Food::isAvailable() const {
-    return weight > 0;
+bool Food::isAvailable(double requested) const {
+    return weight >= requested && requested > 0;
 }
 
 void Food::setWeight(double newWeight) {
@@ -28,7 +28,7 @@ bool Food::addItemQuantity(double quantity) {
     return true;
 }
 bool Food::delItemQuantity(double quantity) {
-    if(getWeight() >= quantity){
+    if(getWeight() >= quantity && quantity > 0){
         setWeight(getWeight() - quantity);
         return true;
     }
