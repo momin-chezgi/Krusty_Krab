@@ -4,6 +4,25 @@
 # include "Repository/RestaurantStorage.h"
 # include "Repository/RestaurateurStorage.h"
 
+namespace {
+    void printAdminSaleLine(const RestID_tp &restaurantID, const string &restaurantName, const ItemID_tp &itemID, cost totalSale, const string &itemName)
+    {
+        cout << "  - Restaurant " << restaurantName << " (" << restaurantID << ")"
+             << " | item " << itemID;
+        if (!itemName.empty()) {
+            cout << " (" << itemName << ")";
+        }
+        cout << " => total: " << totalSale << endl;
+    }
+
+    void printAdminCustomerSummary(const RestID_tp &restaurantID, const string &restaurantName, const CustID_tp &customerID, size_t orderCount, cost totalSpent)
+    {
+        cout << "  - Restaurant " << restaurantName << " (" << restaurantID
+             << ") | customer " << customerID << " => " << orderCount
+             << " order(s), total: " << totalSpent << endl;
+    }
+}
+
 AdminOfSystem::AdminOfSystem(const vector<ManagerID_tp> &initRestaurateurIDs,
    string initName) :
    id(IDGenerator::uuid()), name(initName)
@@ -342,5 +361,117 @@ bool AdminOfSystem::removeRestaurant(RestID_tp restaurantID)
 
 
 
-void AdminOfSystem::updateAndPrintTotalSaleStatistics(){}
-void AdminOfSystem::updateAndPrintTotalCustomerStatistics(){}
+void AdminOfSystem::updateAndPrintTotalSaleStatistics()
+{
+    RestaurantStorage rStorage;
+    OrderStorage oStorage;
+
+    map<RestID_tp, Restaurant> restaurants = rStorage.giveAllRestaurants();
+    map<OrderID_tp, Order> orders = oStorage.giveAllOrders();
+
+    totalSaleStatistics.clear();
+    totalCustomerStatistics.clear();
+
+    if (restaurants.empty()) {
+        cout << "No restaurants found for statistics." << endl;
+        return;
+    }
+
+    cout << "Total sale statistics (all restaurants):" << endl;
+    for (const auto& entry : restaurants) {
+        const RestID_tp restaurantID = entry.first;
+        const Restaurant restaurant = entry.second;
+        const string restaurantName = restaurant.getName();
+        const vector<OrderID_tp>& orderIDs = restaurant.getOrderIDs();
+
+        map<ItemID_tp, cost> perRestaurantSale;
+        map<ItemID_tp, string> itemNames;
+
+        for (const auto& orderID : orderIDs) {
+            auto orderIt = orders.find(orderID);
+            if (orderIt == orders.end()) {
+                continue;
+            }
+
+            vector<OrderLine> lines = orderIt->second.getOrder();
+            for (const auto& line : lines) {
+                if (!line.first) {
+                    continue;
+                }
+                ItemID_tp itemID = line.first->getID();
+                perRestaurantSale[itemID] += line.first->getPricePerUnit() * line.second;
+                if (!itemNames[itemID].size()) {
+                    itemNames[itemID] = line.first->getName();
+                }
+            }
+        }
+
+        totalSaleStatistics[restaurantID] = perRestaurantSale;
+
+        if (perRestaurantSale.empty()) {
+            cout << "Restaurant " << restaurantName << " (" << restaurantID << ") has no sales data." << endl;
+            continue;
+        }
+
+        for (const auto& sale : perRestaurantSale) {
+            printAdminSaleLine(restaurantID, restaurantName, sale.first, sale.second, itemNames[sale.first]);
+        }
+    }
+}
+
+void AdminOfSystem::updateAndPrintTotalCustomerStatistics()
+{
+    RestaurantStorage rStorage;
+    OrderStorage oStorage;
+
+    map<RestID_tp, Restaurant> restaurants = rStorage.giveAllRestaurants();
+    map<OrderID_tp, Order> orders = oStorage.giveAllOrders();
+
+    totalSaleStatistics.clear();
+    totalCustomerStatistics.clear();
+
+    if (restaurants.empty()) {
+        cout << "No restaurants found for statistics." << endl;
+        return;
+    }
+
+    cout << "Total customer statistics (all restaurants):" << endl;
+    for (const auto& entry : restaurants) {
+        const RestID_tp restaurantID = entry.first;
+        const Restaurant restaurant = entry.second;
+        const string restaurantName = restaurant.getName();
+        const vector<OrderID_tp>& orderIDs = restaurant.getOrderIDs();
+
+        map<CustID_tp, vector<OrderID_tp>> perRestaurantCustomers;
+
+        for (const auto& orderID : orderIDs) {
+            auto orderIt = orders.find(orderID);
+            if (orderIt == orders.end()) {
+                continue;
+            }
+
+            const CustID_tp orderer = orderIt->second.getOrderer();
+            perRestaurantCustomers[orderer].push_back(orderID);
+        }
+
+        totalCustomerStatistics[restaurantID] = perRestaurantCustomers;
+
+        if (perRestaurantCustomers.empty()) {
+            cout << "Restaurant " << restaurantName << " (" << restaurantID << ") has no customer data." << endl;
+            continue;
+        }
+
+        for (const auto& customerEntry : perRestaurantCustomers) {
+            const vector<OrderID_tp>& customerOrders = customerEntry.second;
+            cost totalSpent = 0;
+            for (const auto& orderID : customerOrders) {
+                auto orderIt = orders.find(orderID);
+                if (orderIt == orders.end()) {
+                    continue;
+                }
+                totalSpent += orderIt->second.getTotalPrice();
+            }
+            printAdminCustomerSummary(restaurantID, restaurantName, customerEntry.first, customerOrders.size(), totalSpent);
+        }
+    }
+}

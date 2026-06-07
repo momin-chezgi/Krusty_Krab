@@ -12,6 +12,7 @@ void Printer::InvalidInput()
 }
 void Printer::wellcome()
 {
+    cout << endl << "==========================" << endl;
     cout << "Wellcome to Krusty Krab management system" << endl;
     cout << "Please choose your rule(by entering the number of each rule):" << endl;
     cout << "1. Customer" << endl;
@@ -55,6 +56,7 @@ void Printer::restaurateurDashboard(string nm,
          , bool isactive
          , size_t averaget)
 {
+    cout << endl << "==========================" << endl;
     cout << "Welcome to your dashboard, " << nm << "!" << endl;
     cout << "Your restaurant is located at: " << ad << endl;
     cout << "Your restaurant is currently " << (isactive ? "active" : "inactive") << endl;
@@ -64,7 +66,7 @@ void Printer::restaurateurDashboard(string nm,
 
 void Printer::RestaurateurChoices()
 {
-    cout << "Please choose an option by entering the option number:" << endl;
+    cout << endl << "Please choose an option by entering the option number:" << endl;
     cout << "1. Edit restaurant name" << endl;
     cout << "2. Edit restaurant address" << endl;
     cout << "3. Activate restaurant" << endl;
@@ -94,6 +96,7 @@ void Printer::RestaurateurChoices()
 
 void Printer::adminDashboard(const vector<ManagerID_tp> &restaurateurIDs)
 {
+    cout << endl << "==========================" << endl;
     cout << "Welcome to the admin dashboard" << endl;
     cout << "Current restaurateurs:" << endl;
     for (const auto& id : restaurateurIDs) {
@@ -118,6 +121,7 @@ void Printer::adminChoices()
 
 void Printer::CustomerDashboard(const string& name)
 {
+    cout << endl << "==========================" << endl;
     cout << "Welcome to customer dashboard, " << name << endl;
 }
 

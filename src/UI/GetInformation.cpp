@@ -149,6 +149,7 @@ bool GetInf::customer(Customer &buffer){
             Customer newCustomer = GetInf::customerFactory();
             if(storage.saveCustomer(newCustomer)){
                 buffer = newCustomer;
+                cout << endl << "- - - - - - - - - - - - -" << endl;
                 cout << "Customer created. Your ID is: " << newCustomer.getID() << endl;
                 return true;
             }

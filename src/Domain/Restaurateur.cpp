@@ -3,6 +3,26 @@
 # include "Repository/OrderStorage.h"
 # include "Repository/RestaurantStorage.h"
 
+namespace {
+    void printSaleLine(const ItemID_tp &itemID, double totalSale, const string &itemName)
+    {
+        cout << "  - " << itemID;
+        if (!itemName.empty()) {
+            cout << " (" << itemName << ")";
+        }
+        cout << " => total: " << totalSale << endl;
+    }
+
+    cost sumOrderTotal(const vector<Order> &orders)
+    {
+        cost total = 0;
+        for (const auto &order : orders) {
+            total += order.getTotalPrice();
+        }
+        return total;
+    }
+}
+
 Restaurateur::Restaurateur(RestID_tp initRestaurantID, string initName) :
     name(initName), restaurantID(initRestaurantID) 
 {
@@ -227,12 +247,91 @@ bool Restaurateur::replaceOrderInQueue(OrderID_tp previousOrderID, OrderID_tp ne
 
 bool Restaurateur::updateAndPrintSaleStatistics()
 {
-    cout << "Sale statistics are not available in mock storage yet." << endl;
+    RestaurantStorage rStorage;
+    if (!rStorage.isValidRestaurant(restaurantID)) {
+        cout << "No valid restaurant is linked to this manager." << endl;
+        return false;
+    }
+
+    OrderStorage storage;
+    map<OrderID_tp, Order> allOrders = storage.giveAllOrders();
+    vector<OrderID_tp> orderIDs = getOrderIDs();
+
+    saleStatisics.clear();
+    map<ItemID_tp, string> itemNames;
+
+    for (const auto& orderID : orderIDs) {
+        auto orderIt = allOrders.find(orderID);
+        if (orderIt == allOrders.end()) {
+            continue;
+        }
+
+        Order order = orderIt->second;
+        vector<OrderLine> lines = order.getOrder();
+        for (const auto& line : lines) {
+            if (!line.first) {
+                continue;
+            }
+            ItemID_tp itemID = line.first->getID();
+            saleStatisics[itemID] += line.first->getPricePerUnit() * line.second;
+            if (!itemNames[itemID].size()) {
+                itemNames[itemID] = line.first->getName();
+            }
+        }
+    }
+
+    cout << "Sale statistics for " << rStorage.getName(restaurantID) << " (" << restaurantID << ")" << endl;
+    if (saleStatisics.empty()) {
+        cout << "No sales data found for the current queue." << endl;
+        return true;
+    }
+
+    for (const auto& stat : saleStatisics) {
+        printSaleLine(stat.first, stat.second, itemNames[stat.first]);
+    }
     return true;
 }
 
 bool Restaurateur::updateAndPrintCustomerStatistics()
 {
-    cout << "Customer statistics are not available in mock storage yet." << endl;
+    RestaurantStorage rStorage;
+    if (!rStorage.isValidRestaurant(restaurantID)) {
+        cout << "No valid restaurant is linked to this restaurateur." << endl;
+        return false;
+    }
+
+    OrderStorage storage;
+    map<OrderID_tp, Order> allOrders = storage.giveAllOrders();
+    vector<OrderID_tp> orderIDs = getOrderIDs();
+
+    customerStatistics.clear();
+
+    for (const auto& orderID : orderIDs) {
+        auto orderIt = allOrders.find(orderID);
+        if (orderIt == allOrders.end()) {
+            continue;
+        }
+        const CustID_tp ordererID = orderIt->second.getOrderer();
+        customerStatistics[ordererID].push_back(orderIt->second);
+    }
+
+    cout << "Customer statistics for " << rStorage.getName(restaurantID) << " (" << restaurantID << ")" << endl;
+    if (customerStatistics.empty()) {
+        cout << "No customers found for the current queue." << endl;
+        return true;
+    }
+
+    for (const auto& customerEntry : customerStatistics) {
+        const vector<Order>& orders = customerEntry.second;
+        cout << "  - customer " << customerEntry.first
+             << " => " << orders.size()
+             << " order(s), total: " << sumOrderTotal(orders) << endl;
+        for (const auto& order : orders) {
+            cout << "    * " << order.getID() << " - "
+                 << orderStatus2String(order.getOrderStatus())
+                 << " - " << order.getTotalPrice() << endl;
+        }
+    }
+
     return true;
 }
