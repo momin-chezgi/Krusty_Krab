@@ -149,19 +149,19 @@ bool GetInf::customer(Customer &buffer){
             Customer newCustomer = GetInf::customerFactory();
             if(storage.saveCustomer(newCustomer)){
                 buffer = newCustomer;
-                cout << endl << "- - - - - - - - - - - - -" << endl;
-                cout << "Customer created. Your ID is: " << newCustomer.getID() << endl;
+                cout << endl << "----------------------------------------" << endl;
+                cout << "New customer created. Your ID is: " << newCustomer.getID() << endl;
                 return true;
             }
             cout << "Could not create customer at this time. Try again." << endl;
             continue;
         }
-        cout << "Invalid ID, ";
+        cout << "Invalid ID. ";
     }
 }
 
 string GetInf::customerName(){
-    cout << "What is your name? ";
+    cout << "Enter your name: ";
     string enteredName;
     cin >> enteredName;
     return enteredName;
@@ -275,7 +275,7 @@ Restaurateur GetInf::restaurateur()
         if(storage.isValidRestaurateur(givenID)){
             return storage.giveRestaurateur(givenID);
         }
-        cout << "Invalid ID, ";
+        cout << "Invalid ID. ";
     }
 }
 
@@ -324,7 +324,7 @@ bool GetInf::admin(AdminOfSystem &buffer)
             buffer = storage.giveAdmin(givenID);
             return true;
         }
-        cout << "Invalid ID, ";
+        cout << "Invalid ID. ";
     }
 }
 
@@ -365,9 +365,9 @@ MenuItem* GetInf::menuItem()
     cin >> name;
     cout << "Enter item price: ";
     cin >> price;
-    cout << "Enter item quantity/volume: ";
+    cout << "Enter amount/quantity (kg or liter): ";
     cin >> quantity;
-    cout << "Enter item bio: ";
+    cout << "Enter item description: ";
     cin >> bio;
 
     if(type == ItemType::Drink){
@@ -404,7 +404,7 @@ bool GetInf::addItemToCart(MenuID_tp menuID, Order& resultOrder)
     for (const auto& item : menu.getMenu()){
         if(item->getID() == itemID){
             if(!item->isAvailable(quantity) || quantity <= 0){
-                cout << "Sorry, the item is not available in the kitchen right now" << endl;
+                cout << "Item is currently unavailable for the requested amount." << endl;
                 return true;
             }
             resultOrder.addItem(menuID, itemID, quantity);

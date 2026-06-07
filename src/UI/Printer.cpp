@@ -6,24 +6,35 @@
 #include "Repository/RestaurantStorage.h"
 #include "Repository/RestaurateurStorage.h"
 
+namespace {
+    const string panelRule = "========================================";
+
+    void printHeader(const string& title)
+    {
+        cout << "\n" << panelRule << "\n";
+        cout << title << "\n";
+        cout << panelRule << "\n";
+    }
+}
+
 void Printer::InvalidInput()
 {
-        cout << "Invalid input, please try again" << endl;
+    cout << "Invalid input, please try again." << endl;
 }
+
 void Printer::wellcome()
 {
-    cout << endl << "==========================" << endl;
-    cout << "Wellcome to Krusty Krab management system" << endl;
-    cout << "Please choose your rule(by entering the number of each rule):" << endl;
+    printHeader("Welcome to Krusty Krab management system");
+    cout << "Select your role by entering the option number." << endl;
     cout << "1. Customer" << endl;
-    cout << "2. Restaurateur/In-charge of a restaurant" << endl;
+    cout << "2. Restaurateur / In-charge of a restaurant" << endl;
     cout << "3. Admin of the system" << endl;
     cout << "0. Exit the application" << endl;
 }
 
 void Printer::chooseRestaurant()
 {
-    cout << "Please choose a restaurant by entering its ID: " << endl;
+    cout << "Choose a restaurant by entering its ID: " << endl;
 }
 
 void Printer::menu(MenuID_tp menuID)
@@ -32,23 +43,27 @@ void Printer::menu(MenuID_tp menuID)
 
     Menu menu = storage.giveMenu(menuID);
 
-    cout << "Menu: " << endl;
+    printHeader("Restaurant Menu");
     for (const auto& item : menu.getMenu())
     {
         if(item->isAvailable(1)){
-            cout << item->getName() << " - " << item->getBio() << " - Cost: "<< item->getPricePerUnit() << " - Time: " << item->getPreparationMinutes() << " - ID: "<< item->getID() << endl;
+            cout << "  - " << item->getName()
+                 << " | " << item->getBio()
+                 << " | Price: " << item->getPricePerUnit()
+                 << " | Prep time: " << item->getPreparationMinutes()
+                 << " min | ID: " << item->getID() << endl;
         }
     }
 }
 
 void Printer::orderOut()
 {
-    cout << "Do you want to order? (y/n) " << endl;
+    cout << "Would you like to place an order? (y/n) " << endl;
 }
 
 void Printer::addItemToCart()
 {
-    cout << "Enter the ID of the item you want to add to your cart(q for finalizing and quitting): " << endl;
+    cout << "Enter item ID to add to your cart (q to finish): " << endl;
 }
 
 void Printer::restaurateurDashboard(string nm,
@@ -56,17 +71,16 @@ void Printer::restaurateurDashboard(string nm,
          , bool isactive
          , size_t averaget)
 {
-    cout << endl << "==========================" << endl;
-    cout << "Welcome to your dashboard, " << nm << "!" << endl;
-    cout << "Your restaurant is located at: " << ad << endl;
-    cout << "Your restaurant is currently " << (isactive ? "active" : "inactive") << endl;
-    cout << "The average preparation time for your restaurant is: " << averaget << " minutes" << endl << endl;
-
+    printHeader("Restaurateur Dashboard");
+    cout << "Welcome, " << nm << "!" << endl;
+    cout << "Restaurant address: " << ad << endl;
+    cout << "Restaurant status: " << (isactive ? "active" : "inactive") << endl;
+    cout << "Average preparation time: " << averaget << " minutes" << endl << endl;
 }
 
 void Printer::RestaurateurChoices()
 {
-    cout << endl << "Please choose an option by entering the option number:" << endl;
+    cout << "Select an option by entering the option number:" << endl;
     cout << "1. Edit restaurant name" << endl;
     cout << "2. Edit restaurant address" << endl;
     cout << "3. Activate restaurant" << endl;
@@ -96,8 +110,7 @@ void Printer::RestaurateurChoices()
 
 void Printer::adminDashboard(const vector<ManagerID_tp> &restaurateurIDs)
 {
-    cout << endl << "==========================" << endl;
-    cout << "Welcome to the admin dashboard" << endl;
+    printHeader("Admin Dashboard");
     cout << "Current restaurateurs:" << endl;
     for (const auto& id : restaurateurIDs) {
         cout << "- " << id << endl;
@@ -106,7 +119,7 @@ void Printer::adminDashboard(const vector<ManagerID_tp> &restaurateurIDs)
 
 void Printer::adminChoices()
 {
-    cout << "Please choose an option:" << endl;
+    cout << "Select an option:" << endl;
     cout << "1. Create restaurant (create a restaurateur before it)" << endl;
     cout << "2. Activate restaurant" << endl;
     cout << "3. Deactivate restaurant" << endl;
@@ -121,13 +134,13 @@ void Printer::adminChoices()
 
 void Printer::CustomerDashboard(const string& name)
 {
-    cout << endl << "==========================" << endl;
-    cout << "Welcome to customer dashboard, " << name << endl;
+    printHeader("Customer Dashboard");
+    cout << "Welcome, " << name << endl;
 }
 
 void Printer::CustomerChoices()
 {
-    cout << "Please choose an option:" << endl;
+    cout << "Select an option:" << endl;
     cout << "1. Place order" << endl;
     cout << "2. Show order IDs in my profile" << endl;
     cout << "404. Debug: print in-memory storage" << endl;
@@ -143,9 +156,9 @@ void Printer::debugStorage()
     MenuStorage menuStorage;
     OrderStorage orderStorage;
 
-    cout << "\n========== DEBUG STORAGE ==========" << endl;
+    printHeader("DEBUG STORAGE");
 
-    cout << "\nCustomers:" << endl;
+    cout << "Customers:" << endl;
     map<CustID_tp, Customer> customers = customerStorage.giveAllCustomers();
     if (customers.empty()) {
         cout << "- none" << endl;
@@ -155,7 +168,7 @@ void Printer::debugStorage()
         cout << "- storage key: " << entry.first
              << ", object ID: " << customer.getID()
              << ", name: " << customer.getName() << endl;
-        cout << "  orders: ";
+        cout << "  Orders: ";
         if (customer.getMyOrders().empty()) {
             cout << "none";
         }
@@ -188,7 +201,7 @@ void Printer::debugStorage()
         cout << "- storage key: " << entry.first
              << ", object ID: " << admin.getID()
              << ", name: " << admin.getName() << endl;
-        cout << "  restaurateurs: ";
+        cout << "  Restaurateurs: ";
         if (admin.getRestaurateurIDs().empty()) {
             cout << "none";
         }
@@ -214,7 +227,7 @@ void Printer::debugStorage()
              << ", phone: " << restaurant.getPhone()
              << ", menu ID: " << restaurant.getMenuID()
              << ", bio: " << restaurant.getBio() << endl;
-        cout << "  order queue: ";
+        cout << "  Order queue: ";
         if (restaurant.getOrderIDs().empty()) {
             cout << "none";
         }
@@ -241,7 +254,7 @@ void Printer::debugStorage()
             if (!item) {
                 continue;
             }
-            cout << "  item ID: " << item->getID()
+            cout << "  Item ID: " << item->getID()
                  << ", name: " << item->getName()
                  << ", type: " << item->getItemType()
                  << ", price: " << item->getPricePerUnit()
@@ -264,18 +277,18 @@ void Printer::debugStorage()
              << ", total: " << order.getTotalPrice() << endl;
         vector<OrderLine> items = order.getOrder();
         if (items.empty()) {
-            cout << "  items: none" << endl;
+            cout << "  Items: none" << endl;
         }
         for (const auto& line : items) {
             if (!line.first) {
                 continue;
             }
-            cout << "  item ID: " << line.first->getID()
+            cout << "  Item ID: " << line.first->getID()
                  << ", name: " << line.first->getName()
                  << ", quantity: " << line.second
                  << ", unit price: " << line.first->getPricePerUnit() << endl;
         }
     }
 
-    cout << "======== END DEBUG STORAGE ========\n" << endl;
+    cout << panelRule << "\n" << endl;
 }

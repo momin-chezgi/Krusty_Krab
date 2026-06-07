@@ -282,7 +282,7 @@ bool Restaurateur::updateAndPrintSaleStatistics()
 
     cout << "Sale statistics for " << rStorage.getName(restaurantID) << " (" << restaurantID << ")" << endl;
     if (saleStatisics.empty()) {
-        cout << "No sales data found for the current queue." << endl;
+        cout << "No sales found for the active order queue." << endl;
         return true;
     }
 
@@ -317,7 +317,7 @@ bool Restaurateur::updateAndPrintCustomerStatistics()
 
     cout << "Customer statistics for " << rStorage.getName(restaurantID) << " (" << restaurantID << ")" << endl;
     if (customerStatistics.empty()) {
-        cout << "No customers found for the current queue." << endl;
+        cout << "No customers found for the active order queue." << endl;
         return true;
     }
 

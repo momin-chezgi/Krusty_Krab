@@ -409,7 +409,7 @@ void AdminOfSystem::updateAndPrintTotalSaleStatistics()
         totalSaleStatistics[restaurantID] = perRestaurantSale;
 
         if (perRestaurantSale.empty()) {
-            cout << "Restaurant " << restaurantName << " (" << restaurantID << ") has no sales data." << endl;
+            cout << "Restaurant " << restaurantName << " (" << restaurantID << ") has no sales." << endl;
             continue;
         }
 
@@ -457,7 +457,7 @@ void AdminOfSystem::updateAndPrintTotalCustomerStatistics()
         totalCustomerStatistics[restaurantID] = perRestaurantCustomers;
 
         if (perRestaurantCustomers.empty()) {
-            cout << "Restaurant " << restaurantName << " (" << restaurantID << ") has no customer data." << endl;
+            cout << "Restaurant " << restaurantName << " (" << restaurantID << ") has no customers in the queue." << endl;
             continue;
         }
 

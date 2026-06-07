@@ -66,7 +66,7 @@ void CustomerDashboard(){
                 oStorage.saveOrder(order);
                 rstorage.addOrderToRestaurant(restaurantID, order.getID());
                 cStorage.updateCustomer(user);
-                cout << "Order created with ID: " << order.getID() << endl;
+                cout << "Order successfully created. Order ID: " << order.getID() << endl;
             }
             continue;
         }
@@ -77,7 +77,7 @@ void CustomerDashboard(){
                 cout << "No orders found for this customer." << endl;
                 continue;
             }
-            cout << "My orders:" << endl;
+            cout << "My order history:" << endl;
             for(const auto& orderID : user.getMyOrders()){
                 if(!oStorage.isValidOrder(orderID)){
                     continue;
@@ -219,7 +219,8 @@ void AdminDashboard()
             continue;
         }
         if(chosenOption == AdminAction::CreateRestaurant){
-            cout << "Enter restaurateur ID to link this restaurant:(Caution: if your restaurateur ID isn't valid, the restaurant won't save) ";
+            cout << "Enter restaurateur ID to link this restaurant. ";
+            cout << "(If the restaurateur ID is invalid, the restaurant will not be saved.) ";
             ManagerID_tp restaurateurID;
             cin >> restaurateurID;
             Restaurant newRestaurant = GetInf::newRestaurant();
@@ -234,10 +235,10 @@ void AdminDashboard()
             }
             Restaurateur manager = restaurateurStorage.giveRestaurateur(restaurateurID);
             if(!manager.setRestaurantID(newRestaurantID)){
-                cout << "Restaurant created, but restaurateur couldn't be linked." << endl;
+                cout << "Restaurant created, but restaurateur could not be linked." << endl;
             }
             restaurateurStorage.updateRestaurateur(manager);
-            cout << "Restaurant created with ID: " << newRestaurantID << endl;
+            cout << "Restaurant created. New restaurant ID: " << newRestaurantID << endl;
             user.addRestaurateur(restaurateurID);
             adminStorage.updateAdmin(user);
             continue;
@@ -247,7 +248,7 @@ void AdminDashboard()
             if(restaurateurStorage.saveRestaurateur(newRestaurateur)){
                 user.addRestaurateur(newRestaurateur.getID());
                 adminStorage.updateAdmin(user);
-                cout << "Restaurateur created with ID: " << newRestaurateur.getID() << endl;
+                cout << "Restaurateur created. New ID: " << newRestaurateur.getID() << endl;
             } else {
                 cout << "Could not create restaurateur." << endl;
             }
