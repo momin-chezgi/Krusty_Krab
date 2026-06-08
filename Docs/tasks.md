@@ -5,8 +5,8 @@
 
 Learn...
 1. ~~safe pointers~~
-2. maps(done)
-3. default constructors (done)
+2. (done) maps
+3. (done) default constructors
 4. 'cast' types in modern C++
 5. anonymous namespaces
 6. deeply about streams
@@ -36,7 +36,7 @@ In Restaurateur:
 4. Menu: delete the unnecessary 'replace' function
 
 Common:
-1. input: get a line for strings instead of a raw cin (done)
+1. (done) input: get a line for strings instead of a raw cin 
 
 
 
@@ -64,18 +64,18 @@ Common:
 ... And It's time for InOut/ and ~~MySQL~~ SQLite for data storage
 ... Maybe after finishing InOut/ it's vital to redesign and rewrite the codes !
 11. Think how to deal with statistics 
-12. ID Management: hide, change them to string(from size_t) and use UUID(Done!)
+12. (done) ID Management: hide, change them to string(from size_t) and use UUID
 
 
 
 ### At the very end:
 0. Use ~~MySQL~~ SQLite
 1. Add the option of creating a user
-2. Create UUID (done)
-3. Implement repositories (done)
-4. Organize all the files in a well-organized form(like domain/ headers/ repository/ etc.) (done)
+2. (done) Create UUID 
+3. (done) Implement repositories 
+4. (done) Organize all the files in a well-organized form(like domain/ headers/ repository/ etc.) 
 5. Use namespaces for each logical space
 6. Use smart pointers
 7. Use Cpp modern casting
-8. Add operator overloadings (done)
+8. (done) Add operator overloadings 
 9. Catch errors
