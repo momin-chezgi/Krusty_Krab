@@ -141,10 +141,7 @@ bool GetInf::customer(Customer &buffer){
         if(givenID == "q" || givenID == "Q" || givenID == "quit" || givenID == "QUIT"){
             return false;
         }
-        if(storage.isValidCustomer(givenID)){
-            buffer = storage.giveCustomer(givenID);
-            return true;
-        }
+
         if(givenID == "new" || givenID == "NEW" || givenID == "create" || givenID == "CREATE"){
             Customer newCustomer = GetInf::customerFactory();
             if(storage.saveCustomer(newCustomer)){
@@ -156,15 +153,24 @@ bool GetInf::customer(Customer &buffer){
             cout << "Could not create customer at this time. Try again." << endl;
             continue;
         }
+        if(storage.isValidCustomer(givenID)){
+            buffer = storage.giveCustomer(givenID);
+            return true;
+        }
         cout << "Invalid ID. ";
     }
 }
 
 string GetInf::customerName(){
-    cout << "Enter your name: ";
-    string enteredName;
-    cin >> enteredName;
-    return enteredName;
+    while (true) {
+        cout << "Enter your name: ";
+        string enteredName ;
+        getline(cin >> ws, enteredName);
+        if (!enteredName.empty()) {
+            return enteredName;
+        }
+        Printer::InvalidInput();
+    }
 }
 
 Customer GetInf::customerFactory()
@@ -197,13 +203,13 @@ Restaurant GetInf::newRestaurant()
     cout << "Enter menu ID: ";
     cin >> menuID;
     cout << "Enter restaurant name: ";
-    cin >> name;
+    getline(cin >> ws, name);
     cout << "Enter address: ";
-    cin >> address;
+    getline(cin >> ws, address);
     cout << "Enter phone number: ";
-    cin >> phone;
+    getline(cin >> ws, phone);
     cout << "Enter bio: ";
-    cin >> bio;
+    getline(cin >> ws, bio);
     cout << "Enter preparation minutes: ";
     cin >> minutes;
 
@@ -248,7 +254,7 @@ string GetInf::modifyRestaurantString(RestaurateurAction choosenOption)
             cout << "Enter an ID/value: ";
             break;
     }
-    cin >> value;
+    getline(cin >> ws, value);
     return value;
 }
 
@@ -283,7 +289,7 @@ Restaurateur GetInf::restaurateurFactory()
 {
     string restaurateurName;
     cout << "Enter restaurateur name: ";
-    cin >> restaurateurName;
+    getline(cin >> ws, restaurateurName);
 
     string restaurantID;
     cout << "Enter managed restaurant ID (or N if none): ";
@@ -362,13 +368,13 @@ MenuItem* GetInf::menuItem()
     }
 
     cout << "Enter item name: ";
-    cin >> name;
+    getline(cin >> ws, name);
     cout << "Enter item price: ";
     cin >> price;
     cout << "Enter amount/quantity (kg or liter): ";
     cin >> quantity;
     cout << "Enter item description: ";
-    cin >> bio;
+    getline(cin >> ws, bio);
 
     if(type == ItemType::Drink){
         return new Drink(name, price, quantity, bio);
@@ -423,10 +429,10 @@ OrderID_tp GetInf::OrderID(RestaurateurAction option)
     while(true){
         switch(option){
             case RestaurateurAction::RemoveOrderFromQueue:
-                cout << "Enter the ID of the order you want to delete: ";
+                cout << "Enter the ID of the order want to delete: ";
                 break;
             case RestaurateurAction::ReplaceOrderInQueue:
-                cout << "Enter the ID of the order you want to replace: ";
+                cout << "Enter the ID of the order want to replace: ";
                 break;
             default:
                 cout << "Enter the ID of the order: ";

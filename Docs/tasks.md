@@ -36,7 +36,7 @@ In Restaurateur:
 4. Menu: delete the unnecessary 'replace' function
 
 Common:
-1. input: get a line for strings instead of a raw cin
+1. input: get a line for strings instead of a raw cin (done)
 
 
 
