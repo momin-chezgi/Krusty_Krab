@@ -112,7 +112,7 @@ public:
 
 
         // queue:
-        vector<OrderID_tp> getOrderIDs(ManagerID_tp restaurateurID) const;
+        vector<OrderID_tp> getOrderHistoryIDs(ManagerID_tp restaurateurID) const;
 
         bool addOrderToQueue(ManagerID_tp restaurateurID, OrderID_tp orderID);
         // addOrderToQueue returns true if the order hasn't been in the orders(distinguished by id) and carefully added

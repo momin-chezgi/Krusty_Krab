@@ -10,7 +10,7 @@ Restaurant::Restaurant(Restaurant* r)
     standardTimeOfPreparation = r->getMinutesFoodPrepare();
     phoneNumber = r->getPhone();
     bio = r->getBio();
-    orderIDs = r->getOrderIDs();
+    orderIDs = r->getOrderHistoryIDs();
     menuID = r->getMenuID();
 }
 
@@ -48,7 +48,7 @@ string Restaurant::getPhone() const {return phoneNumber;}
 
 string Restaurant::getBio() const   {return bio;}
 
-const vector<OrderID_tp> &Restaurant::getOrderIDs() const   {return orderIDs;}
+const vector<OrderID_tp> &Restaurant::getOrderHistoryIDs() const   {return orderIDs;}
 
 MenuID_tp Restaurant::getMenuID() const    {return menuID;}
 

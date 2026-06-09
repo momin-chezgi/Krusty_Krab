@@ -2,6 +2,8 @@
 # include "Repository/MenuStorage.h"
 # include "Repository/OrderStorage.h"
 # include "Repository/RestaurantStorage.h"
+# include "UI/Printer.h"
+# include "UI/GetInformation.h"
 
 namespace {
     void printSaleLine(const ItemID_tp &itemID, double totalSale, const string &itemName)
@@ -187,26 +189,13 @@ bool Restaurateur::removeItemFromMenu(ItemID_tp itemID)
     MenuID_tp menuID = rStorage.getMenuID(restaurantID);
     return storage.deleteItem(menuID, itemID);
 }
-bool Restaurateur::replaceItemInMenu(ItemID_tp previousItemID, const MenuItem * replacedItem)
-{
-    MenuStorage storage;
-    RestaurantStorage rStorage;
-    
-    MenuID_tp menuID = rStorage.getMenuID(restaurantID);
-    
-    if(replacedItem->getID() == previousItemID) return false;
-    if(storage.has(menuID, replacedItem->getID())) return false;
-    if(!storage.has(menuID, previousItemID)) return false; 
-    
-    return storage.addItem(menuID,replacedItem) && storage.deleteItem(menuID, previousItemID);
-}
 
 // Order:
 
-vector<OrderID_tp> Restaurateur::getOrderIDs() const
+vector<OrderID_tp> Restaurateur::getOrderHistoryIDs() const
 {
     RestaurantStorage storage;
-    return storage.getOrderIDs(restaurantID);
+    return storage.getOrderHistoryIDs(restaurantID);
 }
 
 bool Restaurateur::addItemToOrder(OrderID_tp orderID, MenuID_tp menuID, ItemID_tp itemID, double quantity)
@@ -233,17 +222,15 @@ bool Restaurateur::removeOrderFromQueue(OrderID_tp orderID)
     RestaurantStorage storage;
     return storage.deleteOrderFromRestaurant(restaurantID, orderID);
 }
-bool Restaurateur::replaceOrderInQueue(OrderID_tp previousOrderID, OrderID_tp newOrderID)
+bool Restaurateur::setOrderStatus()
 {
-    OrderStorage storage;
-    RestaurantStorage rStorage;
-    if(!storage.isValidOrder(newOrderID)) return false;
-    if(!storage.isValidOrder(previousOrderID)) return false;
-    // if provious order is in queue and the new order, too:
-    if(rStorage.orderIsInQueue(restaurantID, previousOrderID) && rStorage.orderIsInQueue(restaurantID, newOrderID)) return false;
-    return rStorage.deleteOrderFromRestaurant(restaurantID, previousOrderID) && rStorage.addOrderToRestaurant(restaurantID, newOrderID);
+    OrderID_tp ordrID;
+    OrderStatus desiredStat = GetInf::orderStatus(ordrID);
+    OrderStorage ostorage;
+    return ostorage.updateStatus(ordrID, desiredStat);
 }
-// statistics:
+
+// Monitoring:
 
 bool Restaurateur::updateAndPrintSaleStatistics()
 {
@@ -255,7 +242,7 @@ bool Restaurateur::updateAndPrintSaleStatistics()
 
     OrderStorage storage;
     map<OrderID_tp, Order> allOrders = storage.giveAllOrders();
-    vector<OrderID_tp> orderIDs = getOrderIDs();
+    vector<OrderID_tp> orderIDs = getOrderHistoryIDs();
 
     saleStatisics.clear();
     map<ItemID_tp, string> itemNames;
@@ -302,7 +289,7 @@ bool Restaurateur::updateAndPrintCustomerStatistics()
 
     OrderStorage storage;
     map<OrderID_tp, Order> allOrders = storage.giveAllOrders();
-    vector<OrderID_tp> orderIDs = getOrderIDs();
+    vector<OrderID_tp> orderIDs = getOrderHistoryIDs();
 
     customerStatistics.clear();
 
@@ -333,5 +320,34 @@ bool Restaurateur::updateAndPrintCustomerStatistics()
         }
     }
 
+    return true;
+}
+
+void Restaurateur::showCurrentOrders()
+{
+    RestaurantStorage rstorage;
+    Printer::showCurrentOrders(rstorage.getOrderIDs(restaurantID));
+}
+
+void Restaurateur::showOrderHistory()
+{
+    RestaurantStorage rstorage;
+    Printer::showOrderHistory(rstorage.getOrderHistoryIDs(restaurantID));
+
+}
+
+void Restaurateur::showMenu()
+{
+    RestaurantStorage rstorage;
+    Printer::menu(rstorage.getMenuID(restaurantID));
+}
+
+bool OrderStorage::updateStatus(OrderID_tp orderID, OrderStatus stat)
+{
+    auto it = orders.find(orderID);
+    if(it == orders.end()){
+        return false;
+    }
+    orders[orderID].setOrderStatus(stat);
     return true;
 }

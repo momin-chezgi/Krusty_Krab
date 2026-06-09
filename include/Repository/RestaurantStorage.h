@@ -2,6 +2,7 @@
 
 # include "Common/Types.h"
 # include "Domain/Restaurant.h"
+# include "Repository/OrderStorage.h"
 
 class RestaurantStorage{
 public:
@@ -12,7 +13,11 @@ public:
     string getPhoneNumber(RestID_tp restaurantID) const;
     string getBio(RestID_tp restaurantID) const;
     MenuID_tp getMenuID(RestID_tp restaurantID) const;
-    vector<OrderID_tp> getOrderIDs(RestID_tp restaurantID) const;
+    vector<OrderID_tp> getOrderHistoryIDs(RestID_tp restaurantID) const;
+    vector<OrderID_tp> getOrderIDs(RestID_tp restaurantID);
+    // The difference between getOrderHistoryIDs() and getOrderIds() are 
+    //in that latter function returns just InPrepration/ReadyToSend orders
+    //but the first one returns all the orders
 
     bool setName(RestID_tp restaurantID, string newName);
     bool setAddress(RestID_tp restaurantID, string newAddress);

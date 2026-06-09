@@ -27,7 +27,7 @@ public:
     size_t getMinutesFoodPrepare() const;
     string getPhone() const;
     string getBio() const;
-    const vector<OrderID_tp> &getOrderIDs() const;
+    const vector<OrderID_tp> &getOrderHistoryIDs() const;
     MenuID_tp getMenuID() const;
 
     void setName(const string newName);

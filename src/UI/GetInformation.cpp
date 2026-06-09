@@ -72,7 +72,6 @@ static RestaurateurAction readRestaurateurAction()
         }
         RestaurateurAction value = static_cast<RestaurateurAction>(raw);
         if (value == RestaurateurAction::ClearScreen
-            ||value == RestaurateurAction::Quit
             || value == RestaurateurAction::EditRestaurantName
             || value == RestaurateurAction::EditRestaurantAddress
             || value == RestaurateurAction::ActivateRestaurant
@@ -84,10 +83,15 @@ static RestaurateurAction readRestaurateurAction()
             || value == RestaurateurAction::RemoveItemFromMenu
             || value == RestaurateurAction::AddOrderToQueue
             || value == RestaurateurAction::RemoveOrderFromQueue
+            || value == RestaurateurAction::SetOrderStatus
             || value == RestaurateurAction::PrintSaleStatistics
             || value == RestaurateurAction::PrintCustomerStatistics
+            || value == RestaurateurAction::ShowCurrentOrders
+            || value == RestaurateurAction::ShowOrderHistory
+            || value == RestaurateurAction::ShowMenu
             || value == RestaurateurAction::EditRestaurateurName
             || value == RestaurateurAction::EditManagedRestaurant
+            ||value == RestaurateurAction::Quit
             || value == RestaurateurAction::DebugStorage) {
             return value;
         }
@@ -470,4 +474,31 @@ bool GetInf::orderOut(RestID_tp restaurantID, Order& buffer)
 {
     (void)restaurantID;
     return !buffer.getOrder().empty();
+}
+
+
+OrderStatus GetInf::orderStatus(OrderID_tp& buffer)
+{
+    while (true)
+    {        
+        OrderID_tp tempID;
+        Printer::orderID();
+        cin >> tempID;
+        Printer::orderStatus();
+        int stat;
+        cin >> stat;
+        buffer = tempID;
+        switch(stat){
+            case 1:
+                return OrderStatus::InPreparation;
+            case 2:
+                return OrderStatus::ReadyToSend;
+            case 3:
+                return OrderStatus::Delivered;
+            case 0:
+                return OrderStatus::Cancelled;
+            default:
+                continue;
+        }
+    }
 }

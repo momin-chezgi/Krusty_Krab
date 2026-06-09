@@ -14,6 +14,7 @@ public:
     bool removeItem(OrderID_tp orderID, ItemID_tp itemID);
     OrderStatus getOrderStatus(OrderID_tp orderID);
     map<OrderID_tp, Order> giveAllOrders() const;
+    bool updateStatus(OrderID_tp orderID, OrderStatus stat);
 private:
     static map<OrderID_tp, Order> orders;
 };

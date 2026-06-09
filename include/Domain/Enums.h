@@ -21,10 +21,10 @@ enum class ItemType : int {
 };
 
 enum class OrderStatus : int {
-    InPreparation,
-    ReadyToSend,
-    Delivered,
-    Cancelled
+    InPreparation = 1,
+    ReadyToSend = 2,
+    Delivered = 3,
+    Cancelled = 0,
 };
 
 enum class CustomerAction : int {
@@ -52,9 +52,13 @@ enum class RestaurateurAction : int {
     // queue:
     AddOrderToQueue = 21,
     RemoveOrderFromQueue = 22,
-    // statistics:
+    SetOrderStatus = 23,
+    // Monitoring:
     PrintSaleStatistics = 31,
     PrintCustomerStatistics = 32,
+    ShowCurrentOrders = 33,
+    ShowOrderHistory = 34,
+    ShowMenu = 35,
     // own profile:
     EditRestaurateurName = 41,
     EditManagedRestaurant = 42,

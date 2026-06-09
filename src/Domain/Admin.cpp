@@ -324,12 +324,12 @@ bool AdminOfSystem::removeRestaurant(RestID_tp restaurantID)
 
    // queue:
 
-   vector<OrderID_tp> AdminOfSystem::getOrderIDs(ManagerID_tp restaurateurID) const
+   vector<OrderID_tp> AdminOfSystem::getOrderHistoryIDs(ManagerID_tp restaurateurID) const
    {      
       if(!hasRestaurateur(restaurateurID)) return {"NotFound"};
       RestaurantStorage storage;
       RestID_tp restaurantID = getRestaurantID(restaurateurID);
-      return storage.getOrderIDs(restaurantID);
+      return storage.getOrderHistoryIDs(restaurantID);
    }
 
 
@@ -382,7 +382,7 @@ void AdminOfSystem::updateAndPrintTotalSaleStatistics()
         const RestID_tp restaurantID = entry.first;
         const Restaurant restaurant = entry.second;
         const string restaurantName = restaurant.getName();
-        const vector<OrderID_tp>& orderIDs = restaurant.getOrderIDs();
+        const vector<OrderID_tp>& orderIDs = restaurant.getOrderHistoryIDs();
 
         map<ItemID_tp, cost> perRestaurantSale;
         map<ItemID_tp, string> itemNames;
@@ -440,7 +440,7 @@ void AdminOfSystem::updateAndPrintTotalCustomerStatistics()
         const RestID_tp restaurantID = entry.first;
         const Restaurant restaurant = entry.second;
         const string restaurantName = restaurant.getName();
-        const vector<OrderID_tp>& orderIDs = restaurant.getOrderIDs();
+        const vector<OrderID_tp>& orderIDs = restaurant.getOrderHistoryIDs();
 
         map<CustID_tp, vector<OrderID_tp>> perRestaurantCustomers;
 

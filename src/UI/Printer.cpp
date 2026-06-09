@@ -89,6 +89,42 @@ void Printer::addItemToCart()
     cout << "Enter item ID to add to your cart (q to finish): " << endl;
 }
 
+void Printer::orderID()
+{
+    cout << "Enter the ID of the order" << endl;
+}
+
+void Printer::orderStatus()
+{
+    cout << "Which status do you want?" << endl;
+    cout << "1. In-preparation" << endl;
+    cout << "2. Ready to send" << endl;
+    cout << "3. Delivered" << endl;
+    cout << "0. Cancelled" << endl;
+}
+
+void Printer::showCurrentOrders(vector<OrderID_tp> QueueByID)
+{
+    cout << "\nCurrent orders in queue (IDs):" << endl;
+    if (QueueByID.empty()) {
+        cout << "- none" << endl;
+        return;
+    }
+    for(auto it : QueueByID) cout << it << ", ";
+    cout << endl;
+}
+void Printer::showOrderHistory(vector<OrderID_tp> OrdersByID)
+{
+    cout << "\nOrder history (IDs):" << endl;
+    if (OrdersByID.empty()) {
+        cout << "- none" << endl;
+        return;
+    }
+    for(auto it : OrdersByID) cout << it << ", ";
+    cout << endl;
+}
+
+
 void Printer::restaurateurDashboard(string nm,
          string ad
          , bool isactive
@@ -120,12 +156,18 @@ void Printer::RestaurateurChoices()
     cout << "\nOrder editing options:" << endl;
     cout << "21. Add an order to the order queue" << endl;
     cout << "22. Remove an order from the order queue" << endl;
+    cout << "23. Set the status of an order" << endl;
 
-    cout << "\nOther options:" << endl;
+    cout << "\nMonitoring:" << endl;
     cout << "31. Print sale statistics" << endl;
     cout << "32. Print customer statistics" << endl;
+    cout << "33. Show current orders in queue" << endl;
+    cout << "34. Show the history of orders" << endl;
+    cout << "35. Show the menu of the restaurant" << endl;
+    cout << "\nprofile:" << endl;
     cout << "41. Edit my name" << endl;
     cout << "42. Edit managed restaurant ID" << endl;
+    cout <<"\nOthers:" << endl;
     cout << "404. Debug: print in-memory storage" << endl;
     cout << "0. Exit dashboard" << endl;
 }
@@ -254,10 +296,10 @@ void Printer::debugStorage()
              << ", menu ID: " << restaurant.getMenuID()
              << ", bio: " << restaurant.getBio() << endl;
         cout << "  Order queue: ";
-        if (restaurant.getOrderIDs().empty()) {
+        if (restaurant.getOrderHistoryIDs().empty()) {
             cout << "none";
         }
-        for (const auto& orderID : restaurant.getOrderIDs()) {
+        for (const auto& orderID : restaurant.getOrderHistoryIDs()) {
             cout << orderID << " ";
         }
         cout << endl;

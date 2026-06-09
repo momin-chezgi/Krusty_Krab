@@ -55,7 +55,6 @@ public:
     // 'addItemToMenu' returns true if the item wasn't in the menu and has been added
     bool removeItemFromMenu(ItemID_tp itemID);
     // 'removeItemFromMenu' returns true if the item was in the menu and has been deleted
-    bool replaceItemInMenu(ItemID_tp previousItemID, const MenuItem* replacedItem);
 
     // Order
     
@@ -65,7 +64,7 @@ public:
 
     // Queue:
 
-    vector<OrderID_tp> getOrderIDs() const;
+    vector<OrderID_tp> getOrderHistoryIDs() const;
 
     bool addOrderToQueue(OrderID_tp orderID);
     // addOrderToQueue returns true if the order hasn't been in the orders(distinguished by id)
@@ -73,13 +72,14 @@ public:
     bool removeOrderFromQueue(OrderID_tp orderID);
     // removeOrderFromQueue returns true if the order has been in the orders(distinguished by id)
     // and carefully removed
-    bool replaceOrderInQueue(OrderID_tp previousOrderID, OrderID_tp newOrderID);
-    // replaceOrderInQueue returns true if the previous order has been in the orders(distinguished by id)
-    // and the new order hasn't been in the orders(distinguished by id) and
+    bool setOrderStatus();
 
-    // statistics:
+    // Monitoring:
 
     bool updateAndPrintSaleStatistics();
     bool updateAndPrintCustomerStatistics();
+    void showCurrentOrders();
+    void showOrderHistory();
+    void showMenu();
 
 };

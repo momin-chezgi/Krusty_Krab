@@ -103,7 +103,7 @@ void RestaurateurDashboard(){
 
     while(true){
         RestaurateurAction chosenOption = restaurateurOptions(
-            user.getRestaurantName(),
+            user.getName(),
             user.getRestaurantAddress(),
             user.getRestaurantStatus(),
             user.getRestaurantPreparationMinutes()
@@ -166,18 +166,22 @@ void RestaurateurDashboard(){
             case RestaurateurAction::RemoveOrderFromQueue:
                 user.removeOrderFromQueue(GetInf::OrderID(RestaurateurAction::RemoveOrderFromQueue));
                 break;
-// case RestaurateurAction::ReplaceOrderInQueue:
-// {
-//     OrderID_tp previousOrderID = GetInf::OrderID(RestaurateurAction::ReplaceOrderInQueue);
-//     OrderID_tp newOrderID = GetInf::OrderID(RestaurateurAction::ReplaceOrderInQueue);
-//     user.replaceOrderInQueue(previousOrderID, newOrderID);
-//     break;
-// }
+            case RestaurateurAction::SetOrderStatus:
+                user.setOrderStatus();
             case RestaurateurAction::PrintSaleStatistics:
                 user.updateAndPrintSaleStatistics();
                 break;
             case RestaurateurAction::PrintCustomerStatistics:
                 user.updateAndPrintCustomerStatistics();
+                break;
+            case RestaurateurAction::ShowCurrentOrders:
+                user.showCurrentOrders();
+                break;
+            case RestaurateurAction::ShowOrderHistory:
+                user.showOrderHistory();
+                break;
+            case RestaurateurAction::ShowMenu:
+                user.showMenu();
                 break;
             case RestaurateurAction::EditRestaurateurName:
                 user.setName(GetInf::modifyRestaurantString(chosenOption));

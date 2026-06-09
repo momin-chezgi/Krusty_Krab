@@ -187,13 +187,29 @@ bool RestaurantStorage::setBio(RestID_tp restaurantID, const string newBio)
     return false;
 }
 
-vector<OrderID_tp> RestaurantStorage::getOrderIDs(RestID_tp restaurantID) const
+vector<OrderID_tp> RestaurantStorage::getOrderHistoryIDs(RestID_tp restaurantID) const
 {
     auto it = restaurants.find(restaurantID);
     if (it != restaurants.end()){
-        return it->second.getOrderIDs();
+        return it->second.getOrderHistoryIDs();
     }
     return vector<OrderID_tp>{};
+}
+
+vector<OrderID_tp> RestaurantStorage::getOrderIDs(RestID_tp restaurantID)
+{
+    OrderStorage ostorage;
+    auto it = restaurants.find(restaurantID);
+    if(it == restaurants.end()) return vector<OrderID_tp>{};
+    vector<OrderID_tp> resultVect{};
+    vector<OrderID_tp> rawVector = it->second.getOrderHistoryIDs();
+    for(const auto& ordr : rawVector){
+        OrderStatus stat = ostorage.getOrderStatus(ordr);
+        if(stat == OrderStatus::InPreparation || stat == OrderStatus::ReadyToSend){
+            resultVect.push_back(ordr);
+        }
+    }
+    return resultVect;
 }
 
 map<RestID_tp, Restaurant> RestaurantStorage::giveAllRestaurants() const

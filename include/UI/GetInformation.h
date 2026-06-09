@@ -49,6 +49,7 @@ namespace GetInf{
     // or doesn't want to order, otherwise returns true and saves the order in buffer
     bool addItemToCart(MenuID_tp menuID, Order& resultOrder);
     OrderID_tp OrderID(RestaurateurAction option = RestaurateurAction::Quit);
+    OrderStatus orderStatus(OrderID_tp& buffer);
 
     // not implemented yet:
     bool order(const Order *resultOrder);

@@ -17,7 +17,6 @@ Learn...
 
 In Customer:
 1. (done) Dashboard: show the list of all active restaurants
-2. Exit & Delete: place an option 'delete account' by entering y
 
 In Restaurant:
 1. (done) Menu: print 'weight' or 'volume' instead of 'quantity'
@@ -31,13 +30,12 @@ In Order:
 1. (done) Check while placing order if exists at least the requested quantity in the menu
 
 In Restaurateur:
-1. Presenting: Show menu, queue, etc
-2. Order: edit orderStatus
-3. Order: delete the unnecessary 'replace' function, because you can use delete/add instead of
-4. Menu: delete the unnecessary 'replace' function
+1. (done) Monitoring: Show menu, queue, etc ids
+2. (done) Monitoring: Show the details of order items
+3. (done) Order: edit orderStatus
+4. (done) Order: delete the unnecessary 'replace' function, because you can use delete/add instead of
+5. (done) Menu: delete the unnecessary 'replace' function
 
-In Admin:
-1. Restaurateur deleting 
 
 UI:
 1. (done) input: get a line for strings instead of a raw cin 
@@ -54,6 +52,10 @@ Architecture and Design:
 
 Data Structure:
 1. set instead of vector: Use set instead of vector in places you want not to store an ID in two times
+
+Account deleting:
+1. Restaurateur account deleting
+2. Exit & Delete: place an option 'delete account' by entering y
 
 UI:
 1. Between two followed lines, use an empty line at least

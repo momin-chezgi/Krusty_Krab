@@ -18,13 +18,13 @@ namespace Printer{
     void RestaurateurChoices();
     void CustomerDashboard(const string& name);
     void CustomerChoices();
-    void totalSaleStatistics(const map<Restaurant *, map<MenuItem, cost>> &tss);
-    void totalCustomerStatistics(const map<Restaurant *, map<Customer, vector<Order>>> &tcs);
-    void saleStatistics(const map<MenuItem, cost> &ss);
-    void customerStatistics(const map<Customer, vector<Order>> &cs);
     void chooseRestaurant();
     void orderOut();
+    void orderID();
+    void orderStatus();
     void addItemToCart();
+    void showCurrentOrders(vector<OrderID_tp> QueueByID);
+    void showOrderHistory(vector<OrderID_tp> OrdersByID);
     void adminDashboard(const vector<ManagerID_tp> &restaurateurIDs);
     void adminChoices();
     void debugStorage();
