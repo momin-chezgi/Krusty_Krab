@@ -68,7 +68,6 @@ vcpkg_installed/
 Testing/
 .cache/
 
-makefile
 architectural-goals.md
 AGENTS.md
 bin/
