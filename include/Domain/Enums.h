@@ -49,11 +49,9 @@ enum class RestaurateurAction : int {
     // menu:
     AddItemToMenu = 11,
     RemoveItemFromMenu = 12,
-    ReplaceItemInMenu = 13,
     // queue:
     AddOrderToQueue = 21,
     RemoveOrderFromQueue = 22,
-    ReplaceOrderInQueue = 23,
     // statistics:
     PrintSaleStatistics = 31,
     PrintCustomerStatistics = 32,

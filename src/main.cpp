@@ -150,16 +150,6 @@ void RestaurateurDashboard(){
             case RestaurateurAction::RemoveItemFromMenu:
                 user.removeItemFromMenu(GetInf::menuItemID());
                 break;
-            case RestaurateurAction::ReplaceItemInMenu:
-            {
-                ItemID_tp oldItemID = GetInf::menuItemID();
-                MenuItem* item = GetInf::menuItem();
-                if (item) {
-                    user.replaceItemInMenu(oldItemID, item);
-                    delete item;
-                }
-                break;
-            }
             case RestaurateurAction::AddOrderToQueue:
             {
                 RestID_tp restaurantID = user.getRestaurantID();
@@ -176,13 +166,13 @@ void RestaurateurDashboard(){
             case RestaurateurAction::RemoveOrderFromQueue:
                 user.removeOrderFromQueue(GetInf::OrderID(RestaurateurAction::RemoveOrderFromQueue));
                 break;
-            case RestaurateurAction::ReplaceOrderInQueue:
-            {
-                OrderID_tp previousOrderID = GetInf::OrderID(RestaurateurAction::ReplaceOrderInQueue);
-                OrderID_tp newOrderID = GetInf::OrderID(RestaurateurAction::ReplaceOrderInQueue);
-                user.replaceOrderInQueue(previousOrderID, newOrderID);
-                break;
-            }
+// case RestaurateurAction::ReplaceOrderInQueue:
+// {
+//     OrderID_tp previousOrderID = GetInf::OrderID(RestaurateurAction::ReplaceOrderInQueue);
+//     OrderID_tp newOrderID = GetInf::OrderID(RestaurateurAction::ReplaceOrderInQueue);
+//     user.replaceOrderInQueue(previousOrderID, newOrderID);
+//     break;
+// }
             case RestaurateurAction::PrintSaleStatistics:
                 user.updateAndPrintSaleStatistics();
                 break;

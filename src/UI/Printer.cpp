@@ -116,12 +116,10 @@ void Printer::RestaurateurChoices()
     cout << "\nMenu editing options:" << endl;
     cout << "11. Add an item to menu" << endl;
     cout << "12. Remove an item from menu" << endl;
-    cout << "13. Replace an item in menu" << endl;
 
     cout << "\nOrder editing options:" << endl;
     cout << "21. Add an order to the order queue" << endl;
     cout << "22. Remove an order from the order queue" << endl;
-    cout << "23. Replace an order in the order queue" << endl;
 
     cout << "\nOther options:" << endl;
     cout << "31. Print sale statistics" << endl;

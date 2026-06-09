@@ -82,10 +82,8 @@ static RestaurateurAction readRestaurateurAction()
             || value == RestaurateurAction::EditRestaurantBio
             || value == RestaurateurAction::AddItemToMenu
             || value == RestaurateurAction::RemoveItemFromMenu
-            || value == RestaurateurAction::ReplaceItemInMenu
             || value == RestaurateurAction::AddOrderToQueue
             || value == RestaurateurAction::RemoveOrderFromQueue
-            || value == RestaurateurAction::ReplaceOrderInQueue
             || value == RestaurateurAction::PrintSaleStatistics
             || value == RestaurateurAction::PrintCustomerStatistics
             || value == RestaurateurAction::EditRestaurateurName
@@ -152,6 +150,7 @@ bool GetInf::customer(Customer &buffer){
                 buffer = newCustomer;
                 cout << endl << "----------------------------------------" << endl;
                 cout << "New customer created. Your ID is: " << newCustomer.getID() << endl;
+                cout << "----------------------------------------" << endl;
                 return true;
             }
             cout << "Could not create customer at this time. Try again." << endl;
@@ -448,9 +447,9 @@ OrderID_tp GetInf::OrderID(RestaurateurAction option)
             case RestaurateurAction::RemoveOrderFromQueue:
                 cout << "Enter the ID of the order want to delete: ";
                 break;
-            case RestaurateurAction::ReplaceOrderInQueue:
-                cout << "Enter the ID of the order want to replace: ";
-                break;
+            // case RestaurateurAction::ReplaceOrderInQueue:
+            //     cout << "Enter the ID of the order want to replace: ";
+            //     break;
             default:
                 cout << "Enter the ID of the order: ";
         }

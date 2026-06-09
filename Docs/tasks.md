@@ -25,16 +25,19 @@ In Restaurant:
 3. Dashboard: contains an option for showing complete details
 
 In Menu:
-1. Implement quantity
+1. (done) Implement quantity
 
 In Order:
-1. Check while placing order if exists at least the requested quantity in the menu
+1. (done) Check while placing order if exists at least the requested quantity in the menu
 
 In Restaurateur:
 1. Presenting: Show menu, queue, etc
 2. Order: edit orderStatus
 3. Order: delete the unnecessary 'replace' function, because you can use delete/add instead of
 4. Menu: delete the unnecessary 'replace' function
+
+In Admin:
+1. Restaurateur deleting 
 
 UI:
 1. (done) input: get a line for strings instead of a raw cin 
