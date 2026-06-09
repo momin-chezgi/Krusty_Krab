@@ -2,10 +2,11 @@
 # include "Common/Types.h"
 
 enum class Role : int {
+    ClearScreen = -1,
     Quit = 0,
     Customer = 1,
     Restaurateur = 2,
-    SystemAdmin = 3
+    SystemAdmin = 3,
 };
 
 enum class RestaurantStatus : int {
@@ -26,13 +27,15 @@ enum class OrderStatus : int {
 };
 
 enum class CustomerAction : int {
+    ClearScreen = -1,
     Quit = 0,
     PlaceOrder = 1,
     ViewMyOrders = 2,
-    DebugStorage = 404
+    DebugStorage = 404,
 };
 
 enum class RestaurateurAction : int {
+    ClearScreen = -1,
     Quit = 0,
     // restaurant:
     EditRestaurantName = 1,
@@ -57,9 +60,11 @@ enum class RestaurateurAction : int {
     EditRestaurateurName = 41,
     EditManagedRestaurant = 42,
     DebugStorage = 404
+
 };
 
 enum class AdminAction : int {
+    ClearScreen = -1,
     Quit = 0,
     CreateRestaurant = 1,
     ActivateRestaurant = 2,

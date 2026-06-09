@@ -37,6 +37,7 @@ In Restaurateur:
 
 Common:
 1. (done) input: get a line for strings instead of a raw cin 
+2. (done) Add an clear() option in command line
 
 
 
@@ -44,7 +45,6 @@ Common:
 1. Design a cancel choice for each order and item
 2. Password: have this system to be more secure by passwords and access-controlers
 3. set instead of vector: Use set instead of vector in places you want not to store an ID in two times
-4. Add an clear() option in command line
 5. Don't get stuck in a loop, if the ID isn't correct, show an error message and get out.
 6. Between two followed lines, use an empty line at least
 

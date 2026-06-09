@@ -29,6 +29,7 @@ void Printer::wellcome()
     cout << "1. Customer" << endl;
     cout << "2. Restaurateur / In-charge of a restaurant" << endl;
     cout << "3. Admin of the system" << endl;
+    cout << "-1. Clear the screen" << endl;
     cout << "0. Exit the application" << endl;
 }
 
@@ -145,6 +146,7 @@ void Printer::CustomerChoices()
     cout << "2. Show order IDs in my profile" << endl;
     cout << "404. Debug: print in-memory storage" << endl;
     cout << "0. Exit dashboard" << endl;
+    cout << "-1. Clear the screen" << endl;
 }
 
 void Printer::debugStorage()
@@ -291,4 +293,10 @@ void Printer::debugStorage()
     }
 
     cout << panelRule << "\n" << endl;
+}
+
+void Printer::clearScreen()
+{
+    cout << "\033[2J\033[H";
+    cout.flush();
 }

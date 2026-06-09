@@ -32,7 +32,8 @@ static Role readRole()
         if (value == Role::Customer
             || value == Role::Restaurateur
             || value == Role::SystemAdmin
-            || value == Role::Quit) {
+            || value == Role::Quit
+            || value == Role::ClearScreen) {
             return value;
         }
         Printer::InvalidInput();
@@ -49,7 +50,8 @@ static CustomerAction readCustomerAction()
             continue;
         }
         CustomerAction value = static_cast<CustomerAction>(raw);
-        if (value == CustomerAction::Quit
+        if (value == CustomerAction::ClearScreen
+            ||value == CustomerAction::Quit
             || value == CustomerAction::PlaceOrder
             || value == CustomerAction::ViewMyOrders
             || value == CustomerAction::DebugStorage) {
@@ -69,7 +71,8 @@ static RestaurateurAction readRestaurateurAction()
             continue;
         }
         RestaurateurAction value = static_cast<RestaurateurAction>(raw);
-        if (value == RestaurateurAction::Quit
+        if (value == RestaurateurAction::ClearScreen
+            ||value == RestaurateurAction::Quit
             || value == RestaurateurAction::EditRestaurantName
             || value == RestaurateurAction::EditRestaurantAddress
             || value == RestaurateurAction::ActivateRestaurant
@@ -104,7 +107,8 @@ static AdminAction readAdminAction()
             continue;
         }
         AdminAction value = static_cast<AdminAction>(raw);
-        if (value == AdminAction::Quit
+        if (value == AdminAction::ClearScreen
+            ||value == AdminAction::Quit
             || value == AdminAction::CreateRestaurant
             || value == AdminAction::ActivateRestaurant
             || value == AdminAction::DeactivateRestaurant
@@ -165,7 +169,7 @@ string GetInf::customerName(){
     while (true) {
         cout << "Enter your name: ";
         string enteredName ;
-        getline(cin >> ws, enteredName);
+        getline(cin >> std::ws, enteredName);
         if (!enteredName.empty()) {
             return enteredName;
         }
@@ -203,13 +207,13 @@ Restaurant GetInf::newRestaurant()
     cout << "Enter menu ID: ";
     cin >> menuID;
     cout << "Enter restaurant name: ";
-    getline(cin >> ws, name);
+    getline(cin >> std::ws, name);
     cout << "Enter address: ";
-    getline(cin >> ws, address);
+    getline(cin >> std::ws, address);
     cout << "Enter phone number: ";
-    getline(cin >> ws, phone);
+    getline(cin >> std::ws, phone);
     cout << "Enter bio: ";
-    getline(cin >> ws, bio);
+    getline(cin >> std::ws, bio);
     cout << "Enter preparation minutes: ";
     cin >> minutes;
 
@@ -254,7 +258,7 @@ string GetInf::modifyRestaurantString(RestaurateurAction choosenOption)
             cout << "Enter an ID/value: ";
             break;
     }
-    getline(cin >> ws, value);
+    getline(cin >> std::ws, value);
     return value;
 }
 
@@ -289,7 +293,7 @@ Restaurateur GetInf::restaurateurFactory()
 {
     string restaurateurName;
     cout << "Enter restaurateur name: ";
-    getline(cin >> ws, restaurateurName);
+    getline(cin >> std::ws, restaurateurName);
 
     string restaurantID;
     cout << "Enter managed restaurant ID (or N if none): ";
@@ -368,13 +372,13 @@ MenuItem* GetInf::menuItem()
     }
 
     cout << "Enter item name: ";
-    getline(cin >> ws, name);
+    getline(cin >> std::ws, name);
     cout << "Enter item price: ";
     cin >> price;
     cout << "Enter amount/quantity (kg or liter): ";
     cin >> quantity;
     cout << "Enter item description: ";
-    getline(cin >> ws, bio);
+    getline(cin >> std::ws, bio);
 
     if(type == ItemType::Drink){
         return new Drink(name, price, quantity, bio);

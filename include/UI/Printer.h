@@ -26,4 +26,5 @@ namespace Printer{
     void adminDashboard(const vector<ManagerID_tp> &restaurateurIDs);
     void adminChoices();
     void debugStorage();
+    void clearScreen();
 };

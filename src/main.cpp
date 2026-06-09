@@ -32,6 +32,9 @@ int main()
                 break;
             case Role::Quit:
                 return 0;
+            case Role::ClearScreen:
+                Printer::clearScreen();
+                break;
             default:
                 Printer::InvalidInput();
         }
@@ -47,42 +50,45 @@ void CustomerDashboard(){
 
     while(true){
         CustomerAction action = customerActions(user.getName());
-        if(action == CustomerAction::Quit){
-            return;
-        }
-        if(action == CustomerAction::DebugStorage){
-            Printer::debugStorage();
-            continue;
-        }
-        if(action == CustomerAction::PlaceOrder){
-            RestID_tp restaurantID = chooseRestaurant();
-            MenuID_tp menuID = giveMenu(restaurantID);
-            Printer::menu(menuID);
-            Order order(user.getID(), {});
-            if(orderOut(restaurantID, menuID, order)){
-                user.orderOut(order.getID());
-                RestaurantStorage rstorage;
-                OrderStorage oStorage;
-                oStorage.saveOrder(order);
-                rstorage.addOrderToRestaurant(restaurantID, order.getID());
-                cStorage.updateCustomer(user);
-                cout << "Order successfully created. Order ID: " << order.getID() << endl;
-            }
-            continue;
-        }
+        switch (action){
+            case CustomerAction::ClearScreen:
+                Printer::clearScreen();
+                break;
+            case CustomerAction::Quit:
+                return;
+            case CustomerAction::DebugStorage :
+                Printer::debugStorage();
+            case CustomerAction::PlaceOrder :
+            {
+                RestID_tp restaurantID = chooseRestaurant();
+                MenuID_tp menuID = giveMenu(restaurantID);
+                Printer::menu(menuID);
+                Order order(user.getID(), {});
+                if(orderOut(restaurantID, menuID, order)){
+                    user.orderOut(order.getID());
+                    RestaurantStorage rstorage;
+                    OrderStorage oStorage;
+                    oStorage.saveOrder(order);
+                    rstorage.addOrderToRestaurant(restaurantID, order.getID());
+                    cStorage.updateCustomer(user);
+                    cout << "Order successfully created. Order ID: " << order.getID() << endl;
+                }
 
-        if(action == CustomerAction::ViewMyOrders){
-            OrderStorage oStorage;
-            if (user.getMyOrders().empty()) {
-                cout << "No orders found for this customer." << endl;
-                continue;
             }
-            cout << "My order history:" << endl;
-            for(const auto& orderID : user.getMyOrders()){
-                if(!oStorage.isValidOrder(orderID)){
+            case CustomerAction::ViewMyOrders :
+            {
+                OrderStorage oStorage;
+                if (user.getMyOrders().empty()) {
+                    cout << "No orders found for this customer." << endl;
                     continue;
                 }
-                cout << "- " << orderID << endl;
+                cout << "My order history:" << endl;
+                for(const auto& orderID : user.getMyOrders()){
+                    if(!oStorage.isValidOrder(orderID)){
+                        continue;
+                    }
+                    cout << "- " << orderID << endl << endl;
+                }
             }
         }
     }
@@ -105,6 +111,10 @@ void RestaurateurDashboard(){
 
         if(chosenOption == RestaurateurAction::Quit){
             return;
+        }
+        if(chosenOption == RestaurateurAction::ClearScreen){
+            Printer::clearScreen();
+            continue;
         }
         switch(chosenOption){
             case RestaurateurAction::EditRestaurantName:
@@ -216,6 +226,10 @@ void AdminDashboard()
         }
         if(chosenOption == AdminAction::DebugStorage){
             Printer::debugStorage();
+            continue;
+        }
+        if(chosenOption == AdminAction::ClearScreen){
+            Printer::clearScreen();
             continue;
         }
         if(chosenOption == AdminAction::CreateRestaurant){
