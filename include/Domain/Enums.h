@@ -16,7 +16,8 @@ enum class RestaurantStatus : int {
 
 enum class ItemType : int {
     Food = 1,
-    Drink = 2
+    Drink = 2,
+    None = -1,
 };
 
 enum class OrderStatus : int {

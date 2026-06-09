@@ -20,6 +20,24 @@ bool MenuStorage::has(MenuID_tp menuID, ItemID_tp itemID)
     return it != menus.end() && it->second.has(itemID);
 }
 
+ItemType MenuStorage::type(MenuID_tp menuID, ItemID_tp itemID)
+{
+    auto it = menus.find(menuID);
+    if(it == menus.end()){
+        return ItemType::None;
+    }
+    if(!it->second.has(itemID)){
+        return ItemType::None;
+    }
+    vector <MenuItem*> items = it->second.getMenu();
+    auto item = find_if(items.begin(), items.end(), [&itemID](const MenuItem * menuitem){
+        return menuitem->getID() == itemID;
+    });
+    if((*item)->getItemType() == "Food") return ItemType::Food;
+    if((*item)->getItemType() == "Drink") return ItemType::Drink;
+    return ItemType::None;
+}
+
 bool MenuStorage::isValidMenu(MenuID_tp menuID)
 {
     auto it = menus.find(menuID);

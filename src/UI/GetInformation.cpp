@@ -375,7 +375,11 @@ MenuItem* GetInf::menuItem()
     getline(cin >> std::ws, name);
     cout << "Enter item price: ";
     cin >> price;
-    cout << "Enter amount/quantity (kg or liter): ";
+    if(type == ItemType::Food){
+        cout << "Enter the weight(kg):";
+    }else{
+        cout << "Enter the volume(Litre):";
+    }
     cin >> quantity;
     cout << "Enter item description: ";
     getline(cin >> std::ws, bio);
@@ -407,7 +411,11 @@ bool GetInf::addItemToCart(MenuID_tp menuID, Order& resultOrder)
         return true;
     }
     double quantity{};
-    cout << "Enter the quantity: ";
+    if(storage.type(menuID, itemID)==ItemType::Food){
+        cout << "Enter the weight (kg):";
+    }else{
+        cout << "Enter the volume (Litre):";
+    }
     cin >> quantity;
 
     Menu menu = storage.giveMenu(menuID);
