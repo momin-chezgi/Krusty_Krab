@@ -1,6 +1,6 @@
 > In the Name of Allah
 
-# Krusty Krab digital system
+# Krusty Krab restaurant management system
 
 > If you are a random guy on GitHub who is reading this README, I recommend you leave out! because it is just a boring university project.
 
@@ -9,7 +9,7 @@ The name of the project was inspired by the `SpongeBob SquarePants` series!
 <img src='krusty_krab.jpeg' width=&quot400&quot height=&quot400&quot>
 
 This is a CLI-based project for simulating a restaurant management system. The programming language is C++14. 
-The base of the UI is by prompting, like most of the CLI commands.
+The base of the UI is prompting, like most CLI commands.
 There are three roles:
 I) Customer
 II) Restaurateur(Manager)
