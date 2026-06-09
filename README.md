@@ -20,6 +20,7 @@ We also have some other characteristics:
 * Menu
 * Menu Item (contains food and drink)
 * Cart (when order hasn't been finalised)
+
 Each level of user has its specific access:
 ### For Customer:
 1. Placing an order
