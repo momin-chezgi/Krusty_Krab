@@ -200,3 +200,13 @@ map<RestID_tp, Restaurant> RestaurantStorage::giveAllRestaurants() const
 {
     return restaurants;
 }
+
+vector<RestID_tp> RestaurantStorage::activeRestaurantList()
+{
+    vector <RestID_tp> restList;
+    for(const auto & rest : restaurants){
+        if(!rest.second.isActive()) continue;
+        restList.push_back(rest.first);
+    }
+    return restList;
+}

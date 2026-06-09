@@ -35,6 +35,7 @@ public:
     bool replaceRestaurant(RestID_tp prerestaurantID, const Restaurant& updatingRestaurant);  // returns true if the restaurant with the given ID exists and has been updated, otherwise returns false
     map<RestID_tp, Restaurant> giveAllRestaurants() const;
 
+    static vector<RestID_tp> activeRestaurantList();
 private:
     static map<RestID_tp, Restaurant> restaurants;
 };

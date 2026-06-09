@@ -16,7 +16,7 @@ Learn...
 9. Learning ~~MySQL~~ -> SQLite
 
 In Customer:
-1. Dashboard: show the list of all active restaurants
+1. (done) Dashboard: show the list of all active restaurants
 2. Exit & Delete: place an option 'delete account' by entering y
 
 In Restaurant:

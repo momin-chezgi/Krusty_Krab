@@ -7,13 +7,23 @@
 #include "Repository/RestaurateurStorage.h"
 
 namespace {
-    const string panelRule = "========================================";
+    const string panelRule = "========================================================";
+    const string newSpace  = "________________________________________________________";
 
     void printHeader(const string& title)
     {
         cout << "\n" << panelRule << "\n";
         cout << title << "\n";
         cout << panelRule << "\n";
+    }
+    void ShowRestaurants()
+    {
+        cout << "\n" << "Active Restaurants" << "\n";
+        vector<RestID_tp> list = RestaurantStorage::activeRestaurantList();
+        for(const auto & rest : list){
+            cout << rest << "-";
+        }
+        cout << endl;
     }
 }
 
@@ -81,6 +91,7 @@ void Printer::restaurateurDashboard(string nm,
 
 void Printer::RestaurateurChoices()
 {
+    cout << endl << newSpace << endl;
     cout << "Select an option by entering the option number:" << endl;
     cout << "1. Edit restaurant name" << endl;
     cout << "2. Edit restaurant address" << endl;
@@ -120,6 +131,7 @@ void Printer::adminDashboard(const vector<ManagerID_tp> &restaurateurIDs)
 
 void Printer::adminChoices()
 {
+    cout << endl << newSpace << endl;
     cout << "Select an option:" << endl;
     cout << "1. Create restaurant (create a restaurateur before it)" << endl;
     cout << "2. Activate restaurant" << endl;
@@ -137,10 +149,12 @@ void Printer::CustomerDashboard(const string& name)
 {
     printHeader("Customer Dashboard");
     cout << "Welcome, " << name << endl;
+    ShowRestaurants();
 }
 
 void Printer::CustomerChoices()
 {
+    cout << endl << newSpace << endl;
     cout << "Select an option:" << endl;
     cout << "1. Place order" << endl;
     cout << "2. Show order IDs in my profile" << endl;
