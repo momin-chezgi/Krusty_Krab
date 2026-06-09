@@ -1,4 +1,5 @@
 ### Essentials:
+
 1. Document: drawing the pattern of the classes
 2. ~~Implement id assignment for each class~~ -> ID generation is the same all around the code (see at the very end : 2)
 3. ~~List all the types of food (done)~~
@@ -35,18 +36,25 @@ In Restaurateur:
 3. Order: delete the unnecessary 'replace' function, because you can use delete/add instead of
 4. Menu: delete the unnecessary 'replace' function
 
-Common:
+UI:
 1. (done) input: get a line for strings instead of a raw cin 
 2. (done) Add an clear() option in command line
 
 
 
 ### Optionals:
+
+Architecture and Design:
 1. Design a cancel choice for each order and item
 2. Password: have this system to be more secure by passwords and access-controlers
-3. set instead of vector: Use set instead of vector in places you want not to store an ID in two times
-5. Don't get stuck in a loop, if the ID isn't correct, show an error message and get out.
-6. Between two followed lines, use an empty line at least
+3. Make an 'application' layer : don't do everything in the domain!
+
+Data Structure:
+1. set instead of vector: Use set instead of vector in places you want not to store an ID in two times
+
+UI:
+1. Between two followed lines, use an empty line at least
+2. Don't get stuck in a loop, if the ID isn't correct, show an error message and get out.
 
 
 
@@ -69,13 +77,21 @@ Common:
 
 
 ### At the very end:
-0. Use ~~MySQL~~ SQLite
+
+Data Base:
+1. Use ~~MySQL~~ SQLite
+
+Designing:
 1. Add the option of creating a user
-2. (done) Create UUID 
-3. (done) Implement repositories 
-4. (done) Organize all the files in a well-organized form(like domain/ headers/ repository/ etc.) 
-5. Use namespaces for each logical space
-6. Use smart pointers
-7. Use Cpp modern casting
-8. (done) Add operator overloadings 
-9. Catch errors
+2. (done) Implement repositories 
+3. (done) Organize all the files in a well-organized form(like domain/ headers/ repository/ etc.) 
+
+Features:
+1. (done) Create UUID 
+
+Foreward...
+1. Use namespaces for each logical space
+2. Use smart pointers
+3. Use Cpp modern casting
+4. (done) Add operator overloadings 
+5. Catch errors
