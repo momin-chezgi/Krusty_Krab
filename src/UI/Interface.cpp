@@ -34,8 +34,8 @@ MenuID_tp giveMenu(RestID_tp restaurantID){
     return GetInf::menu(restaurantID);
 }
 
-bool orderOut(RestID_tp RestaurantID, MenuID_tp menuID, Order& resultOrder){
-    (void)RestaurantID;
+bool orderOut(MenuID_tp menuID, Order& resultOrder)
+{
     Printer::orderOut();
     string decision;
     cin >> decision;

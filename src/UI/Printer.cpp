@@ -18,7 +18,7 @@ namespace {
     }
     void ShowRestaurants()
     {
-        cout << "\n" << "Active Restaurants" << "\n";
+        cout << "\n" << "Active Restaurants:" << "\n";
         vector<RestID_tp> list = RestaurantStorage::activeRestaurantList();
         for(const auto & rest : list){
             cout << rest << "-";
@@ -57,12 +57,24 @@ void Printer::menu(MenuID_tp menuID)
     printHeader("Restaurant Menu");
     for (const auto& item : menu.getMenu())
     {
-        if(item->isAvailable(1)){
-            cout << "  - " << item->getName()
-                 << " | " << item->getBio()
-                 << " | Price: " << item->getPricePerUnit()
-                 << " | Prep time: " << item->getPreparationMinutes()
-                 << " min | ID: " << item->getID() << endl;
+        if(item->isAvailable(0)){
+            if(Food* fptr = dynamic_cast<Food*>(item)){
+                cout << "  - " << item->getName()
+                    << " | " << item->getBio()
+                    << " | Price: " << item->getPricePerUnit()
+                    << " | Prep time: " << item->getPreparationMinutes() << " min"
+                    << "weight(kg): " << fptr->getWeight()
+                    << " | ID: " << item->getID() << endl;
+
+            }
+            if(Drink* dptr = dynamic_cast<Drink*>(item)){
+                cout << "  - " << item->getName()
+                    << " | " << item->getBio()
+                    << " | Price: " << item->getPricePerUnit()
+                    << " | Prep time: " << item->getPreparationMinutes() << " min"
+                    << "volume(litre): " << dptr->getVolume()
+                    << " | ID: " << item->getID() << endl;
+            }
         }
     }
 }
@@ -270,12 +282,24 @@ void Printer::debugStorage()
             if (!item) {
                 continue;
             }
-            cout << "  Item ID: " << item->getID()
-                 << ", name: " << item->getName()
-                 << ", type: " << item->getItemType()
-                 << ", price: " << item->getPricePerUnit()
-                 << ", minutes: " << item->getPreparationMinutes()
-                 << ", bio: " << item->getBio() << endl;
+            if(Food* fptr = dynamic_cast<Food*>(item)){
+                cout << "  Item ID: " << item->getID()
+                    << ", name: " << item->getName()
+                    << ", type: " << item->getItemType()
+                    << ", price: " << item->getPricePerUnit()
+                    << ", minutes: " << item->getPreparationMinutes()
+                    << ", reminded: " << fptr->getWeight() << " kgs"
+                    << ", bio: " << item->getBio() << endl;
+            }
+            if(Drink* dptr = dynamic_cast<Drink*>(item)){
+                cout << "  Item ID: " << item->getID()
+                    << ", name: " << item->getName()
+                    << ", type: " << item->getItemType()
+                    << ", price: " << item->getPricePerUnit()
+                    << ", minutes: " << item->getPreparationMinutes()
+                    << ", reminded: " << dptr->getVolume() << " litres"
+                    << ", bio: " << item->getBio() << endl;
+            }
         }
     }
 

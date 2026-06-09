@@ -105,6 +105,24 @@ bool MenuStorage::deleteItem(MenuID_tp menuID, ItemID_tp itemID)
     return it->second.removeItem(*itemIt);
 }
 
+bool MenuStorage::reduceItemQuantity(MenuID_tp menuID, ItemID_tp itemID, double quantity)
+{
+    auto it = menus.find(menuID);
+    if (it == menus.end()) {
+        return false;
+    }
+
+    vector<MenuItem*> items = it->second.getMenu();
+    auto itemIt = find_if(items.begin(), items.end(), [itemID](const MenuItem* item) {
+        return item && item->getID() == itemID;
+    });
+    if (itemIt == items.end()) {
+        return false;
+    }
+
+    return (*itemIt)->delItemQuantity(quantity);
+}
+
 MenuItem* MenuStorage::cloneItem(MenuID_tp menuID, ItemID_tp itemID)
 {
     auto it = menus.find(menuID);

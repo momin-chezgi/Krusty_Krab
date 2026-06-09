@@ -413,7 +413,7 @@ bool GetInf::addItemToCart(MenuID_tp menuID, Order& resultOrder)
     double quantity{};
     if(storage.type(menuID, itemID)==ItemType::Food){
         cout << "Enter the weight (kg):";
-    }else{
+    }if(storage.type(menuID, itemID)==ItemType::Drink){
         cout << "Enter the volume (Litre):";
     }
     cin >> quantity;
@@ -425,8 +425,13 @@ bool GetInf::addItemToCart(MenuID_tp menuID, Order& resultOrder)
                 cout << "Item is currently unavailable for the requested amount." << endl;
                 return true;
             }
+            MenuStorage mstorage;
+            if(!mstorage.reduceItemQuantity(menuID, itemID, quantity)){
+                cout << "There isn't enough in the stock for your request." << endl;
+                return false;
+            }
             resultOrder.addItem(menuID, itemID, quantity);
-            cout << "Current total: " << resultOrder.getTotalPrice() << endl;
+            cout << "Current total price: " << resultOrder.getTotalPrice() << endl;
             return true;
         }
     }

@@ -12,7 +12,7 @@ Learn...
 5. anonymous namespaces
 6. deeply about streams
 7. static functions
-8. lambda functions
+8. (done) lambda functions
 9. Learning ~~MySQL~~ -> SQLite
 
 In Customer:
@@ -20,8 +20,8 @@ In Customer:
 2. Exit & Delete: place an option 'delete account' by entering y
 
 In Restaurant:
-1. Menu: print 'weight' or 'volume' instead of 'quantity'
-2. Menu: print the quantity for each item
+1. (done) Menu: print 'weight' or 'volume' instead of 'quantity'
+2. (done) Menu: print the quantity for each item
 3. Dashboard: contains an option for showing complete details
 
 In Menu:
@@ -55,7 +55,7 @@ Data Structure:
 UI:
 1. Between two followed lines, use an empty line at least
 2. Don't get stuck in a loop, if the ID isn't correct, show an error message and get out.
-
+3. Adding fancy UniCode emojies and characters!
 
 
 ### Steps:

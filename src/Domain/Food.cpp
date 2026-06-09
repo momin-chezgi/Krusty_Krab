@@ -15,7 +15,7 @@ double Food::getWeight() const {
 }
 
 bool Food::isAvailable(double requested) const {
-    return weight >= requested && requested > 0;
+    return weight >= requested && requested >= 0.0000;
 }
 
 void Food::setWeight(double newWeight) {

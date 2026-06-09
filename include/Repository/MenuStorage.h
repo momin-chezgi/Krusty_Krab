@@ -15,6 +15,7 @@ public:
     bool updateMenu(const Menu& updatingMenu);  // returns true if the menu with the given ID exists and has been updated, otherwise returns false
     bool addItem(MenuID_tp menuID, const MenuItem * newItem);
     bool deleteItem(MenuID_tp menuID, ItemID_tp itemID);
+    bool reduceItemQuantity(MenuID_tp menuID, ItemID_tp itemID, double quantity);
     MenuItem* cloneItem(MenuID_tp menuID, ItemID_tp itemID);
     map<MenuID_tp, Menu> giveAllMenus() const;
 private:

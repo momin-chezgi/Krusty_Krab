@@ -64,7 +64,7 @@ void CustomerDashboard(){
                 MenuID_tp menuID = giveMenu(restaurantID);
                 Printer::menu(menuID);
                 Order order(user.getID(), {});
-                if(orderOut(restaurantID, menuID, order)){
+                if(orderOut(menuID, order)){
                     user.orderOut(order.getID());
                     RestaurantStorage rstorage;
                     OrderStorage oStorage;
@@ -165,7 +165,7 @@ void RestaurateurDashboard(){
                 RestID_tp restaurantID = user.getRestaurantID();
                 MenuID_tp menuID = user.getMenuID();
                 Order newOrder(user.getID(), {});
-                if (orderOut(restaurantID, menuID, newOrder)) {
+                if (orderOut(menuID, newOrder)) {
                     OrderStorage oStorage;
                     if (oStorage.saveOrder(newOrder)) {
                         user.addOrderToQueue(newOrder.getID());
