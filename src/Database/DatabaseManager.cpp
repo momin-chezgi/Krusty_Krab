@@ -1,6 +1,7 @@
 #include "Database/DatabaseManager.h"
 
 namespace {
+    const string defaultDbPath = "data/krusty_krab.db";
     const string schemaSql = R"SQL(
         CREATE TABLE IF NOT EXISTS admins (
             id TEXT PRIMARY KEY,
@@ -16,6 +17,12 @@ namespace {
         CREATE TABLE IF NOT EXISTS customers (
             id TEXT PRIMARY KEY,
             name TEXT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS customer_orders (
+            customer_id TEXT NOT NULL,
+            order_id TEXT NOT NULL,
+            PRIMARY KEY (customer_id, order_id)
         );
 
         CREATE TABLE IF NOT EXISTS menus (
@@ -136,9 +143,17 @@ static void printSQLiteError(sqlite3* connection, const string& action)
 
 DatabaseManager::DatabaseManager(const string& dbPath)
 {
-    this->dbPath = dbPath;
+    const char* environmentPath = std::getenv("KRUSTY_KRAB_DB_PATH");
+    if (!dbPath.empty()) {
+        this->dbPath = dbPath;
+    } else if (environmentPath != nullptr && environmentPath[0] != '\0') {
+        this->dbPath = environmentPath;
+    } else {
+        this->dbPath = defaultDbPath;
+    }
+
     int rc = sqlite3_open_v2(
-        dbPath.c_str(),
+        this->dbPath.c_str(),
         &dbConnection,
         SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE,
         nullptr

@@ -12,7 +12,7 @@ using std::vector;
 
 class DatabaseManager {
 public:
-    explicit DatabaseManager(const string& dbPath = "data/krusty_krab.db");
+    explicit DatabaseManager(const string& dbPath = "");
     ~DatabaseManager();
 
     DatabaseManager(const DatabaseManager&) = delete;
