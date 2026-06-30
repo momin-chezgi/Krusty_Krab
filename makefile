@@ -16,6 +16,7 @@ SRCS := \
 	src/Repository/RestaurantStorage.cpp \
 	src/Repository/RestaurateurStorage.cpp \
 	src/Repository/SQL.cpp \
+	src/Database/DatabaseManager.cpp \
 	src/UI/GetInformation.cpp \
 	src/UI/Interface.cpp \
 	src/UI/Printer.cpp \
