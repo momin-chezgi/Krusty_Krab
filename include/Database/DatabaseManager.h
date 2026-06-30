@@ -52,6 +52,7 @@ public:
     };
 
 private:
+    void bootstrap();
     void close();
     bool prepareAndBind(
         sqlite3_stmt** statement,
