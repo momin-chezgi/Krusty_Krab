@@ -10,6 +10,20 @@ MenuItem(initName, initPrice, initBio) {
     setWeight(initWeight);
 }
 
+Food::Food(
+    string initName,
+    cost initPrice,
+    double initWeight,
+    string initBio,
+    size_t initPreparationMinutes,
+    string initFoodType
+) : MenuItem(initName, initPrice, initBio) {
+    setItemType("Food");
+    setWeight(initWeight);
+    setPreparationMinutes(initPreparationMinutes);
+    setFoodType(initFoodType);
+}
+
 double Food::getWeight() const {
     return weight;
 }

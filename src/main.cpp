@@ -69,7 +69,7 @@ void CustomerDashboard(){
                 RestID_tp restaurantID = chooseRestaurant();
                 MenuID_tp menuID = giveMenu(restaurantID);
                 Printer::menu(menuID);
-                Order order(cStorage.storageIDFor(user), {});
+                Order order(user.getID(), {});
                 if(orderOut(menuID, order)){
                     user.orderOut(order.getID());
                     RestaurantStorage rstorage;

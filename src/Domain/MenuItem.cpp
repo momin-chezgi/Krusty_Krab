@@ -43,10 +43,10 @@ void MenuItem::setPricePerUnit(cost newPrice){
     }
 }
 
-string MenuItem::getItemType() {
+string MenuItem::getItemType() const {
     return itemType;
 }
-string MenuItem::getFoodType() {
+string MenuItem::getFoodType() const {
     return foodType;
 }
 
@@ -61,6 +61,10 @@ cost MenuItem::calculatePrice(double quantity) {
 
 void MenuItem::setItemType(string newType) {
     itemType = newType;
+}
+
+void MenuItem::setFoodType(string newType) {
+    foodType = newType;
 }
 
 MenuItem::~MenuItem(){}

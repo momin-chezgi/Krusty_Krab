@@ -9,6 +9,13 @@ class Drink : public MenuItem
 public:
     Drink(Drink *d);
     Drink(string initName, cost initPrice, double initVolume, string initBio = "");
+    Drink(
+        string initName,
+        cost initPrice,
+        double initVolume,
+        string initBio,
+        size_t initPreparationMinutes
+    );
 
     double getVolume() const;
     bool isAvailable(double requested) const override;

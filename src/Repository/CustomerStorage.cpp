@@ -2,8 +2,6 @@
 
 #include "Database/DatabaseManager.h"
 
-map<CustID_tp, CustID_tp> CustomerStorage::persistedIDsByObjectID = {};
-
 namespace {
     const string customerExistsSql = "SELECT 1 FROM customers WHERE id = ? LIMIT 1;";
     const string customerSelectSql = "SELECT name FROM customers WHERE id = ?;";
@@ -138,9 +136,12 @@ namespace {
         return true;
     }
 
-    bool replaceCustomerOrders(DatabaseManager& database, const Customer& customer)
+    bool replaceCustomerOrders(
+        DatabaseManager& database,
+        const CustID_tp& customerID,
+        const Customer& customer
+    )
     {
-        const CustID_tp customerID = customer.getID();
         if (!database.execute(deleteCustomerOrdersSql, {customerID})) {
             return false;
         }
@@ -167,7 +168,6 @@ Customer CustomerStorage::giveCustomer(CustID_tp customerID)
         return Customer("NotFound");
     }
 
-    persistedIDsByObjectID[customer.getID()] = customerID;
     return customer;
 }
 
@@ -179,15 +179,6 @@ bool CustomerStorage::isValidCustomer(CustID_tp customerID)
     }
 
     return customerExists(database.connection(), customerID);
-}
-
-CustID_tp CustomerStorage::storageIDFor(const Customer& customer) const
-{
-    auto it = persistedIDsByObjectID.find(customer.getID());
-    if (it != persistedIDsByObjectID.end()) {
-        return it->second;
-    }
-    return customer.getID();
 }
 
 bool CustomerStorage::saveCustomer(const Customer& newCustomer)
@@ -202,21 +193,16 @@ bool CustomerStorage::saveCustomer(const Customer& newCustomer)
         return false;
     }
 
-    const CustID_tp customerID = storageIDFor(newCustomer);
+    const CustID_tp customerID = newCustomer.getID();
     if (!database.execute(insertCustomerSql, {customerID, newCustomer.getName()})) {
         return false;
     }
 
-    if (!replaceCustomerOrders(database, newCustomer)) {
+    if (!replaceCustomerOrders(database, customerID, newCustomer)) {
         return false;
     }
 
-    if (!transaction.commit()) {
-        return false;
-    }
-
-    persistedIDsByObjectID[newCustomer.getID()] = customerID;
-    return true;
+    return transaction.commit();
 }
 
 bool CustomerStorage::updateCustomer(const Customer& updatingCustomer)
@@ -226,7 +212,7 @@ bool CustomerStorage::updateCustomer(const Customer& updatingCustomer)
         return false;
     }
 
-    const CustID_tp customerID = storageIDFor(updatingCustomer);
+    const CustID_tp customerID = updatingCustomer.getID();
     if (!customerExists(database.connection(), customerID)) {
         return false;
     }
@@ -240,16 +226,11 @@ bool CustomerStorage::updateCustomer(const Customer& updatingCustomer)
         return false;
     }
 
-    if (!replaceCustomerOrders(database, updatingCustomer)) {
+    if (!replaceCustomerOrders(database, customerID, updatingCustomer)) {
         return false;
     }
 
-    if (!transaction.commit()) {
-        return false;
-    }
-
-    persistedIDsByObjectID[updatingCustomer.getID()] = customerID;
-    return true;
+    return transaction.commit();
 }
 
 bool CustomerStorage::deleteCustomer(CustID_tp customerID)
@@ -313,7 +294,6 @@ map<CustID_tp, Customer> CustomerStorage::giveAllCustomers() const
             customerID,
             Customer(customerName, orderIDs)
         );
-        persistedIDsByObjectID[customers[customerID].getID()] = customerID;
     }
 
     if (rc != SQLITE_DONE) {
