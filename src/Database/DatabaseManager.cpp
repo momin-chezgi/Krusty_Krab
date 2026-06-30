@@ -1,5 +1,133 @@
 #include "Database/DatabaseManager.h"
 
+namespace {
+    const string schemaSql = R"SQL(
+        CREATE TABLE IF NOT EXISTS admins (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS admin_restaurateurs (
+            admin_id TEXT NOT NULL,
+            restaurateur_id TEXT NOT NULL,
+            PRIMARY KEY (admin_id, restaurateur_id)
+        );
+
+        CREATE TABLE IF NOT EXISTS customers (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS menus (
+            id TEXT PRIMARY KEY
+        );
+
+        CREATE TABLE IF NOT EXISTS menu_items (
+            id TEXT PRIMARY KEY,
+            menu_id TEXT NOT NULL,
+            item_type TEXT NOT NULL,
+            name TEXT NOT NULL,
+            bio TEXT NOT NULL DEFAULT '',
+            price REAL NOT NULL DEFAULT 0,
+            stock_quantity REAL NOT NULL DEFAULT 0,
+            preparation_minutes INTEGER NOT NULL DEFAULT 0,
+            food_type TEXT NOT NULL DEFAULT ''
+        );
+
+        CREATE TABLE IF NOT EXISTS restaurants (
+            id TEXT PRIMARY KEY,
+            menu_id TEXT NOT NULL,
+            name TEXT NOT NULL,
+            address TEXT NOT NULL,
+            active INTEGER NOT NULL DEFAULT 1,
+            preparation_minutes INTEGER NOT NULL DEFAULT 0,
+            phone TEXT NOT NULL,
+            bio TEXT NOT NULL DEFAULT ''
+        );
+
+        CREATE TABLE IF NOT EXISTS restaurateurs (
+            id TEXT PRIMARY KEY,
+            restaurant_id TEXT NOT NULL DEFAULT '',
+            name TEXT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS orders (
+            id TEXT PRIMARY KEY,
+            orderer_id TEXT NOT NULL,
+            restaurant_id TEXT NOT NULL DEFAULT '',
+            status TEXT NOT NULL DEFAULT 'InPreparation',
+            total_price REAL NOT NULL DEFAULT 0
+        );
+
+        CREATE TABLE IF NOT EXISTS order_items (
+            order_id TEXT NOT NULL,
+            item_id TEXT NOT NULL,
+            item_type TEXT NOT NULL,
+            name TEXT NOT NULL,
+            bio TEXT NOT NULL DEFAULT '',
+            price REAL NOT NULL DEFAULT 0,
+            quantity REAL NOT NULL,
+            quantity_snapshot REAL NOT NULL DEFAULT 0,
+            preparation_minutes INTEGER NOT NULL DEFAULT 0,
+            food_type TEXT NOT NULL DEFAULT '',
+            PRIMARY KEY (order_id, item_id)
+        );
+    )SQL";
+
+    const string seedSql = R"SQL(
+        INSERT OR IGNORE INTO admins (id, name)
+        VALUES ('TestAdmin', 'TestAdmin');
+
+        INSERT OR IGNORE INTO admin_restaurateurs (admin_id, restaurateur_id)
+        VALUES ('TestAdmin', 'TestRestaurateur');
+
+        INSERT OR IGNORE INTO customers (id, name)
+        VALUES ('TestCustomer', 'TestCustomer');
+
+        INSERT OR IGNORE INTO menus (id)
+        VALUES ('TestMenu');
+
+        INSERT OR IGNORE INTO menu_items (
+            id,
+            menu_id,
+            item_type,
+            name,
+            bio,
+            price,
+            stock_quantity,
+            preparation_minutes,
+            food_type
+        )
+        VALUES
+            ('TestDrink', 'TestMenu', 'Drink', 'Krusty Cola', 'Cold drink', 10.0, 20.0, 0, ''),
+            ('TestFood', 'TestMenu', 'Food', 'Krabby Patty', 'Classic burger', 25.0, 20.0, 0, '');
+
+        INSERT OR IGNORE INTO restaurants (
+            id,
+            menu_id,
+            name,
+            address,
+            active,
+            preparation_minutes,
+            phone,
+            bio
+        )
+        VALUES (
+            'TestRestaurant',
+            'TestMenu',
+            'TestRestaurant',
+            'TestCity/TestStreet/TestBuilding',
+            1,
+            20,
+            '1234567890',
+            'Seed restaurant'
+        );
+
+        INSERT OR IGNORE INTO restaurateurs (id, restaurant_id, name)
+        VALUES ('TestRestaurateur', 'TestRestaurant', 'TestRestaurateur');
+    )SQL";
+}
+
 static void printSQLiteError(sqlite3* connection, const string& action)
 {
     cerr << "DatabaseManager::" << action << " failed: "
@@ -19,7 +147,11 @@ DatabaseManager::DatabaseManager(const string& dbPath)
     if (rc != SQLITE_OK) {
         printSQLiteError(dbConnection, "open");
         close();
+        return;
     }
+
+    execute("PRAGMA foreign_keys = ON;");
+    bootstrap();
 }
 
 DatabaseManager::~DatabaseManager()
@@ -173,6 +305,28 @@ bool DatabaseManager::rollbackTransaction()
     }
     inTransaction = false;
     return true;
+}
+
+void DatabaseManager::bootstrap()
+{
+    if (!isOpen()) {
+        return;
+    }
+
+    Transaction transaction(*this);
+    if (!transaction.isActive()) {
+        return;
+    }
+
+    if (!execute(schemaSql)) {
+        return;
+    }
+
+    if (!execute(seedSql)) {
+        return;
+    }
+
+    transaction.commit();
 }
 
 void DatabaseManager::close()

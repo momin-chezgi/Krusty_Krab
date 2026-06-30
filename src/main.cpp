@@ -8,6 +8,7 @@
 #include "Repository/OrderStorage.h"
 #include "Repository/RestaurantStorage.h"
 #include "Repository/RestaurateurStorage.h"
+#include "Database/DatabaseManager.h"
 #include "UI/Interface.h"
 #include "Utility/IDGenerator.h"
 
@@ -17,6 +18,11 @@ void AdminDashboard();
 
 int main()
 {
+    DatabaseManager database;
+    if (!database.isOpen()) {
+        cerr << "Warning: SQLite database is not available." << endl;
+    }
+
     while (true)
     {
         switch(Login())
