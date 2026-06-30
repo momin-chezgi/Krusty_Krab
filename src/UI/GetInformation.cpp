@@ -321,7 +321,7 @@ Restaurateur GetInf::findRestaurant(RestID_tp restaurantID)
     return Restaurateur();
 }
 
-bool GetInf::admin(AdminOfSystem &buffer)
+bool GetInf::admin(AdminOfSystem &buffer, AdminID_tp &adminID)
 {
     AdminStorage storage;
     AdminID_tp givenID;
@@ -335,6 +335,7 @@ bool GetInf::admin(AdminOfSystem &buffer)
         }
         if(storage.isValidAdmin(givenID)){
             buffer = storage.giveAdmin(givenID);
+            adminID = givenID;
             return true;
         }
         cout << "Invalid ID. ";

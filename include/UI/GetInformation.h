@@ -32,7 +32,7 @@ namespace GetInf{
     // You can also add the pasword authantication proccess to admin and restaurateurs;
 
     // admin:-------------------------------------------
-    bool admin(AdminOfSystem &buffer);
+    bool admin(AdminOfSystem &buffer, AdminID_tp &adminID);
     AdminAction adminOptions(const vector<ManagerID_tp> &restaurateurIDs);
     Restaurateur restaurateurFactory();
 

@@ -16,10 +16,10 @@ Restaurateur enterAsRestaurateur()
     return GetInf::restaurateur();
 }
 
-AdminOfSystem enterAsAdmin()
+AdminOfSystem enterAsAdmin(AdminID_tp &adminID)
 {
     AdminOfSystem buffer;
-    if (GetInf::admin(buffer)) {
+    if (GetInf::admin(buffer, adminID)) {
         return buffer;
     }
     return AdminOfSystem({}, "Quit");

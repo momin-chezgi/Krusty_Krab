@@ -211,7 +211,8 @@ void RestaurateurDashboard(){
 
 void AdminDashboard()
 {
-    AdminOfSystem user = enterAsAdmin();
+    AdminID_tp adminID;
+    AdminOfSystem user = enterAsAdmin(adminID);
     if(user.getName() == "Quit"){
         return;
     }
@@ -232,7 +233,7 @@ void AdminDashboard()
             Printer::clearScreen();
             continue;
         }
-        if(chosenOption == AdminAction::CreateRestaurant){
+            if(chosenOption == AdminAction::CreateRestaurant){
             cout << "Enter restaurateur ID to link this restaurant. ";
             cout << "(If the restaurateur ID is invalid, the restaurant will not be saved.) ";
             ManagerID_tp restaurateurID;
@@ -254,14 +255,14 @@ void AdminDashboard()
             restaurateurStorage.updateRestaurateur(manager);
             cout << "Restaurant created. New restaurant ID: " << newRestaurantID << endl;
             user.addRestaurateur(restaurateurID);
-            adminStorage.updateAdmin(user);
+            adminStorage.updateAdmin(adminID, user);
             continue;
         }
         if(chosenOption == AdminAction::CreateRestaurateur){
             Restaurateur newRestaurateur = GetInf::restaurateurFactory();
             if(restaurateurStorage.saveRestaurateur(newRestaurateur)){
                 user.addRestaurateur(newRestaurateur.getID());
-                adminStorage.updateAdmin(user);
+                adminStorage.updateAdmin(adminID, user);
                 cout << "Restaurateur created. New ID: " << newRestaurateur.getID() << endl;
             } else {
                 cout << "Could not create restaurateur." << endl;
@@ -276,7 +277,7 @@ void AdminDashboard()
             } else {
                 user.deactivateRestaurant(restaurateurID);
             }
-            adminStorage.updateAdmin(user);
+            adminStorage.updateAdmin(adminID, user);
             continue;
         }
         if(chosenOption == AdminAction::PrintTotalSaleStatistics

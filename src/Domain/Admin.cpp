@@ -25,10 +25,10 @@ namespace {
 
 AdminOfSystem::AdminOfSystem(const vector<ManagerID_tp> &initRestaurateurIDs,
    string initName) :
-   id(IDGenerator::uuid()), name(initName)
+   id(IDGenerator::uuid()), name(std::move(initName))
 {
-   for(auto r : initRestaurateurIDs){
-      restaurateurIDs.push_back(r); 
+   for(const auto& restaurateurID : initRestaurateurIDs){
+      restaurateurIDs.push_back(restaurateurID);
    }
 }
 
