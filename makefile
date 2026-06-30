@@ -23,6 +23,8 @@ SRCS := \
 	src/main.cpp
 
 TARGET := bin/krusty_krab
+CXXFLAGS := -std=c++14 -Wall -Wextra -Iinclude -g -O0
+LDLIBS := -lsqlite3
 
 .PHONY: all clean
 
@@ -30,7 +32,7 @@ all: $(TARGET)
 
 $(TARGET): $(SRCS)
 	mkdir bin/ -p
-	g++ -std=c++14 -Wall -Wextra -Iinclude -g -O0 $(SRCS) -o $(TARGET)
+	g++ $(CXXFLAGS) $(SRCS) -o $(TARGET) $(LDLIBS)
 
 clean:
 	rm -f $(TARGET)
