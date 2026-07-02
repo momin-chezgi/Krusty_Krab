@@ -14,6 +14,7 @@ private:
     cost pricePerUnit{};
 public:
     MenuItem(string initName, cost initPrice, string initBio = "");
+    MenuItem(ItemID_tp initID, string initName, cost initPrice, string initBio = "");
 
     ItemID_tp getID() const;
     size_t getPreparationMinutes() const;

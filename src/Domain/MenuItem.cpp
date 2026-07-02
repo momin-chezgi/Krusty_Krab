@@ -6,6 +6,12 @@ MenuItem::MenuItem(string initName, cost initPrice, string initBio){
     setBio(initBio);
 }
 
+MenuItem::MenuItem(ItemID_tp initID, string initName, cost initPrice, string initBio)
+    : MenuItem(initName, initPrice, initBio)
+{
+    id = initID;
+}
+
 ItemID_tp MenuItem::getID() const{
     return id;
 }

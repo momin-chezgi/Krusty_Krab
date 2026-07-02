@@ -195,6 +195,7 @@ namespace {
 
         if (itemType == "Food") {
             return new Food(
+                itemID,
                 itemName,
                 price,
                 stockQuantity,
@@ -206,6 +207,7 @@ namespace {
 
         if (itemType == "Drink") {
             return new Drink(
+                itemID,
                 itemName,
                 price,
                 stockQuantity,

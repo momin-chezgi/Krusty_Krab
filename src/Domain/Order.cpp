@@ -16,6 +16,12 @@ Order::Order(CustID_tp oID, const vector<OrderLine> &initOrder) :
     }
 }
 
+Order::Order(OrderID_tp initID, CustID_tp oID, const vector<OrderLine> &initOrder) :
+    Order(oID, initOrder)
+{
+    id = initID;
+}
+
 OrderID_tp Order::getID() const
 {
     return id;

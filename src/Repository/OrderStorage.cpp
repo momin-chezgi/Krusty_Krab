@@ -238,6 +238,7 @@ namespace {
 
         if (itemType == "Food") {
             return new Food(
+                itemID,
                 name,
                 price,
                 quantitySnapshot,
@@ -249,6 +250,7 @@ namespace {
 
         if (itemType == "Drink") {
             return new Drink(
+                itemID,
                 name,
                 price,
                 quantitySnapshot,
@@ -330,7 +332,7 @@ namespace {
 
                 vector<OrderLine> lines;
                 if (loadOrderItems(connection, persistedID, lines)) {
-                    order = Order(ordererID, lines);
+                    order = Order(persistedID, ordererID, lines);
                     order.setOrderStatus(statusFromStorage(status));
                     clearLines(lines);
                     found = true;
