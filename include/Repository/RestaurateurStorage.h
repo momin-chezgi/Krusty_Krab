@@ -18,6 +18,4 @@ public:
     bool deleteRestaurateur(ManagerID_tp restaurateurID);
     // returns true if the restaurateur with the given ID exists and has been deleted, otherwise returns false
     map<ManagerID_tp, Restaurateur> giveAllRestaurateurs() const;
-private:
-    static map<ManagerID_tp, Restaurateur> restaurateurs;
 };

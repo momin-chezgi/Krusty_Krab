@@ -41,6 +41,4 @@ public:
     map<RestID_tp, Restaurant> giveAllRestaurants() const;
 
     static vector<RestID_tp> activeRestaurantList();
-private:
-    static map<RestID_tp, Restaurant> restaurants;
 };

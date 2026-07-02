@@ -52,6 +52,12 @@ namespace {
             bio TEXT NOT NULL DEFAULT ''
         );
 
+        CREATE TABLE IF NOT EXISTS restaurant_orders (
+            restaurant_id TEXT NOT NULL,
+            order_id TEXT NOT NULL,
+            PRIMARY KEY (restaurant_id, order_id)
+        );
+
         CREATE TABLE IF NOT EXISTS restaurateurs (
             id TEXT PRIMARY KEY,
             restaurant_id TEXT NOT NULL DEFAULT '',
