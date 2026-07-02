@@ -5,6 +5,8 @@
 Customer::Customer() {}
 Customer::Customer(string initName, const vector<OrderID_tp> &initOrder) :
  name(initName), myOrders(initOrder) {}
+Customer::Customer(CustID_tp initID, string initName, const vector<OrderID_tp> &initOrder) :
+ id(initID), name(initName), myOrders(initOrder) {}
 
 void Customer::orderOut(OrderID_tp orderID)
 {

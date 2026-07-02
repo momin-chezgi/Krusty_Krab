@@ -32,6 +32,17 @@ AdminOfSystem::AdminOfSystem(const vector<ManagerID_tp> &initRestaurateurIDs,
    }
 }
 
+AdminOfSystem::AdminOfSystem(
+   AdminID_tp initID,
+   const vector<ManagerID_tp> &initRestaurateurIDs,
+   string initName) :
+   id(initID), name(std::move(initName))
+{
+   for(const auto& restaurateurID : initRestaurateurIDs){
+      restaurateurIDs.push_back(restaurateurID);
+   }
+}
+
 AdminOfSystem::~AdminOfSystem(){}
 
 

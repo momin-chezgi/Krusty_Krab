@@ -47,6 +47,13 @@ namespace {
         return true;
     }
 
+    string sqliteText(const unsigned char* text)
+    {
+        return text != nullptr
+            ? string(static_cast<const char*>(static_cast<const void*>(text)))
+            : "";
+    }
+
     map<ManagerID_tp, ManagerID_tp>& loadedObjectAliases()
     {
         static map<ManagerID_tp, ManagerID_tp> aliases;
@@ -108,13 +115,10 @@ namespace {
                 const unsigned char* restaurantText = sqlite3_column_text(statement, 0);
                 const unsigned char* nameText = sqlite3_column_text(statement, 1);
 
-                const RestID_tp restaurantID =
-                    restaurantText != nullptr ? reinterpret_cast<const char*>(restaurantText) : "";
-                const string name =
-                    nameText != nullptr ? reinterpret_cast<const char*>(nameText) : "";
+                const RestID_tp restaurantID = sqliteText(restaurantText);
+                const string name = sqliteText(nameText);
 
-                restaurateur = Restaurateur(restaurantID, name);
-                loadedObjectAliases()[restaurateur.getID()] = restaurateurID;
+                restaurateur = Restaurateur(restaurateurID, restaurantID, name);
                 found = true;
             } else if (rc != SQLITE_DONE) {
                 printSQLiteError(connection, "step");
@@ -146,7 +150,7 @@ namespace {
             const int rc = sqlite3_step(statement);
             if (rc == SQLITE_ROW) {
                 const unsigned char* text = sqlite3_column_text(statement, 0);
-                value = text != nullptr ? reinterpret_cast<const char*>(text) : "";
+                value = sqliteText(text);
             } else if (rc != SQLITE_DONE) {
                 printSQLiteError(database.connection(), "step");
             }
@@ -312,15 +316,11 @@ map<ManagerID_tp, Restaurateur> RestaurateurStorage::giveAllRestaurateurs() cons
         const unsigned char* restaurantText = sqlite3_column_text(statement, 1);
         const unsigned char* nameText = sqlite3_column_text(statement, 2);
 
-        const ManagerID_tp restaurateurID =
-            idText != nullptr ? reinterpret_cast<const char*>(idText) : "";
-        const RestID_tp restaurantID =
-            restaurantText != nullptr ? reinterpret_cast<const char*>(restaurantText) : "";
-        const string name =
-            nameText != nullptr ? reinterpret_cast<const char*>(nameText) : "";
+        const ManagerID_tp restaurateurID = sqliteText(idText);
+        const RestID_tp restaurantID = sqliteText(restaurantText);
+        const string name = sqliteText(nameText);
 
-        Restaurateur restaurateur(restaurantID, name);
-        loadedObjectAliases()[restaurateur.getID()] = restaurateurID;
+        Restaurateur restaurateur(restaurateurID, restaurantID, name);
         restaurateurs.emplace(restaurateurID, restaurateur);
     }
 

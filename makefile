@@ -46,6 +46,28 @@ ORDER_SNAPSHOT_TEST_SRCS := \
 	src/Database/DatabaseManager.cpp \
 	src/Utility/IDGenerator.cpp
 
+REPOSITORY_AGGREGATE_HYDRATION_TEST_SRCS := \
+	tests/repository_aggregate_hydration_test.cpp \
+	src/Domain/Admin.cpp \
+	src/Domain/Customer.cpp \
+	src/Domain/Drink.cpp \
+	src/Domain/Food.cpp \
+	src/Domain/Menu.cpp \
+	src/Domain/MenuItem.cpp \
+	src/Domain/Order.cpp \
+	src/Domain/Restaurant.cpp \
+	src/Domain/Restaurateur.cpp \
+	src/Repository/AdminStorage.cpp \
+	src/Repository/CustomerStorage.cpp \
+	src/Repository/MenuStorage.cpp \
+	src/Repository/OrderStorage.cpp \
+	src/Repository/RestaurantStorage.cpp \
+	src/Repository/RestaurateurStorage.cpp \
+	src/Database/DatabaseManager.cpp \
+	src/UI/GetInformation.cpp \
+	src/UI/Printer.cpp \
+	src/Utility/IDGenerator.cpp
+
 .PHONY: all clean test
 
 all: $(TARGET)
@@ -54,9 +76,10 @@ $(TARGET): $(SRCS)
 	mkdir bin/ -p
 	g++ $(CXXFLAGS) $(SRCS) -o $(TARGET) $(LDLIBS)
 
-test: bin/menu_item_hydration_test bin/order_snapshot_test
+test: bin/menu_item_hydration_test bin/order_snapshot_test bin/repository_aggregate_hydration_test
 	./bin/menu_item_hydration_test
 	./bin/order_snapshot_test
+	./bin/repository_aggregate_hydration_test
 
 bin/menu_item_hydration_test: $(HYDRATION_TEST_SRCS)
 	mkdir bin/ -p
@@ -66,5 +89,9 @@ bin/order_snapshot_test: $(ORDER_SNAPSHOT_TEST_SRCS)
 	mkdir bin/ -p
 	g++ $(CXXFLAGS) $(ORDER_SNAPSHOT_TEST_SRCS) -o bin/order_snapshot_test $(LDLIBS)
 
+bin/repository_aggregate_hydration_test: $(REPOSITORY_AGGREGATE_HYDRATION_TEST_SRCS)
+	mkdir bin/ -p
+	g++ $(CXXFLAGS) $(REPOSITORY_AGGREGATE_HYDRATION_TEST_SRCS) -o bin/repository_aggregate_hydration_test $(LDLIBS)
+
 clean:
-	rm -f $(TARGET) bin/menu_item_hydration_test bin/order_snapshot_test
+	rm -f $(TARGET) bin/menu_item_hydration_test bin/order_snapshot_test bin/repository_aggregate_hydration_test

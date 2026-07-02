@@ -46,6 +46,13 @@ namespace {
         return true;
     }
 
+    string sqliteText(const unsigned char* text)
+    {
+        return text != nullptr
+            ? string(static_cast<const char*>(static_cast<const void*>(text)))
+            : "";
+    }
+
     bool customerExists(sqlite3* connection, const CustID_tp& customerID)
     {
         sqlite3_stmt* statement = nullptr;
@@ -79,7 +86,7 @@ namespace {
             const int rc = sqlite3_step(statement);
             if (rc == SQLITE_ROW) {
                 const unsigned char* text = sqlite3_column_text(statement, 0);
-                name = text != nullptr ? reinterpret_cast<const char*>(text) : "";
+                name = sqliteText(text);
                 found = true;
             } else if (rc != SQLITE_DONE) {
                 printSQLiteError(connection, "step");
@@ -106,7 +113,7 @@ namespace {
             int rc = SQLITE_OK;
             while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
                 const unsigned char* text = sqlite3_column_text(statement, 0);
-                orderIDs.emplace_back(text != nullptr ? reinterpret_cast<const char*>(text) : "");
+                orderIDs.emplace_back(sqliteText(text));
             }
 
             if (rc == SQLITE_DONE) {
@@ -132,7 +139,7 @@ namespace {
             return false;
         }
 
-        customer = Customer(name, orderIDs);
+        customer = Customer(customerID, name, orderIDs);
         return true;
     }
 
@@ -278,10 +285,8 @@ map<CustID_tp, Customer> CustomerStorage::giveAllCustomers() const
         const unsigned char* idText = sqlite3_column_text(statement, 0);
         const unsigned char* nameText = sqlite3_column_text(statement, 1);
 
-        const CustID_tp customerID =
-            idText != nullptr ? reinterpret_cast<const char*>(idText) : "";
-        const string customerName =
-            nameText != nullptr ? reinterpret_cast<const char*>(nameText) : "";
+        const CustID_tp customerID = sqliteText(idText);
+        const string customerName = sqliteText(nameText);
 
         vector<OrderID_tp> orderIDs;
         if (!loadCustomerOrders(database.connection(), customerID, orderIDs)) {
@@ -292,7 +297,7 @@ map<CustID_tp, Customer> CustomerStorage::giveAllCustomers() const
 
         customers.emplace(
             customerID,
-            Customer(customerName, orderIDs)
+            Customer(customerID, customerName, orderIDs)
         );
     }
 

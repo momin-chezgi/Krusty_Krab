@@ -18,6 +18,17 @@ public:
     Restaurant() = default;
     Restaurant(Restaurant* r);
     Restaurant(string initManuID, string initName, string initAddress, string initPhoneNumber, string initBio = "", size_t minutesPrepared = 0);
+    Restaurant(RestID_tp initID, string initMenuID, string initName, string initAddress, string initPhoneNumber, string initBio = "", size_t minutesPrepared = 0);
+    Restaurant(
+        RestID_tp initID,
+        string initMenuID,
+        string initName,
+        string initAddress,
+        string initPhoneNumber,
+        string initBio,
+        size_t minutesPrepared,
+        const vector<OrderID_tp>& initOrderIDs
+    );
 
     RestID_tp getID() const;
     string getName() const;

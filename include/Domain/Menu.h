@@ -13,6 +13,7 @@ public:
     Menu() = default;
     Menu(Menu *m);
     Menu(const vector<MenuItem*> &initMenu);
+    Menu(MenuID_tp initID, const vector<MenuItem*> &initMenu);
     Menu(const Menu& other);
 
     Menu& operator=(const Menu& other);

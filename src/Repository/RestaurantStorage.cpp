@@ -83,6 +83,13 @@ namespace {
         return true;
     }
 
+    string sqliteText(const unsigned char* text)
+    {
+        return text != nullptr
+            ? string(static_cast<const char*>(static_cast<const void*>(text)))
+            : "";
+    }
+
     bool restaurantExists(sqlite3* connection, const RestID_tp& restaurantID)
     {
         sqlite3_stmt* statement = nullptr;
@@ -146,7 +153,7 @@ namespace {
             int rc = SQLITE_OK;
             while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
                 const unsigned char* text = sqlite3_column_text(statement, 0);
-                orderIDs.emplace_back(text != nullptr ? reinterpret_cast<const char*>(text) : "");
+                orderIDs.emplace_back(sqliteText(text));
             }
 
             if (rc == SQLITE_DONE) {
@@ -179,35 +186,28 @@ namespace {
                 const unsigned char* phoneText = sqlite3_column_text(statement, 5);
                 const unsigned char* bioText = sqlite3_column_text(statement, 6);
 
-                const MenuID_tp menuID =
-                    menuText != nullptr ? reinterpret_cast<const char*>(menuText) : "";
-                const string name =
-                    nameText != nullptr ? reinterpret_cast<const char*>(nameText) : "";
-                const string address =
-                    addressText != nullptr ? reinterpret_cast<const char*>(addressText) : "";
-                const string phone =
-                    phoneText != nullptr ? reinterpret_cast<const char*>(phoneText) : "";
-                const string bio =
-                    bioText != nullptr ? reinterpret_cast<const char*>(bioText) : "";
-
-                Restaurant loaded(
-                    menuID,
-                    name,
-                    address,
-                    phone,
-                    bio,
-                    static_cast<size_t>(preparationMinutes)
-                );
-                if (active) {
-                    loaded.activate();
-                } else {
-                    loaded.deactivate();
-                }
+                const MenuID_tp menuID = sqliteText(menuText);
+                const string name = sqliteText(nameText);
+                const string address = sqliteText(addressText);
+                const string phone = sqliteText(phoneText);
+                const string bio = sqliteText(bioText);
 
                 vector<OrderID_tp> orderIDs;
                 if (loadRestaurantOrders(connection, restaurantID, orderIDs)) {
-                    for (const auto& orderID : orderIDs) {
-                        loaded.AddOrderToQueue(orderID);
+                    Restaurant loaded(
+                        restaurantID,
+                        menuID,
+                        name,
+                        address,
+                        phone,
+                        bio,
+                        static_cast<size_t>(preparationMinutes),
+                        orderIDs
+                    );
+                    if (active) {
+                        loaded.activate();
+                    } else {
+                        loaded.deactivate();
                     }
                     restaurant = loaded;
                     found = true;
@@ -261,7 +261,7 @@ namespace {
             const int rc = sqlite3_step(statement);
             if (rc == SQLITE_ROW) {
                 const unsigned char* text = sqlite3_column_text(statement, 0);
-                value = text != nullptr ? reinterpret_cast<const char*>(text) : "";
+                value = sqliteText(text);
             } else if (rc != SQLITE_DONE) {
                 printSQLiteError(database.connection(), "step");
             }
@@ -653,8 +653,7 @@ map<RestID_tp, Restaurant> RestaurantStorage::giveAllRestaurants() const
     int rc = SQLITE_OK;
     while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
         const unsigned char* idText = sqlite3_column_text(statement, 0);
-        const RestID_tp restaurantID =
-            idText != nullptr ? reinterpret_cast<const char*>(idText) : "";
+        const RestID_tp restaurantID = sqliteText(idText);
 
         Restaurant restaurant;
         if (!loadRestaurant(database.connection(), restaurantID, restaurant)) {
@@ -691,7 +690,7 @@ vector<RestID_tp> RestaurantStorage::activeRestaurantList()
     int rc = SQLITE_OK;
     while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
         const unsigned char* idText = sqlite3_column_text(statement, 0);
-        restaurantIDs.emplace_back(idText != nullptr ? reinterpret_cast<const char*>(idText) : "");
+        restaurantIDs.emplace_back(sqliteText(idText));
     }
 
     if (rc != SQLITE_DONE) {

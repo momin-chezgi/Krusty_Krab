@@ -28,6 +28,42 @@ Restaurant::Restaurant(string initMenuID,
     menuID(initMenuID)
 {}
 
+Restaurant::Restaurant(
+     RestID_tp initID,
+     string initMenuID,
+     string initName,
+     string initAddress,
+     string initPhoneNumber,
+     string initBio,
+     size_t minutesPrepared) :
+    id(initID),
+    name(initName),
+    address(initAddress),
+    standardTimeOfPreparation(minutesPrepared),
+    phoneNumber(initPhoneNumber),
+    bio(initBio),
+    menuID(initMenuID)
+{}
+
+Restaurant::Restaurant(
+     RestID_tp initID,
+     string initMenuID,
+     string initName,
+     string initAddress,
+     string initPhoneNumber,
+     string initBio,
+     size_t minutesPrepared,
+     const vector<OrderID_tp>& initOrderIDs) :
+    id(initID),
+    name(initName),
+    address(initAddress),
+    standardTimeOfPreparation(minutesPrepared),
+    phoneNumber(initPhoneNumber),
+    bio(initBio),
+    orderIDs(initOrderIDs),
+    menuID(initMenuID)
+{}
+
 Restaurant::~Restaurant(){}
 
 

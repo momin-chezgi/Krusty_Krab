@@ -46,6 +46,13 @@ namespace {
         return true;
     }
 
+    string sqliteText(const unsigned char* text)
+    {
+        return text != nullptr
+            ? string(static_cast<const char*>(static_cast<const void*>(text)))
+            : "";
+    }
+
     bool adminExists(sqlite3* connection, const AdminID_tp& adminID)
     {
         sqlite3_stmt* statement = nullptr;
@@ -79,7 +86,7 @@ namespace {
             int rc = sqlite3_step(statement);
             if (rc == SQLITE_ROW) {
                 const unsigned char* text = sqlite3_column_text(statement, 0);
-                name = text != nullptr ? reinterpret_cast<const char*>(text) : "";
+                name = sqliteText(text);
                 found = true;
             } else if (rc != SQLITE_DONE) {
                 printSQLiteError(connection, "step");
@@ -106,9 +113,7 @@ namespace {
             int rc = SQLITE_OK;
             while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
                 const unsigned char* text = sqlite3_column_text(statement, 0);
-                restaurateurIDs.emplace_back(
-                    text != nullptr ? reinterpret_cast<const char*>(text) : ""
-                );
+                restaurateurIDs.emplace_back(sqliteText(text));
             }
 
             if (rc == SQLITE_DONE) {
@@ -165,7 +170,7 @@ AdminOfSystem AdminStorage::giveAdmin(AdminID_tp adminID) const
         return AdminOfSystem({}, "");
     }
 
-    return AdminOfSystem(restaurateurIDs, name);
+    return AdminOfSystem(adminID, restaurateurIDs, name);
 }
 
 bool AdminStorage::isValidAdmin(AdminID_tp adminID) const
@@ -273,8 +278,8 @@ map<AdminID_tp, AdminOfSystem> AdminStorage::giveAllAdmins() const
         const unsigned char* idText = sqlite3_column_text(statement, 0);
         const unsigned char* nameText = sqlite3_column_text(statement, 1);
 
-        AdminID_tp adminID = idText != nullptr ? reinterpret_cast<const char*>(idText) : "";
-        string name = nameText != nullptr ? reinterpret_cast<const char*>(nameText) : "";
+        AdminID_tp adminID = sqliteText(idText);
+        string name = sqliteText(nameText);
         vector<ManagerID_tp> restaurateurIDs;
         if (!loadRestaurateurIDs(database.connection(), adminID, restaurateurIDs)) {
             admins.clear();
@@ -282,7 +287,7 @@ map<AdminID_tp, AdminOfSystem> AdminStorage::giveAllAdmins() const
             break;
         }
 
-        admins.emplace(adminID, AdminOfSystem(restaurateurIDs, name));
+        admins.emplace(adminID, AdminOfSystem(adminID, restaurateurIDs, name));
     }
 
     if (rc != SQLITE_DONE) {

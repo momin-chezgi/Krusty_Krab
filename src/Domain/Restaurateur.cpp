@@ -29,6 +29,10 @@ Restaurateur::Restaurateur(RestID_tp initRestaurantID, string initName) :
     name(initName), restaurantID(initRestaurantID) 
 {
 }
+Restaurateur::Restaurateur(ManagerID_tp initID, RestID_tp initRestaurantID, string initName) :
+    id(initID), name(initName), restaurantID(initRestaurantID)
+{
+}
 Restaurateur::~Restaurateur(){}
 
 

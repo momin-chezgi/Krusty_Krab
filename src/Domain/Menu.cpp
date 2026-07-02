@@ -12,6 +12,12 @@ Menu::Menu(const vector<MenuItem*> &initMenu)
     setMenu(initMenu);
 }
 
+Menu::Menu(MenuID_tp initID, const vector<MenuItem*> &initMenu) :
+    id(initID)
+{
+    setMenu(initMenu);
+}
+
 Menu::Menu(const Menu& other)
 {
     copyFrom(other);

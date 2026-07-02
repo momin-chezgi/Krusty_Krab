@@ -91,6 +91,13 @@ namespace {
         return true;
     }
 
+    string sqliteText(const unsigned char* text)
+    {
+        return text != nullptr
+            ? string(static_cast<const char*>(static_cast<const void*>(text)))
+            : "";
+    }
+
     bool menuExists(sqlite3* connection, const MenuID_tp& menuID)
     {
         sqlite3_stmt* statement = nullptr;
@@ -186,12 +193,11 @@ namespace {
         const int preparationMinutes = sqlite3_column_int(statement, 6);
         const unsigned char* foodTypeText = sqlite3_column_text(statement, 7);
 
-        const string itemID = idText != nullptr ? reinterpret_cast<const char*>(idText) : "";
-        const string itemType = typeText != nullptr ? reinterpret_cast<const char*>(typeText) : "";
-        const string itemName = nameText != nullptr ? reinterpret_cast<const char*>(nameText) : "";
-        const string itemBio = bioText != nullptr ? reinterpret_cast<const char*>(bioText) : "";
-        const string foodType =
-            foodTypeText != nullptr ? reinterpret_cast<const char*>(foodTypeText) : "";
+        const string itemID = sqliteText(idText);
+        const string itemType = sqliteText(typeText);
+        const string itemName = sqliteText(nameText);
+        const string itemBio = sqliteText(bioText);
+        const string foodType = sqliteText(foodTypeText);
 
         if (itemType == "Food") {
             return new Food(
@@ -275,7 +281,7 @@ namespace {
             if (rc == SQLITE_ROW) {
                 vector<MenuItem*> items;
                 if (loadMenuItems(connection, menuID, items)) {
-                    menu = Menu(items);
+                    menu = Menu(menuID, items);
                     clearItems(items);
                     found = true;
                 }
@@ -301,8 +307,7 @@ namespace {
             const int rc = sqlite3_step(statement);
             if (rc == SQLITE_ROW) {
                 const unsigned char* typeText = sqlite3_column_text(statement, 0);
-                const string itemType =
-                    typeText != nullptr ? reinterpret_cast<const char*>(typeText) : "";
+                const string itemType = sqliteText(typeText);
                 if (itemType == "Food") {
                     result = ItemType::Food;
                 } else if (itemType == "Drink") {
@@ -576,7 +581,7 @@ map<MenuID_tp, Menu> MenuStorage::giveAllMenus() const
     int rc = SQLITE_OK;
     while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
         const unsigned char* idText = sqlite3_column_text(statement, 0);
-        const MenuID_tp menuID = idText != nullptr ? reinterpret_cast<const char*>(idText) : "";
+        const MenuID_tp menuID = sqliteText(idText);
 
         Menu menu;
         if (!loadMenu(database.connection(), menuID, menu)) {

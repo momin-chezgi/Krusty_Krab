@@ -135,6 +135,18 @@ namespace {
         return true;
     }
 
+    string sqliteText(const unsigned char* text)
+    {
+        return text != nullptr
+            ? string(static_cast<const char*>(static_cast<const void*>(text)))
+            : "";
+    }
+
+    string sqliteTextOr(const unsigned char* text, const string& fallback)
+    {
+        return text != nullptr ? sqliteText(text) : fallback;
+    }
+
     bool orderExists(sqlite3* connection, const OrderID_tp& orderID)
     {
         sqlite3_stmt* statement = nullptr;
@@ -229,12 +241,11 @@ namespace {
         const int preparationMinutes = sqlite3_column_int(statement, 7);
         const unsigned char* foodTypeText = sqlite3_column_text(statement, 8);
 
-        const ItemID_tp itemID = idText != nullptr ? reinterpret_cast<const char*>(idText) : "";
-        const string itemType = typeText != nullptr ? reinterpret_cast<const char*>(typeText) : "";
-        const string name = nameText != nullptr ? reinterpret_cast<const char*>(nameText) : "";
-        const string bio = bioText != nullptr ? reinterpret_cast<const char*>(bioText) : "";
-        const string foodType =
-            foodTypeText != nullptr ? reinterpret_cast<const char*>(foodTypeText) : "";
+        const ItemID_tp itemID = sqliteText(idText);
+        const string itemType = sqliteText(typeText);
+        const string name = sqliteText(nameText);
+        const string bio = sqliteText(bioText);
+        const string foodType = sqliteText(foodTypeText);
 
         if (itemType == "Food") {
             return new Food(
@@ -323,12 +334,9 @@ namespace {
                 const unsigned char* ordererText = sqlite3_column_text(statement, 1);
                 const unsigned char* statusText = sqlite3_column_text(statement, 2);
 
-                const OrderID_tp persistedID =
-                    idText != nullptr ? reinterpret_cast<const char*>(idText) : orderID;
-                const CustID_tp ordererID =
-                    ordererText != nullptr ? reinterpret_cast<const char*>(ordererText) : "";
-                const string status =
-                    statusText != nullptr ? reinterpret_cast<const char*>(statusText) : "";
+                const OrderID_tp persistedID = sqliteTextOr(idText, orderID);
+                const CustID_tp ordererID = sqliteText(ordererText);
+                const string status = sqliteText(statusText);
 
                 vector<OrderLine> lines;
                 if (loadOrderItems(connection, persistedID, lines)) {
@@ -593,7 +601,7 @@ OrderStatus OrderStorage::getOrderStatus(OrderID_tp orderID)
         const int rc = sqlite3_step(statement);
         if (rc == SQLITE_ROW) {
             const unsigned char* text = sqlite3_column_text(statement, 0);
-            status = statusFromStorage(text != nullptr ? reinterpret_cast<const char*>(text) : "");
+            status = statusFromStorage(sqliteText(text));
         } else if (rc != SQLITE_DONE) {
             printSQLiteError(database.connection(), "step");
         }
@@ -619,8 +627,7 @@ map<OrderID_tp, Order> OrderStorage::giveAllOrders() const
     int rc = SQLITE_OK;
     while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
         const unsigned char* idText = sqlite3_column_text(statement, 0);
-        const OrderID_tp orderID =
-            idText != nullptr ? reinterpret_cast<const char*>(idText) : "";
+        const OrderID_tp orderID = sqliteText(idText);
 
         Order order;
         if (!loadOrder(database.connection(), orderID, order)) {
