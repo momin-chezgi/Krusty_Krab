@@ -7,6 +7,11 @@ class OrderStorage{
 public:
     bool isValidOrder(OrderID_tp orderID);
     bool saveOrder(const Order& newOrder);
+    bool saveOrder(
+        const Order& newOrder,
+        const CustID_tp& customerID,
+        const RestID_tp& restaurantID
+    );
     // returns true if the order has been saved successfully, otherwise false
     bool deleteOrder(OrderID_tp orderID);  // returns true if the order with the given ID exists and has been deleted, otherwise returns false
     bool updateOrder(const Order& updatingOrder);  // returns true if the order with the given ID exists and has been updated, otherwise returns false

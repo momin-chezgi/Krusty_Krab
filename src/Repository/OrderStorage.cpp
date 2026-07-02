@@ -7,6 +7,8 @@
 
 namespace {
     const string orderExistsSql = "SELECT 1 FROM orders WHERE id = ? LIMIT 1;";
+    const string customerExistsSql = "SELECT 1 FROM customers WHERE id = ? LIMIT 1;";
+    const string restaurantExistsSql = "SELECT 1 FROM restaurants WHERE id = ? LIMIT 1;";
     const string orderSelectSql = R"SQL(
         SELECT id, orderer_id, status
         FROM orders
@@ -37,13 +39,17 @@ namespace {
         "SELECT 1 FROM order_items WHERE order_id = ? AND item_id = ? LIMIT 1;";
     const string insertOrderSql = R"SQL(
         INSERT INTO orders (id, orderer_id, restaurant_id, status, total_price)
-        VALUES (?, ?, '', ?, ?);
+        VALUES (?, ?, ?, ?, ?);
     )SQL";
     const string updateOrderSql = R"SQL(
         UPDATE orders
         SET orderer_id = ?, status = ?, total_price = ?
         WHERE id = ?;
     )SQL";
+    const string insertOrderRestaurantSql =
+        "INSERT INTO restaurant_orders (restaurant_id, order_id) VALUES (?, ?);";
+    const string insertOrderCustomerSql =
+        "INSERT INTO customer_orders (customer_id, order_id) VALUES (?, ?);";
     const string deleteOrderSql = "DELETE FROM orders WHERE id = ?;";
     const string deleteOrderItemsSql = "DELETE FROM order_items WHERE order_id = ?;";
     const string deleteOrderItemSql =
@@ -402,9 +408,85 @@ namespace {
     {
         return database.execute(updateOrderTotalSql, {orderID, orderID});
     }
+
+    bool idExists(sqlite3* connection, const string& existsSql, const string& id)
+    {
+        sqlite3_stmt* statement = nullptr;
+        if (!prepareStatement(connection, existsSql, &statement)) {
+            return false;
+        }
+
+        bool found = false;
+        if (bindText(connection, statement, 1, id)) {
+            const int rc = sqlite3_step(statement);
+            if (rc == SQLITE_ROW) {
+                found = true;
+            } else if (rc != SQLITE_DONE) {
+                printSQLiteError(connection, "step");
+            }
+        }
+
+        sqlite3_finalize(statement);
+        return found;
+    }
+
+    bool saveOrderCore(
+        DatabaseManager& database,
+        const Order& newOrder,
+        const CustID_tp& customerID,
+        const RestID_tp& restaurantID
+    )
+    {
+        const OrderID_tp orderID = newOrder.getID();
+        if (!database.execute(
+            insertOrderSql,
+            {
+                orderID,
+                newOrder.getOrderer(),
+                restaurantID,
+                orderStatus2String(newOrder.getOrderStatus()),
+                std::to_string(newOrder.getTotalPrice())
+            }
+        )) {
+            return false;
+        }
+
+        if (!replaceOrderItems(database, newOrder)) {
+            return false;
+        }
+
+        if (!restaurantID.empty()) {
+            if (!idExists(database.connection(), restaurantExistsSql, restaurantID)) {
+                return false;
+            }
+            if (!database.execute(insertOrderRestaurantSql, {restaurantID, orderID})) {
+                return false;
+            }
+        }
+
+        if (!customerID.empty()) {
+            if (!idExists(database.connection(), customerExistsSql, customerID)) {
+                return false;
+            }
+            if (!database.execute(insertOrderCustomerSql, {customerID, orderID})) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
 
 bool OrderStorage::saveOrder(const Order& newOrder)
+{
+    return saveOrder(newOrder, "", "");
+}
+
+bool OrderStorage::saveOrder(
+    const Order& newOrder,
+    const CustID_tp& customerID,
+    const RestID_tp& restaurantID
+)
 {
     DatabaseManager database;
     if (!database.isOpen()) {
@@ -421,19 +503,7 @@ bool OrderStorage::saveOrder(const Order& newOrder)
         return false;
     }
 
-    if (!database.execute(
-        insertOrderSql,
-        {
-            orderID,
-            newOrder.getOrderer(),
-            orderStatus2String(newOrder.getOrderStatus()),
-            std::to_string(newOrder.getTotalPrice())
-        }
-    )) {
-        return false;
-    }
-
-    if (!replaceOrderItems(database, newOrder)) {
+    if (!saveOrderCore(database, newOrder, customerID, restaurantID)) {
         return false;
     }
 
