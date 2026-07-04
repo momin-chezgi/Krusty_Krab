@@ -17,6 +17,7 @@ void AdminDashboard();
 
 int main()
 {
+    cout << "The loyalty level is under implementation, thank you!" << endl;
     DatabaseManager database;
     if (!database.isOpen()) {
         cerr << "Warning: SQLite database is not available." << endl;
