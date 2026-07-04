@@ -452,7 +452,9 @@ namespace uuids
 
       [[nodiscard]] inline span<std::byte const, 16> as_bytes() const
       {
-         return span<std::byte const, 16>(reinterpret_cast<std::byte const*>(data.data()), 16);
+         return span<std::byte const, 16>(
+            static_cast<std::byte const*>(static_cast<void const*>(data.data())),
+            16);
       }
 
       template <typename StringType>
@@ -750,7 +752,10 @@ namespace uuids
       {
          alignas(uint32_t) uint8_t bytes[16];
          for (int i = 0; i < 16; i += 4)
-            *reinterpret_cast<uint32_t*>(bytes + i) = distribution(*generator);
+         {
+            const uint32_t value = distribution(*generator);
+            memcpy(bytes + i, &value, sizeof(value));
+         }
 
          // variant must be 10xxxxxx
          bytes[8] &= 0xBF;
@@ -852,7 +857,7 @@ namespace uuids
          auto ret = GetAdaptersInfo(nullptr, &len);
          if (ret != ERROR_BUFFER_OVERFLOW) return false;
          std::vector<unsigned char> buf(len);
-         auto pips = reinterpret_cast<PIP_ADAPTER_INFO>(&buf.front());
+         auto pips = static_cast<PIP_ADAPTER_INFO>(static_cast<void*>(&buf.front()));
          ret = GetAdaptersInfo(pips, &len);
          if (ret != ERROR_SUCCESS) return false;
          mac_address addr;
@@ -890,11 +895,12 @@ namespace uuids
 
             auto clock_seq = get_clock_sequence();
 
-            auto ptm = reinterpret_cast<uuids::uuid::value_type*>(&tm);
+            uuids::uuid::value_type timeBytes[sizeof(tm)];
+            memcpy(timeBytes, &tm, sizeof(tm));
 
-            memcpy(&data[0], ptm + 4, 4);
-            memcpy(&data[4], ptm + 2, 2);
-            memcpy(&data[6], ptm, 2);
+            memcpy(&data[0], timeBytes + 4, 4);
+            memcpy(&data[4], timeBytes + 2, 2);
+            memcpy(&data[6], timeBytes, 2);
 
             memcpy(&data[8], &clock_seq, 2);
 

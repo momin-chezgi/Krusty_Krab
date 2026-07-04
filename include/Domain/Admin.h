@@ -27,6 +27,7 @@ class AdminOfSystem{
 public:
     AdminOfSystem() = default;
     AdminOfSystem(const vector<ManagerID_tp> &initRestaurateurIDs, string initName="");
+    AdminOfSystem(AdminID_tp initID, const vector<ManagerID_tp> &initRestaurateurIDs, string initName="");
     AdminOfSystem(const AdminOfSystem& other) = default;
     ~AdminOfSystem();
 

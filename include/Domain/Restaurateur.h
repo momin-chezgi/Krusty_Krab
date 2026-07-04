@@ -14,6 +14,7 @@ class Restaurateur{
 public:
     Restaurateur() = default;
     Restaurateur(RestID_tp initRestaurantID, string initName="");
+    Restaurateur(ManagerID_tp initID, RestID_tp initRestaurantID, string initName);
     Restaurateur(const Restaurateur& other) = default;
     ~Restaurateur();
 

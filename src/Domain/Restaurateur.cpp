@@ -29,6 +29,10 @@ Restaurateur::Restaurateur(RestID_tp initRestaurantID, string initName) :
     name(initName), restaurantID(initRestaurantID) 
 {
 }
+Restaurateur::Restaurateur(ManagerID_tp initID, RestID_tp initRestaurantID, string initName) :
+    id(initID), name(initName), restaurantID(initRestaurantID)
+{
+}
 Restaurateur::~Restaurateur(){}
 
 
@@ -340,14 +344,4 @@ void Restaurateur::showMenu()
 {
     RestaurantStorage rstorage;
     Printer::menu(rstorage.getMenuID(restaurantID));
-}
-
-bool OrderStorage::updateStatus(OrderID_tp orderID, OrderStatus stat)
-{
-    auto it = orders.find(orderID);
-    if(it == orders.end()){
-        return false;
-    }
-    orders[orderID].setOrderStatus(stat);
-    return true;
 }

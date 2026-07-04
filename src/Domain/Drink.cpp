@@ -5,7 +5,32 @@ MenuItem(initName, initPrice, initBio) {
     setItemType("Drink");
     setVolume(initVolume);
 }
-Drink::Drink(Drink *d) : MenuItem(d->getName(), d->getPricePerUnit(), d->getBio()) {
+
+Drink::Drink(
+    ItemID_tp initID,
+    string initName,
+    cost initPrice,
+    double initVolume,
+    string initBio,
+    size_t initPreparationMinutes
+) : MenuItem(initID, initName, initPrice, initBio) {
+    setItemType("Drink");
+    setVolume(initVolume);
+    setPreparationMinutes(initPreparationMinutes);
+}
+
+Drink::Drink(
+    string initName,
+    cost initPrice,
+    double initVolume,
+    string initBio,
+    size_t initPreparationMinutes
+) : MenuItem(initName, initPrice, initBio) {
+    setItemType("Drink");
+    setVolume(initVolume);
+    setPreparationMinutes(initPreparationMinutes);
+}
+Drink::Drink(Drink *d) : MenuItem(d->getID(), d->getName(), d->getPricePerUnit(), d->getBio()) {
     setItemType("Drink");
     setVolume(d->getVolume());
 }

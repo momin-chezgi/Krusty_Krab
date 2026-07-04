@@ -8,6 +8,23 @@ class Food : public MenuItem
 public:
     Food(Food* f);
     Food(string initName, cost initPrice, double initWeight, string initBio = "");
+    Food(
+        ItemID_tp initID,
+        string initName,
+        cost initPrice,
+        double initWeight,
+        string initBio,
+        size_t initPreparationMinutes,
+        string initFoodType
+    );
+    Food(
+        string initName,
+        cost initPrice,
+        double initWeight,
+        string initBio,
+        size_t initPreparationMinutes,
+        string initFoodType
+    );
 
     double getWeight() const;
     bool isAvailable(double requested) const override;

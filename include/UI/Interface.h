@@ -13,7 +13,7 @@
 Role Login();
 bool enterAsCustomer(Customer &buffer);
 Restaurateur enterAsRestaurateur();
-AdminOfSystem enterAsAdmin();
+AdminOfSystem enterAsAdmin(AdminID_tp &adminID);
 MenuID_tp giveMenu(RestID_tp restaurantID);
 bool orderOut(MenuID_tp menuID, Order& resultOrder);
 RestaurateurAction restaurateurOptions(string givenName, const string& givenAddress, bool givenStatus, size_t givenMinutes);

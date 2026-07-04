@@ -1,6 +1,6 @@
 # include "Domain/Food.h"
 
-Food::Food(Food* f) : MenuItem(f->getName(), f->getPricePerUnit(), f->getBio()) {
+Food::Food(Food* f) : MenuItem(f->getID(), f->getName(), f->getPricePerUnit(), f->getBio()) {
     setItemType("Food");
     setWeight(f->getWeight());
 }
@@ -8,6 +8,35 @@ Food::Food(string initName, cost initPrice, double initWeight, string initBio) :
 MenuItem(initName, initPrice, initBio) {
     setItemType("Food");
     setWeight(initWeight);
+}
+
+Food::Food(
+    ItemID_tp initID,
+    string initName,
+    cost initPrice,
+    double initWeight,
+    string initBio,
+    size_t initPreparationMinutes,
+    string initFoodType
+) : MenuItem(initID, initName, initPrice, initBio) {
+    setItemType("Food");
+    setWeight(initWeight);
+    setPreparationMinutes(initPreparationMinutes);
+    setFoodType(initFoodType);
+}
+
+Food::Food(
+    string initName,
+    cost initPrice,
+    double initWeight,
+    string initBio,
+    size_t initPreparationMinutes,
+    string initFoodType
+) : MenuItem(initName, initPrice, initBio) {
+    setItemType("Food");
+    setWeight(initWeight);
+    setPreparationMinutes(initPreparationMinutes);
+    setFoodType(initFoodType);
 }
 
 double Food::getWeight() const {

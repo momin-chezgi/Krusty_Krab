@@ -18,6 +18,4 @@ public:
     bool reduceItemQuantity(MenuID_tp menuID, ItemID_tp itemID, double quantity);
     MenuItem* cloneItem(MenuID_tp menuID, ItemID_tp itemID);
     map<MenuID_tp, Menu> giveAllMenus() const;
-private:
-    static map<MenuID_tp, Menu> menus;
 };

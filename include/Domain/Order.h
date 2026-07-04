@@ -12,6 +12,7 @@ public:
     Order() = default;
     Order(const Order& o);
     Order(CustID_tp oID, const vector<OrderLine> &initOrder = {});
+    Order(OrderID_tp initID, CustID_tp oID, const vector<OrderLine> &initOrder);
     // For that time, the correctness of oID(ordererID) is 
     // the responsibility of the caller function,
     //  but we can add some authentication process to it in the future

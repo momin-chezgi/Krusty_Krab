@@ -3,11 +3,11 @@
 #include "Domain/Order.h"
 #include "Domain/MenuItem.h"
 #include "Repository/AdminStorage.h"
-#include "Repository/CustomerStorage.h"
 #include "Repository/MenuStorage.h"
 #include "Repository/OrderStorage.h"
 #include "Repository/RestaurantStorage.h"
 #include "Repository/RestaurateurStorage.h"
+#include "Database/DatabaseManager.h"
 #include "UI/Interface.h"
 #include "Utility/IDGenerator.h"
 
@@ -17,6 +17,11 @@ void AdminDashboard();
 
 int main()
 {
+    DatabaseManager database;
+    if (!database.isOpen()) {
+        cerr << "Warning: SQLite database is not available." << endl;
+    }
+
     while (true)
     {
         switch(Login())
@@ -46,7 +51,6 @@ void CustomerDashboard(){
     if (!enterAsCustomer(user)){  
         return;
     }
-    CustomerStorage cStorage;
 
     while(true){
         CustomerAction action = customerActions(user.getName());
@@ -66,12 +70,12 @@ void CustomerDashboard(){
                 Order order(user.getID(), {});
                 if(orderOut(menuID, order)){
                     user.orderOut(order.getID());
-                    RestaurantStorage rstorage;
                     OrderStorage oStorage;
-                    oStorage.saveOrder(order);
-                    rstorage.addOrderToRestaurant(restaurantID, order.getID());
-                    cStorage.updateCustomer(user);
-                    cout << "Order successfully created. Order ID: " << order.getID() << endl;
+                    if (oStorage.saveOrder(order, user.getID(), restaurantID)) {
+                        cout << "Order successfully created. Order ID: " << order.getID() << endl;
+                    } else {
+                        cout << "Could not create order at this time." << endl;
+                    }
                 }
 
             }
@@ -157,8 +161,10 @@ void RestaurateurDashboard(){
                 Order newOrder(user.getID(), {});
                 if (orderOut(menuID, newOrder)) {
                     OrderStorage oStorage;
-                    if (oStorage.saveOrder(newOrder)) {
-                        user.addOrderToQueue(newOrder.getID());
+                    if (oStorage.saveOrder(newOrder, "", restaurantID)) {
+                        // Order is already persisted and attached to the restaurant queue.
+                    } else {
+                        cout << "Could not create order at this time." << endl;
                     }
                 }
                 break;
@@ -205,7 +211,8 @@ void RestaurateurDashboard(){
 
 void AdminDashboard()
 {
-    AdminOfSystem user = enterAsAdmin();
+    AdminID_tp adminID;
+    AdminOfSystem user = enterAsAdmin(adminID);
     if(user.getName() == "Quit"){
         return;
     }
@@ -226,7 +233,7 @@ void AdminDashboard()
             Printer::clearScreen();
             continue;
         }
-        if(chosenOption == AdminAction::CreateRestaurant){
+            if(chosenOption == AdminAction::CreateRestaurant){
             cout << "Enter restaurateur ID to link this restaurant. ";
             cout << "(If the restaurateur ID is invalid, the restaurant will not be saved.) ";
             ManagerID_tp restaurateurID;
@@ -248,14 +255,14 @@ void AdminDashboard()
             restaurateurStorage.updateRestaurateur(manager);
             cout << "Restaurant created. New restaurant ID: " << newRestaurantID << endl;
             user.addRestaurateur(restaurateurID);
-            adminStorage.updateAdmin(user);
+            adminStorage.updateAdmin(adminID, user);
             continue;
         }
         if(chosenOption == AdminAction::CreateRestaurateur){
             Restaurateur newRestaurateur = GetInf::restaurateurFactory();
             if(restaurateurStorage.saveRestaurateur(newRestaurateur)){
                 user.addRestaurateur(newRestaurateur.getID());
-                adminStorage.updateAdmin(user);
+                adminStorage.updateAdmin(adminID, user);
                 cout << "Restaurateur created. New ID: " << newRestaurateur.getID() << endl;
             } else {
                 cout << "Could not create restaurateur." << endl;
@@ -270,7 +277,7 @@ void AdminDashboard()
             } else {
                 user.deactivateRestaurant(restaurateurID);
             }
-            adminStorage.updateAdmin(user);
+            adminStorage.updateAdmin(adminID, user);
             continue;
         }
         if(chosenOption == AdminAction::PrintTotalSaleStatistics

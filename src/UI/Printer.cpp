@@ -168,7 +168,7 @@ void Printer::RestaurateurChoices()
     cout << "41. Edit my name" << endl;
     cout << "42. Edit managed restaurant ID" << endl;
     cout <<"\nOthers:" << endl;
-    cout << "404. Debug: print in-memory storage" << endl;
+    cout << "404. Debug: print database storage" << endl;
     cout << "0. Exit dashboard" << endl;
 }
 
@@ -193,7 +193,7 @@ void Printer::adminChoices()
     cout << "32. Print total customer statistics" << endl;
     cout << "33. Print total sale statistics (legacy code)" << endl;
     cout << "34. Print total customer statistics (legacy code)" << endl;
-    cout << "404. Debug: print in-memory storage" << endl;
+    cout << "404. Debug: print database storage" << endl;
     cout << "0. Exit dashboard" << endl;
 }
 
@@ -210,7 +210,7 @@ void Printer::CustomerChoices()
     cout << "Select an option:" << endl;
     cout << "1. Place order" << endl;
     cout << "2. Show order IDs in my profile" << endl;
-    cout << "404. Debug: print in-memory storage" << endl;
+    cout << "404. Debug: print database storage" << endl;
     cout << "0. Exit dashboard" << endl;
     cout << "-1. Clear the screen" << endl;
 }
