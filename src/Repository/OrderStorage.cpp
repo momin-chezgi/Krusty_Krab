@@ -654,6 +654,16 @@ bool OrderStorage::removeItem(OrderID_tp orderID, ItemID_tp itemID)
     return transaction.commit();
 }
 
+bool OrderStorage::giveOrder(OrderID_tp orderID, Order& buffer) const
+{
+    DatabaseManager database;
+    if (!database.isOpen()) {
+        return false;
+    }
+
+    return loadOrder(database.connection(), orderID, buffer);
+}
+
 OrderStatus OrderStorage::getOrderStatus(OrderID_tp orderID)
 {
     DatabaseManager database;

@@ -23,6 +23,7 @@ namespace Printer{
     void orderID();
     void orderStatus();
     void addItemToCart();
+    void customerOrders(const vector<Order>& orders);
     void showCurrentOrders(vector<OrderID_tp> QueueByID);
     void showOrderHistory(vector<OrderID_tp> OrdersByID);
     void adminDashboard(const vector<ManagerID_tp> &restaurateurIDs);

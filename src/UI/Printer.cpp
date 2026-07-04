@@ -209,10 +209,25 @@ void Printer::CustomerChoices()
     cout << endl << newSpace << endl;
     cout << "Select an option:" << endl;
     cout << "1. Place order" << endl;
-    cout << "2. Show order IDs in my profile" << endl;
+    cout << "2. View my orders and status" << endl;
     cout << "404. Debug: print database storage" << endl;
     cout << "0. Exit dashboard" << endl;
     cout << "-1. Clear the screen" << endl;
+}
+
+void Printer::customerOrders(const vector<Order>& orders)
+{
+    if (orders.empty()) {
+        cout << "No orders found for this customer." << endl;
+        return;
+    }
+
+    cout << "My orders:" << endl;
+    for (const auto& order : orders) {
+        cout << "- Order ID: " << order.getID()
+             << ", status: " << orderStatus2String(order.getOrderStatus())
+             << ", total: " << order.getTotalPrice() << endl;
+    }
 }
 
 void Printer::debugStorage()

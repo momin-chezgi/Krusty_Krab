@@ -63,6 +63,7 @@ void CustomerDashboard(){
                 return;
             case CustomerAction::DebugStorage :
                 Printer::debugStorage();
+                break;
             case CustomerAction::PlaceOrder :
             {
                 RestID_tp restaurantID = chooseRestaurant();
@@ -78,22 +79,12 @@ void CustomerDashboard(){
                         cout << "Could not create order at this time." << endl;
                     }
                 }
-
+                break;
             }
             case CustomerAction::ViewMyOrders :
             {
-                OrderStorage oStorage;
-                if (user.getMyOrders().empty()) {
-                    cout << "No orders found for this customer." << endl;
-                    continue;
-                }
-                cout << "My order history:" << endl;
-                for(const auto& orderID : user.getMyOrders()){
-                    if(!oStorage.isValidOrder(orderID)){
-                        continue;
-                    }
-                    cout << "- " << orderID << endl << endl;
-                }
+                Printer::customerOrders(user.historyOfOrders());
+                break;
             }
         }
     }

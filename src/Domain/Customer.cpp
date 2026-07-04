@@ -63,7 +63,17 @@ bool Customer::isReady (OrderID_tp orderID) const
 
 vector<Order> Customer::historyOfOrders() const
 {
-    return {};
+    vector<Order> orders;
+    OrderStorage storage;
+
+    for (const auto& orderID : myOrders) {
+        Order order;
+        if (storage.giveOrder(orderID, order)) {
+            orders.push_back(order);
+        }
+    }
+
+    return orders;
 }
 
 CustID_tp Customer::getID() const
