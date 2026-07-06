@@ -517,6 +517,37 @@ bool MenuStorage::deleteItem(MenuID_tp menuID, ItemID_tp itemID)
     return database.execute(deleteItemSql, {menuID, itemID});
 }
 
+bool MenuStorage::increaseItemQuantity(MenuID_tp menuID, ItemID_tp itemID, double quantity)
+{
+    DatabaseManager database;
+    if (!database.isOpen()) {
+        return false;
+    }
+
+    MenuItem* item = loadSingleItem(database.connection(), menuID, itemID);
+    if (item == nullptr) {
+        return false;
+    }
+
+    const bool increased = item->addItemQuantity(quantity);
+    if (!increased) {
+        delete item;
+        return false;
+    }
+
+    const bool updated = database.execute(
+        updateItemQuantitySql,
+        {
+            std::to_string(itemQuantity(item)),
+            menuID,
+            itemID
+        }
+    );
+
+    delete item;
+    return updated;
+}
+
 bool MenuStorage::reduceItemQuantity(MenuID_tp menuID, ItemID_tp itemID, double quantity)
 {
     DatabaseManager database;

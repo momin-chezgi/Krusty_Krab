@@ -45,6 +45,7 @@ namespace GetInf{
     // menuItem:----------------------------------------
     MenuItem* menuItem();
     ItemID_tp menuItemID();
+    double menuItemQuantity(RestaurateurAction option);
 
     // order:-------------------------------------------
     bool orderOut(RestID_tp restaurantID, Order& buffer);   

@@ -152,6 +152,8 @@ void Printer::RestaurateurChoices()
     cout << "\nMenu editing options:" << endl;
     cout << "11. Add an item to menu" << endl;
     cout << "12. Remove an item from menu" << endl;
+    cout << "13. Raise item stock" << endl;
+    cout << "14. Decrease item stock" << endl;
 
     cout << "\nOrder editing options:" << endl;
     cout << "21. Add an order to the order queue" << endl;

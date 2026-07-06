@@ -56,6 +56,8 @@ public:
     // 'addItemToMenu' returns true if the item wasn't in the menu and has been added
     bool removeItemFromMenu(ItemID_tp itemID);
     // 'removeItemFromMenu' returns true if the item was in the menu and has been deleted
+    bool raiseItemStock(ItemID_tp itemID, double quantity);
+    bool decreaseItemStock(ItemID_tp itemID, double quantity);
 
     // Order
     

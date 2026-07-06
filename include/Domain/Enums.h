@@ -49,6 +49,8 @@ enum class RestaurateurAction : int {
     // menu:
     AddItemToMenu = 11,
     RemoveItemFromMenu = 12,
+    RaiseItemStock = 13,
+    DecreaseItemStock = 14,
     // queue:
     AddOrderToQueue = 21,
     RemoveOrderFromQueue = 22,

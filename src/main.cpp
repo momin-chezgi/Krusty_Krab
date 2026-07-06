@@ -169,6 +169,28 @@ void RestaurateurDashboard(){
             case RestaurateurAction::RemoveItemFromMenu:
                 user.removeItemFromMenu(GetInf::menuItemID());
                 break;
+            case RestaurateurAction::RaiseItemStock:
+            {
+                const ItemID_tp itemID = GetInf::menuItemID();
+                const double quantity = GetInf::menuItemQuantity(chosenOption);
+                if (user.raiseItemStock(itemID, quantity)) {
+                    cout << "Stock raised successfully." << endl;
+                } else {
+                    cout << "Could not raise stock for that item." << endl;
+                }
+                break;
+            }
+            case RestaurateurAction::DecreaseItemStock:
+            {
+                const ItemID_tp itemID = GetInf::menuItemID();
+                const double quantity = GetInf::menuItemQuantity(chosenOption);
+                if (user.decreaseItemStock(itemID, quantity)) {
+                    cout << "Stock decreased successfully." << endl;
+                } else {
+                    cout << "Could not decrease stock for that item." << endl;
+                }
+                break;
+            }
             case RestaurateurAction::AddOrderToQueue:
             {
                 RestID_tp restaurantID = user.getRestaurantID();

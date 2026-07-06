@@ -81,6 +81,8 @@ static RestaurateurAction readRestaurateurAction()
             || value == RestaurateurAction::EditRestaurantBio
             || value == RestaurateurAction::AddItemToMenu
             || value == RestaurateurAction::RemoveItemFromMenu
+            || value == RestaurateurAction::RaiseItemStock
+            || value == RestaurateurAction::DecreaseItemStock
             || value == RestaurateurAction::AddOrderToQueue
             || value == RestaurateurAction::RemoveOrderFromQueue
             || value == RestaurateurAction::SetOrderStatus
@@ -444,6 +446,28 @@ ItemID_tp GetInf::menuItemID()
     cout << "Enter item ID: ";
     cin >> itemID;
     return itemID;
+}
+
+double GetInf::menuItemQuantity(RestaurateurAction option)
+{
+    double quantity{};
+
+    while (true) {
+        if (option == RestaurateurAction::RaiseItemStock) {
+            cout << "Enter amount to add to stock: ";
+        } else {
+            cout << "Enter amount to remove from stock: ";
+        }
+
+        cin >> quantity;
+        if (cin && quantity > 0) {
+            return quantity;
+        }
+
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        Printer::InvalidInput();
+    }
 }
 
 bool GetInf::addItemToCart(MenuID_tp menuID, Order& resultOrder)
