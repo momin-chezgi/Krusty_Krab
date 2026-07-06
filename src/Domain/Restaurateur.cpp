@@ -194,6 +194,24 @@ bool Restaurateur::removeItemFromMenu(ItemID_tp itemID)
     return storage.deleteItem(menuID, itemID);
 }
 
+bool Restaurateur::raiseItemStock(ItemID_tp itemID, double quantity)
+{
+    MenuStorage storage;
+    RestaurantStorage rStorage;
+
+    MenuID_tp menuID = rStorage.getMenuID(restaurantID);
+    return storage.increaseItemQuantity(menuID, itemID, quantity);
+}
+
+bool Restaurateur::decreaseItemStock(ItemID_tp itemID, double quantity)
+{
+    MenuStorage storage;
+    RestaurantStorage rStorage;
+
+    MenuID_tp menuID = rStorage.getMenuID(restaurantID);
+    return storage.reduceItemQuantity(menuID, itemID, quantity);
+}
+
 // Order:
 
 vector<OrderID_tp> Restaurateur::getOrderHistoryIDs() const

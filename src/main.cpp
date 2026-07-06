@@ -122,6 +122,8 @@ void RestaurateurDashboard(){
 
     while(true){
         RestaurateurAction chosenOption = restaurateurOptions(
+            user.getRestaurantName(),
+            user.getRestaurantID(),
             user.getName(),
             user.getRestaurantAddress(),
             user.getRestaurantStatus(),

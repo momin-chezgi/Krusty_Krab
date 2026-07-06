@@ -12,10 +12,13 @@
 namespace Printer{
     void wellcome();
     void menu(MenuID_tp menuID);
-    void restaurateurDashboard(string nm,
-         string ad
-         , bool isactive
-         , size_t averaget);
+    void restaurateurDashboard(
+        string rn,
+        RestID_tp rID,
+        string nm,
+        string ad,
+        bool isactive,
+        size_t averaget);
     void InvalidInput();
     void RestaurateurChoices();
 void CustomerDashboard(

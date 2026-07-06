@@ -17,7 +17,7 @@ Restaurateur enterAsRestaurateur();
 AdminOfSystem enterAsAdmin(AdminID_tp &adminID);
 MenuID_tp giveMenu(RestID_tp restaurantID);
 bool orderOut(MenuID_tp menuID, Order& resultOrder);
-RestaurateurAction restaurateurOptions(string givenName, const string& givenAddress, bool givenStatus, size_t givenMinutes);
+RestaurateurAction restaurateurOptions(string restName, RestID_tp restID,string givenName, const string& givenAddress, bool givenStatus, size_t givenMinutes);
 AdminAction adminOptions(vector<ManagerID_tp> restaurateurIDs);
 CustomerAction customerActions(
     const Customer& user,

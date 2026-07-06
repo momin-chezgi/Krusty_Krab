@@ -62,8 +62,8 @@ CustomerAction customerActions(
     return GetInf::customerAction();
 }
 
-RestaurateurAction restaurateurOptions(string givenName, const string& givenAddress, bool givenStatus, size_t givenMinutes){
-    Printer::restaurateurDashboard(givenName, givenAddress,givenStatus, givenMinutes);
+RestaurateurAction restaurateurOptions(string restName, RestID_tp restID,string givenName, const string& givenAddress, bool givenStatus, size_t givenMinutes){
+    Printer::restaurateurDashboard(restName, restID, givenName, givenAddress,givenStatus, givenMinutes);
     Printer::RestaurateurChoices();
     return GetInf::restaurateurAction();
 }

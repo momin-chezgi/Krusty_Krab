@@ -125,16 +125,23 @@ void Printer::showOrderHistory(vector<OrderID_tp> OrdersByID)
 }
 
 
-void Printer::restaurateurDashboard(string nm,
-         string ad
-         , bool isactive
-         , size_t averaget)
+void Printer::restaurateurDashboard(
+        string rn,
+        RestID_tp rID,
+        string nm,
+        string ad,
+        bool isactive,
+        size_t averaget
+        )
 {
     printHeader("Restaurateur Dashboard");
     cout << "Welcome, " << nm << "!" << endl;
-    cout << "Restaurant address: " << ad << endl;
-    cout << "Restaurant status: " << (isactive ? "active" : "inactive") << endl;
-    cout << "Average preparation time: " << averaget << " minutes" << endl << endl;
+    cout << "Restaurant information:" << endl;
+    cout << "+ name: " << rn << endl;
+    cout << "+ ID:  " << rID << endl;
+    cout << "+ address: " << ad << endl;
+    cout << "+ status: " << (isactive ? "active" : "inactive") << endl;
+    cout << "+ Average preparation time: " << averaget << " minutes" << endl << endl;
 }
 
 void Printer::RestaurateurChoices()
