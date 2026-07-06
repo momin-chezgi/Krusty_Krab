@@ -35,6 +35,9 @@ namespace GetInf{
     bool admin(AdminOfSystem &buffer, AdminID_tp &adminID);
     AdminAction adminOptions(const vector<ManagerID_tp> &restaurateurIDs);
     Restaurateur restaurateurFactory();
+    CustID_tp customerID();
+    Level membershipLevel();
+    point membershipPoints();
 
     // menu:--------------------------------------------
     MenuID_tp menu(RestID_tp restaurantID);

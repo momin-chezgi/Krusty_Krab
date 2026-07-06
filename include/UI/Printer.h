@@ -6,6 +6,8 @@
 #include "Domain/Enums.h"
 #include "Domain/Food.h"
 #include "Domain/Drink.h"
+#include "Domain/MembershipLevel.h"
+#include "Repository/MembershipLevelStorage.h"
 
 namespace Printer{
     void wellcome();
@@ -16,7 +18,14 @@ namespace Printer{
          , size_t averaget);
     void InvalidInput();
     void RestaurateurChoices();
-    void CustomerDashboard(const string& name);
+void CustomerDashboard(
+    const Customer& customer,
+    const MembershipSummary& summary
+);
+    void checkoutInvoice(const CheckoutSummary& summary);
+    void membershipUpgrade(const string& message);
+    void membershipLevelReport(const map<Level, size_t>& counts);
+    void membershipLevelHistory(const vector<MembershipLevelLogEntry>& history);
     void CustomerChoices();
     void chooseRestaurant();
     void orderOut();

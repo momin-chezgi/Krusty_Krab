@@ -52,9 +52,12 @@ bool orderOut(MenuID_tp menuID, Order& resultOrder)
     return true;
 }
 
-CustomerAction customerActions(const string& customerName)
+CustomerAction customerActions(
+    const Customer& user,
+    const MembershipSummary& loyaltySummary
+)
 {
-    Printer::CustomerDashboard(customerName);
+    Printer::CustomerDashboard(user, loyaltySummary);
     Printer::CustomerChoices();
     return GetInf::customerAction();
 }

@@ -77,6 +77,9 @@ enum class AdminAction : int {
     PrintTotalCustomerStatistics = 32,
     PrintRestaurantSaleStatistics = 33,
     PrintRestaurantCustomerStatistics = 34,
+    PrintMembershipLevelReport = 41,
+    ChangeCustomerMembership = 42,
+    ShowMembershipLevelHistory = 43,
     DebugStorage = 404
 };
 

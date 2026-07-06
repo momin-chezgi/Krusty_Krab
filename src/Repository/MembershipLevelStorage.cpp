@@ -59,6 +59,18 @@ namespace {
         )
         VALUES (?, ?, ?, ?);
     )SQL";
+    const string countCustomersByLevelSql =
+        "SELECT level, COUNT(*) FROM membership_levels GROUP BY level;";
+    const string selectMembershipHistorySql = R"SQL(
+        SELECT
+            customer_id,
+            changed_at,
+            level,
+            points
+        FROM membership_level_logs
+        WHERE customer_id = ?
+        ORDER BY changed_at, rowid;
+    )SQL";
 
     void printSQLiteError(sqlite3* connection, const string& action)
     {
@@ -216,6 +228,76 @@ MembershipLevel MembershipLevelStorage::getMembershipLevel(CustID_tp custID)
 
     sqlite3_finalize(statement);
     return membership;
+}
+
+map<Level, size_t> MembershipLevelStorage::countCustomersByLevel()
+{
+    DatabaseManager database;
+    map<Level, size_t> counts{
+        {Level::Normal, 0},
+        {Level::Silver, 0},
+        {Level::Gold, 0},
+        {Level::VIP, 0}
+    };
+
+    if (!database.isOpen()) {
+        return counts;
+    }
+
+    sqlite3_stmt* statement = nullptr;
+    if (!prepareStatement(database.connection(), countCustomersByLevelSql, &statement)) {
+        return counts;
+    }
+
+    int rc = SQLITE_OK;
+    while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
+        Level level = levelFromStorage(sqlite3_column_int(statement, 0));
+        counts[level] = static_cast<size_t>(sqlite3_column_int64(statement, 1));
+    }
+    if (rc != SQLITE_DONE) {
+        printSQLiteError(database.connection(), "step");
+        for (auto& count : counts) {
+            count.second = 0;
+        }
+    }
+
+    sqlite3_finalize(statement);
+    return counts;
+}
+
+vector<MembershipLevelLogEntry> MembershipLevelStorage::levelHistory(CustID_tp custID)
+{
+    DatabaseManager database;
+    vector<MembershipLevelLogEntry> history;
+
+    if (!database.isOpen()) {
+        return history;
+    }
+
+    sqlite3_stmt* statement = nullptr;
+    if (!prepareStatement(database.connection(), selectMembershipHistorySql, &statement)) {
+        return history;
+    }
+
+    if (bindText(database.connection(), statement, 1, custID)) {
+        int rc = SQLITE_OK;
+        while ((rc = sqlite3_step(statement)) == SQLITE_ROW) {
+            MembershipLevelLogEntry entry;
+            const unsigned char* customerID = sqlite3_column_text(statement, 0);
+            entry.customerID = customerID != nullptr ? reinterpret_cast<const char*>(customerID) : "";
+            entry.changedAt = static_cast<long long>(sqlite3_column_int64(statement, 1));
+            entry.level = levelFromStorage(sqlite3_column_int(statement, 2));
+            entry.points = sqlite3_column_double(statement, 3);
+            history.push_back(entry);
+        }
+        if (rc != SQLITE_DONE) {
+            printSQLiteError(database.connection(), "step");
+            history.clear();
+        }
+    }
+
+    sqlite3_finalize(statement);
+    return history;
 }
 
 bool MembershipLevelStorage::hasMembershipLevel(CustID_tp custID)

@@ -39,4 +39,3 @@ all: $(TARGET)
 $(TARGET): $(SRCS)
 	mkdir bin/ -p
 	g++ $(CXXFLAGS) $(SRCS) -o $(TARGET) $(LDLIBS)
-

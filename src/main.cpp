@@ -7,6 +7,8 @@
 #include "Repository/OrderStorage.h"
 #include "Repository/RestaurantStorage.h"
 #include "Repository/RestaurateurStorage.h"
+#include "Repository/CustomerStorage.h"
+#include "Repository/MembershipLevelStorage.h"
 #include "Database/DatabaseManager.h"
 #include "UI/Interface.h"
 #include "Utility/IDGenerator.h"
@@ -17,7 +19,6 @@ void AdminDashboard();
 
 int main()
 {
-    cout << "The loyalty level is under implementation, thank you!" << endl;
     DatabaseManager database;
     if (!database.isOpen()) {
         cerr << "Warning: SQLite database is not available." << endl;
@@ -53,8 +54,15 @@ void CustomerDashboard(){
         return;
     }
 
+    MembershipLevel membership = applyLevelTemplate(Level::Normal, 0.0);
+    const bool hasMembershipProfile = ensureRecordForCustomer(user.getID(), membership);
+    if (!hasMembershipProfile) {
+        cout << "Could not open membership profile. Continuing without loyalty persistence." << endl;
+    }
+    MembershipSummary membershipSummary = buildSummary(membership);
+
     while(true){
-        CustomerAction action = customerActions(user.getName());
+        CustomerAction action = customerActions(user, membershipSummary);
         switch (action){
             case CustomerAction::ClearScreen:
                 Printer::clearScreen();
@@ -74,6 +82,21 @@ void CustomerDashboard(){
                     user.orderOut(order.getID());
                     OrderStorage oStorage;
                     if (oStorage.saveOrder(order, user.getID(), restaurantID)) {
+                        Printer::checkoutInvoice(buildCheckoutSummary(membership, order));
+
+                        const auto loyaltyUpdate = applyOrder(membership, order.getTotalPrice());
+                        membership = loyaltyUpdate.next;
+                        membershipSummary = buildSummary(membership);
+
+                        if (persistMembershipForCustomer(user.getID(), membership)) {
+                            if (loyaltyUpdate.levelUp) {
+                                Printer::membershipUpgrade(
+                                    upgradeMessage(loyaltyUpdate.previousLevel, loyaltyUpdate.nextLevel)
+                                );
+                            }
+                        } else {
+                            cout << "Could not update membership profile." << endl;
+                        }
                         cout << "Order successfully created. Order ID: " << order.getID() << endl;
                     } else {
                         cout << "Could not create order at this time." << endl;
@@ -166,6 +189,7 @@ void RestaurateurDashboard(){
                 break;
             case RestaurateurAction::SetOrderStatus:
                 user.setOrderStatus();
+                break;
             case RestaurateurAction::PrintSaleStatistics:
                 user.updateAndPrintSaleStatistics();
                 break;
@@ -211,6 +235,8 @@ void AdminDashboard()
     AdminStorage adminStorage;
     RestaurateurStorage restaurateurStorage;
     RestaurantStorage restaurantStorage;
+    MembershipLevelStorage membershipStorage;
+    CustomerStorage customerStorage;
 
     while(true){
         AdminAction chosenOption = adminOptions(user.getRestaurateurIDs());
@@ -225,7 +251,8 @@ void AdminDashboard()
             Printer::clearScreen();
             continue;
         }
-            if(chosenOption == AdminAction::CreateRestaurant){
+
+        if(chosenOption == AdminAction::CreateRestaurant){
             cout << "Enter restaurateur ID to link this restaurant. ";
             cout << "(If the restaurateur ID is invalid, the restaurant will not be saved.) ";
             ManagerID_tp restaurateurID;
@@ -281,6 +308,35 @@ void AdminDashboard()
                 user.updateAndPrintTotalSaleStatistics();
             } else {
                 user.updateAndPrintTotalCustomerStatistics();
+            }
+            continue;
+        }
+        if(chosenOption == AdminAction::PrintMembershipLevelReport){
+            Printer::membershipLevelReport(membershipStorage.countCustomersByLevel());
+            continue;
+        }
+        if(chosenOption == AdminAction::ShowMembershipLevelHistory){
+            CustID_tp targetCustomerID = GetInf::customerID();
+            Printer::membershipLevelHistory(
+                membershipStorage.levelHistory(targetCustomerID)
+            );
+            continue;
+        }
+        if(chosenOption == AdminAction::ChangeCustomerMembership){
+            CustID_tp targetCustomerID = GetInf::customerID();
+            if (!customerStorage.isValidCustomer(targetCustomerID)) {
+                cout << "Invalid customer ID." << endl;
+                continue;
+            }
+            const bool hadRecord = membershipStorage.hasMembershipLevel(targetCustomerID);
+            Level targetLevel = GetInf::membershipLevel();
+            point targetPoints = GetInf::membershipPoints();
+            MembershipLevel updatedLevel = applyLevelTemplate(targetLevel, targetPoints);
+            if (persistMembershipForCustomer(targetCustomerID, updatedLevel)) {
+                cout << (hadRecord ? "Membership updated for " : "Membership created and set for ")
+                     << "customer: " << targetCustomerID << endl;
+            } else {
+                cout << "Could not update membership profile." << endl;
             }
             continue;
         }

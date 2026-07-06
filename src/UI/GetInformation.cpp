@@ -110,7 +110,7 @@ static AdminAction readAdminAction()
         }
         AdminAction value = static_cast<AdminAction>(raw);
         if (value == AdminAction::ClearScreen
-            ||value == AdminAction::Quit
+            || value == AdminAction::Quit
             || value == AdminAction::CreateRestaurant
             || value == AdminAction::ActivateRestaurant
             || value == AdminAction::DeactivateRestaurant
@@ -119,6 +119,9 @@ static AdminAction readAdminAction()
             || value == AdminAction::PrintTotalCustomerStatistics
             || value == AdminAction::PrintRestaurantSaleStatistics
             || value == AdminAction::PrintRestaurantCustomerStatistics
+            || value == AdminAction::PrintMembershipLevelReport
+            || value == AdminAction::ChangeCustomerMembership
+            || value == AdminAction::ShowMembershipLevelHistory
             || value == AdminAction::DebugStorage) {
             return value;
         }
@@ -339,6 +342,47 @@ bool GetInf::admin(AdminOfSystem &buffer, AdminID_tp &adminID)
             return true;
         }
         cout << "Invalid ID. ";
+    }
+}
+
+CustID_tp GetInf::customerID()
+{
+    CustID_tp id;
+    cin >> id;
+    return id;
+}
+
+Level GetInf::membershipLevel()
+{
+    while (true) {
+        cout << "Enter new membership level (0=Normal, 1=Silver, 2=Gold, 3=VIP): ";
+        int raw{};
+        if (!readInt(raw)) {
+            cin.clear();
+            continue;
+        }
+        if (raw == static_cast<int>(Level::Normal)
+            || raw == static_cast<int>(Level::Silver)
+            || raw == static_cast<int>(Level::Gold)
+            || raw == static_cast<int>(Level::VIP)) {
+            return static_cast<Level>(raw);
+        }
+        Printer::InvalidInput();
+    }
+}
+
+point GetInf::membershipPoints()
+{
+    point value{};
+    while (true) {
+        cout << "Enter membership points: ";
+        cin >> value;
+        if (cin) {
+            return value;
+        }
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        Printer::InvalidInput();
     }
 }
 

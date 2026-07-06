@@ -62,8 +62,8 @@ void Printer::menu(MenuID_tp menuID)
                 cout << "  - " << item->getName()
                     << " | " << item->getBio()
                     << " | Price: " << item->getPricePerUnit()
-                    << " | Prep time: " << item->getPreparationMinutes() << " min"
-                    << "weight(kg): " << fptr->getWeight()
+                    << " | Prep time: " << item->getPreparationMinutes() << " min(s)"
+                    << " | weight(kg): " << fptr->getWeight()
                     << " | ID: " << item->getID() << endl;
 
             }
@@ -71,8 +71,8 @@ void Printer::menu(MenuID_tp menuID)
                 cout << "  - " << item->getName()
                     << " | " << item->getBio()
                     << " | Price: " << item->getPricePerUnit()
-                    << " | Prep time: " << item->getPreparationMinutes() << " min"
-                    << "volume(litre): " << dptr->getVolume()
+                    << " | Prep time: " << item->getPreparationMinutes() << " min(s)"
+                    << " | volume(litre): " << dptr->getVolume()
                     << " | ID: " << item->getID() << endl;
             }
         }
@@ -193,15 +193,74 @@ void Printer::adminChoices()
     cout << "32. Print total customer statistics" << endl;
     cout << "33. Print total sale statistics (legacy code)" << endl;
     cout << "34. Print total customer statistics (legacy code)" << endl;
+    cout << "\nMembership management:" << endl;
+    cout << "41. Print membership level report" << endl;
+    cout << "42. Change a customer's membership" << endl;
+    cout << "43. Show a customer's membership level history" << endl;
     cout << "404. Debug: print database storage" << endl;
     cout << "0. Exit dashboard" << endl;
 }
 
-void Printer::CustomerDashboard(const string& name)
+void Printer::CustomerDashboard(
+    const Customer& customer,
+    const MembershipSummary& summary
+)
 {
     printHeader("Customer Dashboard");
-    cout << "Welcome, " << name << endl;
+    cout << "Welcome, " << customer.getName() << endl;
+    cout << "Membership level: " << summary.levelName << " Member" << endl;
+    cout << "Current points: " << summary.currentPoints << endl;
+    if (summary.level == Level::VIP) {
+        cout << "Points needed for next level: top level reached" << endl;
+    } else {
+        cout << "Points needed for next level: " << summary.pointsToNextLevel << endl;
+    }
+    cout << "Order discount: " << summary.discountPercent << "%" << endl;
+    cout << "Delivery benefit: " << summary.deliveryBenefit << endl;
+    cout << "Lottery tickets: " << summary.lotteryTickets << endl;
     ShowRestaurants();
+}
+
+void Printer::checkoutInvoice(const CheckoutSummary& summary)
+{
+    printHeader("Checkout Invoice");
+    cout << "Base total: " << summary.baseTotal << endl;
+    cout << "Membership discount (" << summary.discountPercent << "%): -" << summary.discountAmount << endl;
+    cout << "Delivery base fee: " << summary.baseDeliveryFee << endl;
+    cout << "Delivery discount: -" << summary.deliveryDiscountAmount << endl;
+    cout << "Final delivery fee: " << summary.finalDeliveryFee << endl;
+    cout << "Final payable total: " << summary.finalTotal << endl;
+    cout << "Points earned from this order: " << summary.earnedPoints << endl;
+}
+
+void Printer::membershipUpgrade(const string& message)
+{
+    cout << endl << message << endl;
+}
+
+void Printer::membershipLevelReport(const map<Level, size_t>& counts)
+{
+    printHeader("Membership Level Report");
+    cout << "Normal: " << counts.at(Level::Normal) << endl;
+    cout << "Silver: " << counts.at(Level::Silver) << endl;
+    cout << "Gold: " << counts.at(Level::Gold) << endl;
+    cout << "VIP: " << counts.at(Level::VIP) << endl;
+}
+
+void Printer::membershipLevelHistory(const vector<MembershipLevelLogEntry>& history)
+{
+    printHeader("Membership Level History");
+    if (history.empty()) {
+        cout << "No history found." << endl;
+        return;
+    }
+
+    for (const auto& entry : history) {
+        cout << "- customer: " << entry.customerID
+             << ", level: " << levelToString(entry.level)
+             << ", points: " << entry.points
+             << ", changed_at: " << entry.changedAt << endl;
+    }
 }
 
 void Printer::CustomerChoices()
