@@ -4,8 +4,13 @@ SRCS := \
 	src/Domain/Customer.cpp \
 	src/Domain/Drink.cpp \
 	src/Domain/Food.cpp \
+	src/Domain/Gold.cpp \
 	src/Domain/Menu.cpp \
 	src/Domain/MenuItem.cpp \
+	src/Domain/MembershipLevel.cpp \
+	src/Domain/Normal.cpp \
+	src/Domain/Silver.cpp \
+	src/Domain/VIP.cpp \
 	src/Domain/Order.cpp \
 	src/Domain/Restaurant.cpp \
 	src/Domain/Restaurateur.cpp \

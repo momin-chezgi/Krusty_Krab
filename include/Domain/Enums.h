@@ -79,3 +79,18 @@ enum class AdminAction : int {
     PrintRestaurantCustomerStatistics = 34,
     DebugStorage = 404
 };
+
+
+enum class level : int {
+    Normal = 0,
+    Silver = 1,
+    Gold = 2,
+    VIP = 3,
+};
+
+enum class Achievement : int {
+    FrequentBuyer = 1,
+    NightCustomer = 2,
+    LaunchEater = 3,
+    EarlyBird = 4,
+};

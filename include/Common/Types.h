@@ -10,6 +10,7 @@
 using namespace std;
 
 typedef double cost;
+typedef double point;
 typedef string ID_tp;
 typedef string RestID_tp;
 typedef string ManagerID_tp;  // Manager = restaurateur
