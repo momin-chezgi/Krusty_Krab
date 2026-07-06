@@ -19,23 +19,53 @@ We also have some other characteristics:
 * Order
 * Menu
 * Menu Item (contains food and drink)
-* Cart (when order hasn't been finalised)
+* Cart (when the order hasn't been finalised)
 
 Each level of user has its specific access:
 ### For Customer:
-1. Placing an order
-2. Tracing its orders
+1. Browse restaurants and select an active restaurant.
+2. Browse restaurant menus (food and drink items).
+3. Build an order with quantities and create it.
+3. Track order readiness and view order history.
+4. Observe membership-level behaviour where applicable.
 
 ### For Manager:
 1. Monitoring statistics of the restaurant
-2. Changing its details and the restaurant details
-3. Add/remove an item from the restaurant menu
-4. Add/remove an order from the queue of orders
-5. changing the status of an order(In-Preparation, Ready-to-send, delivered or cancelled)
+2. Edit restaurant profile details.
+3. Changing its details and the restaurant details
+4. Add/remove an item from the restaurant menu
+5. Adjust stock levels.
+6. Add/remove an order from the queue of orders
+7. updating the status of an order(In-Preparation, Ready-to-send, delivered or cancelled)
 
 ### For Admin:
 1. Add/delete a manager account
 2. Create a restaurant
 3. Active/deactivate a restaurant
-4. monitoring total statistics
+4. Monitoring total statistics
 
+## Project structure
+
+- `include/Domain` and `src/Domain`: entities and business logic.
+- `include/Repository` and `src/Repository`: static storage and SQL-oriented classes.
+- `include/UI` and `src/UI`: command-line interaction and user-flow orchestration.
+- `include/Utility` and `src/Utility`: shared helpers and ID generation utilities.
+- `Docs`: design notes and references.
+
+## Storage strategy
+
+The current implementation is a transitional prototype.
+
+1. Some flows operate through in-memory repository maps for direct lightweight behaviour.
+2. SQLite-backed repositories are integrated to support persistence-oriented development.
+3. IDs are string-based, with hydration and entity reconstruction currently evolving around repository boundaries.
+
+## Command-line workflow
+
+1. Start the application.
+2. Choose a role.
+3. Provide input-driven data for that role flow.
+4. Navigate the role menu to perform operations.
+5. Return to menus or exit cleanly.
+
+> This README reflects the current shape of the project and should evolve with each development phase.
