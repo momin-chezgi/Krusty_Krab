@@ -1,0 +1,2 @@
+* Phase1 class diagram: https://canva.link/tcef03hvtipq07i
+* Phase2 Membership Level design: https://www.dropbox.com/scl/fi/o2iefzmultonamk1euta5/MembershipLevel.drawio?rlkey=bkyg5whsmnkexbkgan13tiihr&st=gv1ob6s9&dl=0
