@@ -25,6 +25,25 @@ namespace {
             PRIMARY KEY (customer_id, order_id)
         );
 
+        CREATE TABLE IF NOT EXISTS membership_levels (
+            customer_id TEXT PRIMARY KEY,
+            level INTEGER NOT NULL,
+            starting_point REAL NOT NULL DEFAULT 0,
+            ending_point REAL NOT NULL DEFAULT 0,
+            current_points REAL NOT NULL DEFAULT 0,
+            multiplier REAL NOT NULL DEFAULT 1,
+            off_percentage REAL NOT NULL DEFAULT 0,
+            delivery_discount REAL NOT NULL DEFAULT 0,
+            lottery_ticket INTEGER NOT NULL DEFAULT 0
+        );
+
+        CREATE TABLE IF NOT EXISTS membership_level_logs (
+            customer_id TEXT NOT NULL,
+            changed_at INTEGER NOT NULL,
+            level INTEGER NOT NULL,
+            points REAL NOT NULL
+        );
+
         CREATE TABLE IF NOT EXISTS menus (
             id TEXT PRIMARY KEY
         );
@@ -96,6 +115,19 @@ namespace {
 
         INSERT OR IGNORE INTO customers (id, name)
         VALUES ('TestCustomer', 'TestCustomer');
+
+        INSERT OR IGNORE INTO membership_levels (
+            customer_id,
+            level,
+            starting_point,
+            ending_point,
+            current_points,
+            multiplier,
+            off_percentage,
+            delivery_discount,
+            lottery_ticket
+        )
+        VALUES ('TestCustomer', 0, 0.0, 100.0, 0.0, 1.0, 0.0, 0.0, 0);
 
         INSERT OR IGNORE INTO menus (id)
         VALUES ('TestMenu');

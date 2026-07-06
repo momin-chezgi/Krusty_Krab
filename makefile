@@ -16,6 +16,7 @@ SRCS := \
 	src/Domain/Restaurateur.cpp \
 	src/Repository/AdminStorage.cpp \
 	src/Repository/CustomerStorage.cpp \
+	src/Repository/MembershipLevelStorage.cpp \
 	src/Repository/MenuStorage.cpp \
 	src/Repository/OrderStorage.cpp \
 	src/Repository/RestaurantStorage.cpp \
@@ -31,7 +32,7 @@ TARGET := bin/krusty_krab
 CXXFLAGS := -std=c++14 -Wall -Wextra -Iinclude -g -O0
 LDLIBS := -lsqlite3
 
-.PHONY: all clean test
+.PHONY: all 
 
 all: $(TARGET)
 
@@ -39,5 +40,3 @@ $(TARGET): $(SRCS)
 	mkdir bin/ -p
 	g++ $(CXXFLAGS) $(SRCS) -o $(TARGET) $(LDLIBS)
 
-clean:
-	rm -f $(TARGET) bin/customer_order_status_test

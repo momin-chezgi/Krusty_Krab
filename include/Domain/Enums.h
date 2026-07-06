@@ -81,7 +81,7 @@ enum class AdminAction : int {
 };
 
 
-enum class level : int {
+enum class Level : int {
     Normal = 0,
     Silver = 1,
     Gold = 2,

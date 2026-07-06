@@ -3,11 +3,12 @@
 # include <iostream>
 # include <ctime>
 # include <map>
+# include "Common/Types.h"
 # include "Enums.h"
 
 class MembershipLevel{
 protected:
-    level myLevel {level::Normal};
+    Level myLevel {Level::Normal};
     point startingPoint {};
     point endingPoint {};
     point myPoint {};
@@ -16,7 +17,7 @@ protected:
     double deliveryDiscount {};
     size_t lotteryTicket {};
 
-    std::map<time_t, level> levelLog;
+    std::map<time_t, Level> levelLog;
     // It updates by the prrevious class' levelLog;
 public:
     MembershipLevel(
@@ -27,19 +28,28 @@ public:
          double op, 
          double dd, 
          size_t lt,
-         level l
+         Level l
         );
     virtual ~MembershipLevel() = default;
 
-    point getStartingPoint();
-    level getMyLevel();
-    double getMultiplier();
-    double getoffPercentage();
-    double getDeliveryDiscount();
-    size_t getLotteryTicket();
+    point getStartingPoint() const;
+    point getEndingPoint() const;
+    point getMyPoint() const;
+    Level getMyLevel() const;
+    double getMultiplier() const;
+    double getoffPercentage() const;
+    double getDeliveryDiscount() const;
+    size_t getLotteryTicket() const;
+
+    bool saveForCustomer(CustID_tp custID) const;
+    bool updateForCustomer(CustID_tp custID) const;
+    static MembershipLevel loadForCustomer(CustID_tp custID);
+    static bool deleteForCustomer(CustID_tp custID);
     
-    level upgrade(cost orderedPrice);
-    level downgrade(cost cancelledPrice);
+    Level upgrade(cost orderedPrice);
+    Level upgrade(CustID_tp custID, cost orderedPrice);
+    Level downgrade(cost cancelledPrice);
+    Level downgrade(CustID_tp custID, cost cancelledPrice);
 
 };
 

@@ -1,6 +1,7 @@
 # include "Domain/MembershipLevel.h"
+# include "Repository/MembershipLevelStorage.h"
 
-MembershipLevel::MembershipLevel(point sp, point ep, point mp, double m, double op, double dd, size_t lt, level l) :
+MembershipLevel::MembershipLevel(point sp, point ep, point mp, double m, double op, double dd, size_t lt, Level l) :
     myLevel (l),
     startingPoint (sp),
     endingPoint (ep),
@@ -14,53 +15,105 @@ MembershipLevel::MembershipLevel(point sp, point ep, point mp, double m, double 
     }
 }
 
-point MembershipLevel::getStartingPoint()
+point MembershipLevel::getStartingPoint() const
 {
     return startingPoint;
 }
-level MembershipLevel::getMyLevel()
+point MembershipLevel::getEndingPoint() const
+{
+    return endingPoint;
+}
+point MembershipLevel::getMyPoint() const
+{
+    return myPoint;
+}
+Level MembershipLevel::getMyLevel() const
 {
     return myLevel;
 }
-double MembershipLevel::getMultiplier()
+double MembershipLevel::getMultiplier() const
 {
     return multiplier;
 }
-double MembershipLevel::getoffPercentage()
+double MembershipLevel::getoffPercentage() const
 {
     return offPercentage;
 }
-double MembershipLevel::getDeliveryDiscount()
+double MembershipLevel::getDeliveryDiscount() const
 {
     return deliveryDiscount;
 }
-size_t MembershipLevel::getLotteryTicket()
+size_t MembershipLevel::getLotteryTicket() const
 {
     return lotteryTicket;
 }
 
+bool MembershipLevel::saveForCustomer(CustID_tp custID) const
+{
+    MembershipLevelStorage storage;
+    return storage.addMembershipLevel(custID, *this);
+}
 
-level MembershipLevel::upgrade(cost orderedPrice)
+bool MembershipLevel::updateForCustomer(CustID_tp custID) const
+{
+    MembershipLevelStorage storage;
+    return storage.updateMembershipLevel(custID, *this);
+}
+
+MembershipLevel MembershipLevel::loadForCustomer(CustID_tp custID)
+{
+    MembershipLevelStorage storage;
+    return storage.getMembershipLevel(custID);
+}
+
+bool MembershipLevel::deleteForCustomer(CustID_tp custID)
+{
+    MembershipLevelStorage storage;
+    return storage.delMembershipLevel(custID);
+}
+
+Level MembershipLevel::upgrade(cost orderedPrice)
 {
     myPoint += cost2point(orderedPrice)*getMultiplier();
     if (myPoint > endingPoint){
-        return static_cast<level>(static_cast<int>(myLevel) + 1);
+        if (myLevel != Level::VIP) {
+            myLevel = static_cast<Level>(static_cast<int>(myLevel) + 1);
+        }
     }
     return myLevel;
 }
+
+Level MembershipLevel::upgrade(CustID_tp custID, cost orderedPrice)
+{
+    Level level = upgrade(orderedPrice);
+    updateForCustomer(custID);
+    return level;
+}
+
 // remember you should invoke this function JUST like this to work correctly:
 /*
 x.upgrade(cost ...)
 while(x.getMyLevel != upgrade(0));
 */
-level MembershipLevel::downgrade(cost cancelledPrice)
+
+Level MembershipLevel::downgrade(cost cancelledPrice)
 {
     myPoint -= cost2point(cancelledPrice)*getMultiplier();
-    if (myPoint > endingPoint){
-        return static_cast<level>(static_cast<int>(myLevel) - 1);
+    if (myPoint < startingPoint){
+        if (myLevel != Level::Normal) {
+            myLevel = static_cast<Level>(static_cast<int>(myLevel) - 1);
+        }
     }
     return myLevel;
 }
+
+Level MembershipLevel::downgrade(CustID_tp custID, cost cancelledPrice)
+{
+    Level level = downgrade(cancelledPrice);
+    updateForCustomer(custID);
+    return level;
+}
+
 // remember you should invoke this function JUST like this to work correctly:
 /*
 x.upgrade(cost ...)
