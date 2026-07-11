@@ -21,7 +21,7 @@ RestaurateurAction restaurateurOptions(string restName, RestID_tp restID,string 
 AdminAction adminOptions(vector<ManagerID_tp> restaurateurIDs);
 CustomerAction customerActions(
     const Customer& user,
-    const MembershipSummary& membershipSummary
+    const MembershipLevel::Report& membershipSummary
 );
 Restaurateur findForRestaurant(RestID_tp givenID);
 RestID_tp chooseRestaurant();

@@ -1,14 +1,20 @@
 #pragma once
 
-#include "MembershipLevel.h"
+#include "MembershipState.h"
 
-class VIP : public MembershipLevel {
+class VIP : public MembershipState {
 public:
     VIP(
+        point sp,
+        point ep,
         point mp,
         double m,
         double op,
         double dd,
         size_t lt
     );
+
+    MembershipState* clone() const override;
+    std::string getLevelName() const override;
+    std::string getDeliveryBenefit() const override;
 };

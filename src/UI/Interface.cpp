@@ -54,7 +54,7 @@ bool orderOut(MenuID_tp menuID, Order& resultOrder)
 
 CustomerAction customerActions(
     const Customer& user,
-    const MembershipSummary& loyaltySummary
+    const MembershipLevel::Report& loyaltySummary
 )
 {
     Printer::CustomerDashboard(user, loyaltySummary);

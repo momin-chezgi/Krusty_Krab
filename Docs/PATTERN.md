@@ -1,6 +1,8 @@
-My pattern is STRATEGY
-not state
-because state strategy is like a finite diagram 
-and it needs long and comlicated if-else or switch scopes
-But for MembershipLevel we just use a pointer of MembershipLevel
-and the work will happen according to the level(Normal, silver, ...)
+My pattern is STATE.
+
+MembershipLevel is the context object.
+It owns a raw pointer to the current MembershipState.
+
+Normal, Silver, Gold, and VIP are the concrete states.
+The work happens through the current state, and MembershipLevel changes that
+state when automatic point-based upgrade or downgrade rules require it.

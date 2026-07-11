@@ -1,14 +1,20 @@
 #pragma once
 
-# include "MembershipLevel.h"
+# include "MembershipState.h"
 
-class Normal : public MembershipLevel{
+class Normal : public MembershipState{
 public:
     Normal(
+         point sp,
+         point ep,
          point mp,
          double m,
          double op,
          double dd,
          size_t lt
         );
+
+    MembershipState* clone() const override;
+    std::string getLevelName() const override;
+    std::string getDeliveryBenefit() const override;
 };

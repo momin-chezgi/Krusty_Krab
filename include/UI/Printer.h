@@ -23,9 +23,9 @@ namespace Printer{
     void RestaurateurChoices();
 void CustomerDashboard(
     const Customer& customer,
-    const MembershipSummary& summary
+    const MembershipLevel::Report& summary
 );
-    void checkoutInvoice(const CheckoutSummary& summary);
+    void checkoutInvoice(const MembershipLevel::Report& summary);
     void membershipUpgrade(const string& message);
     void membershipLevelReport(const map<Level, size_t>& counts);
     void membershipLevelHistory(const vector<MembershipLevelLogEntry>& history);

@@ -212,7 +212,7 @@ void Printer::adminChoices()
 
 void Printer::CustomerDashboard(
     const Customer& customer,
-    const MembershipSummary& summary
+    const MembershipLevel::Report& summary
 )
 {
     printHeader("Customer Dashboard");
@@ -230,7 +230,7 @@ void Printer::CustomerDashboard(
     ShowRestaurants();
 }
 
-void Printer::checkoutInvoice(const CheckoutSummary& summary)
+void Printer::checkoutInvoice(const MembershipLevel::Report& summary)
 {
     printHeader("Checkout Invoice");
     cout << "Base total: " << summary.baseTotal << endl;

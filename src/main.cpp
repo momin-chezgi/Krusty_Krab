@@ -54,12 +54,12 @@ void CustomerDashboard(){
         return;
     }
 
-    MembershipLevel membership = applyLevelTemplate(Level::Normal, 0.0);
+    MembershipLevel membership(createStateByLevel(Level::Normal, 0.0));
     const bool hasMembershipProfile = ensureRecordForCustomer(user.getID(), membership);
     if (!hasMembershipProfile) {
         cout << "Could not open membership profile. Continuing without loyalty persistence." << endl;
     }
-    MembershipSummary membershipSummary = buildSummary(membership);
+    MembershipLevel::Report membershipSummary = buildSummary(membership);
 
     while(true){
         CustomerAction action = customerActions(user, membershipSummary);
@@ -85,7 +85,7 @@ void CustomerDashboard(){
                         Printer::checkoutInvoice(buildCheckoutSummary(membership, order));
 
                         const auto loyaltyUpdate = applyOrder(membership, order.getTotalPrice());
-                        membership = loyaltyUpdate.next;
+                        membership = applyOrderToMembership(membership, order.getTotalPrice());
                         membershipSummary = buildSummary(membership);
 
                         if (persistMembershipForCustomer(user.getID(), membership)) {
@@ -355,7 +355,7 @@ void AdminDashboard()
             const bool hadRecord = membershipStorage.hasMembershipLevel(targetCustomerID);
             Level targetLevel = GetInf::membershipLevel();
             point targetPoints = GetInf::membershipPoints();
-            MembershipLevel updatedLevel = applyLevelTemplate(targetLevel, targetPoints);
+            MembershipLevel updatedLevel(createStateByLevel(targetLevel, targetPoints));
             if (persistMembershipForCustomer(targetCustomerID, updatedLevel)) {
                 cout << (hadRecord ? "Membership updated for " : "Membership created and set for ")
                      << "customer: " << targetCustomerID << endl;
