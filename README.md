@@ -69,3 +69,5 @@ The current implementation is a transitional prototype.
 5. Return to menus or exit cleanly.
 
 > This README reflects the current shape of the project and should evolve with each development phase.
+
+See also: You can understand more about architecture, design and and class diagrams on ```Docs/LINKS.md```
